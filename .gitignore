@@ -1,3 +1,6 @@
 # Compile targets
 /Debug/
 /Release/
+
+# Ignore Eclipse settings directory
+/.settings/
