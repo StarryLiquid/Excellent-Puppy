@@ -1,5 +1,9 @@
 #include <GL\freeglut.h>
-#include "models/Model.hpp"
+#include "models/TriangleGeometry.hpp"
+#include "models/ModelCNV.hpp"
+#include "types.hpp"
+
+using namespace ExcellentPuppy::Modeling;
 
 // A very small number
 #define EPSILON 0.0001
@@ -98,19 +102,17 @@ void setup (int* argc, char** argv) {
 	glutInit(argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(800, 800);
 	glutCreateWindow("Rotation display");
 }
 
-static excellentpuppy::Model *testCube;
-static excellentpuppy::Model *testPlane;
+static Model *testCube;
+static Model *testPlane;
 void init (void) {
-	glLineWidth(3);
-	glPointSize(3);
-	glClearColor(.5, .5, .5, 1.0);
+	glClearColor(1, 1, 1, 1);
 
-	testCube = new excellentpuppy::Model(cubeSpec, cubeFaces, sizeof(cubeFaces)/sizeof(GEtriangle));
-	testPlane = new excellentpuppy::Model(planeSpec, planeFaces, sizeof(planeFaces)/sizeof(GEtriangle));
+	testCube = new ModelCNV(cubeSpec, new TriangleGeometry(cubeFaces, sizeof(cubeFaces)/sizeof(GEtriangle)));
+	testPlane = new ModelCNV(planeSpec, new TriangleGeometry(planeFaces, sizeof(planeFaces)/sizeof(GEtriangle)));
 
 	setProjection();
 	glMatrixMode(GL_MODELVIEW);
@@ -123,10 +125,10 @@ void init (void) {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	//glCullFace(GL_BACK);
+	glCullFace(GL_BACK);
 
 /**#ifdef LIGHTING
 	glEnable(GL_LIGHTING);
@@ -148,13 +150,7 @@ void registerCallbacks (void) {
 void render (void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glRotated(5, 0, 1, 0);
-
-	glTranslated(0, -.5, 0);
-	testPlane->load();
 	testPlane->render();
-	glTranslated(0, .5, 0);
-	testCube->load();
 	testCube->render();
 
 	glutSwapBuffers();
@@ -172,8 +168,6 @@ void setProjection() {
 			  -1.0, 1.0,
 			   1.0, 6.0);
 }
-
-#include <iostream>
 
 int main (int argc, char** argv) {
 	setup(&argc, argv);

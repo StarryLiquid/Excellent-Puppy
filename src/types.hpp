@@ -19,21 +19,4 @@ typedef struct {
 	GLfloat z;
 } GEvec3D, GEvertex3D;
 
-#define GE_CNV_FORMAT GL_C4F_N3F_V3F
-
-typedef struct {
-	GEcolor color;
-	GEvec3D normal;
-	GEvertex3D vertex;
-} GEcnv;
-
-#define GE_TRI_TYPE GL_UNSIGNED_INT
-const unsigned int GE_TRI_COUNT = 3;
-
-typedef struct {
-	GLuint vert1;
-	GLuint vert2;
-	GLuint vert3;
-} GEtriangle;
-
 #endif /* TYPES_HPP_ */
