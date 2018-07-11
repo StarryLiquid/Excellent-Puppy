@@ -1,6 +1,7 @@
 #include <GL\freeglut.h>
 #include "models/TriangleGeometry.hpp"
 #include "models/ModelCNV.hpp"
+#include "object/CompositeEntity.hpp"
 #include "object/SimpleEntity.hpp"
 #include "types.hpp"
 
@@ -98,6 +99,8 @@ void render (void);
 void handleKeyboard (unsigned char, int, int);
 // Handles special keyboard input
 void handleSpecialKeyboard (int, int, int);
+// Handle mouse movement
+void handleMouseMotion(int, int);
 // Sets the projection
 void setProjection();
 
@@ -109,25 +112,22 @@ void setup (int* argc, char** argv) {
 	glutCreateWindow("Rotation display");
 }
 
-static Objects::SimpleEntity *testCubeEntity;
-static Modeling::Model *testPlane;
+static Objects::Entity *testEntity;
 void init (void) {
 	glClearColor(1, 1, 1, 1);
 
 	Modeling::Model *testCube = new Modeling::ModelCNV(cubeSpec,
 			new Modeling::TriangleGeometry(cubeFaces,
-					sizeof(cubeFaces)/sizeof(GEtriangle)));
-	testCubeEntity = new Objects::SimpleEntity({0, 0, 0},  {0, 0 ,0}, testCube);
-	testPlane = new Modeling::ModelCNV(planeSpec,
+				sizeof(cubeFaces)/sizeof(GEtriangle)));
+	Modeling::Model *testPlane = new Modeling::ModelCNV(planeSpec,
 			new Modeling::TriangleGeometry(planeFaces,
-					sizeof(planeFaces)/sizeof(GEtriangle)));
+				sizeof(planeFaces)/sizeof(GEtriangle)));
+	Objects::SimpleEntity *cubeEntity = new Objects::SimpleEntity({0, 0.5, 0},  {0, 0 ,0}, testCube);
+	Objects::SimpleEntity *planeEntity = new Objects::SimpleEntity({0, 0, 0},  {0, 0 ,0}, testPlane);
+	testEntity = new Objects::CompositeEntity({0, 0, 0},  {0, 0 ,0}, {cubeEntity, planeEntity});
 
 	setProjection();
-	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0.0, 1.0, -3.0,
-	          0.0, 0.0,  0.0,
-	          0.0, 1.0,  0.0);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -154,30 +154,51 @@ void registerCallbacks (void) {
 	glutDisplayFunc(render);
 	glutKeyboardFunc(handleKeyboard);
 	glutSpecialFunc(handleSpecialKeyboard);
+	glutPassiveMotionFunc(handleMouseMotion);
 }
 
 void render (void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	testPlane->render();
-	testCubeEntity->render();
+	testEntity->render();
 
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
 
-void handleKeyboard (unsigned char key, int x, int y){
-	 //glutGetModifiers()
+void handleKeyboard (unsigned char key, int x, int y) {
 }
-void handleSpecialKeyboard (int key, int x, int y){
+static float cameraZPos = 3, cameraXPos = 0;
+void handleSpecialKeyboard (int key, int x, int y) {
 	if(key==GLUT_KEY_UP)
-		testCubeEntity->getRotation()->x += 1;
+		cameraZPos -= 1;
 	if(key==GLUT_KEY_DOWN)
-		testCubeEntity->getRotation()->x -= 1;
+		cameraZPos += 1;
 	if(key==GLUT_KEY_LEFT)
-		testCubeEntity->getRotation()->y += 1;
+		cameraXPos -= 1;
 	if(key==GLUT_KEY_RIGHT)
-		testCubeEntity->getRotation()->y -= 1;
+		cameraXPos += 1;
+
+	setProjection();
+}
+
+static int lastX = -1, lastY = -1;
+static float cameraYDegrees = 0;
+static float cameraXDegrees = 0;
+void handleMouseMotion (int x, int y) {
+	if(lastX != -1) {
+		cameraYDegrees += x-lastX;
+		cameraXDegrees -= y-lastY;
+
+		if(cameraXDegrees < -90)
+			cameraXDegrees = -90;
+		if(cameraXDegrees > 90)
+			cameraXDegrees = 90;
+	}
+	lastX = x;
+	lastY = y;
+
+	setProjection();
 }
 
 void setProjection() {
@@ -186,6 +207,13 @@ void setProjection() {
 	glFrustum(-1.0, 1.0,
 			  -1.0, 1.0,
 			   1.0, 6.0);
+	gluLookAt(0.0, 1.0, 0.0,
+	          0.0, 1.0, 3.0,
+	          0.0, 1.0, 0.0);
+	glRotatef(cameraXDegrees, 1, 0, 0);
+	glRotatef(cameraYDegrees, 0, 1, 0);
+	glTranslatef(cameraXPos, 0, cameraZPos);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 int main (int argc, char** argv) {
