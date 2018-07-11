@@ -1,9 +1,10 @@
 #include <GL\freeglut.h>
 #include "models/TriangleGeometry.hpp"
 #include "models/ModelCNV.hpp"
+#include "object/SimpleEntity.hpp"
 #include "types.hpp"
 
-using namespace ExcellentPuppy::Modeling;
+using namespace ExcellentPuppy;
 
 // A very small number
 #define EPSILON 0.0001
@@ -95,6 +96,8 @@ GEtriangle const planeFaces[] = {
 void render (void);
 // Handles keyboard input
 void handleKeyboard (unsigned char, int, int);
+// Handles special keyboard input
+void handleSpecialKeyboard (int, int, int);
 // Sets the projection
 void setProjection();
 
@@ -106,13 +109,18 @@ void setup (int* argc, char** argv) {
 	glutCreateWindow("Rotation display");
 }
 
-static Model *testCube;
-static Model *testPlane;
+static Objects::SimpleEntity *testCubeEntity;
+static Modeling::Model *testPlane;
 void init (void) {
 	glClearColor(1, 1, 1, 1);
 
-	testCube = new ModelCNV(cubeSpec, new TriangleGeometry(cubeFaces, sizeof(cubeFaces)/sizeof(GEtriangle)));
-	testPlane = new ModelCNV(planeSpec, new TriangleGeometry(planeFaces, sizeof(planeFaces)/sizeof(GEtriangle)));
+	Modeling::Model *testCube = new Modeling::ModelCNV(cubeSpec,
+			new Modeling::TriangleGeometry(cubeFaces,
+					sizeof(cubeFaces)/sizeof(GEtriangle)));
+	testCubeEntity = new Objects::SimpleEntity({0, 0, 0},  {0, 0 ,0}, testCube);
+	testPlane = new Modeling::ModelCNV(planeSpec,
+			new Modeling::TriangleGeometry(planeFaces,
+					sizeof(planeFaces)/sizeof(GEtriangle)));
 
 	setProjection();
 	glMatrixMode(GL_MODELVIEW);
@@ -145,20 +153,31 @@ void init (void) {
 void registerCallbacks (void) {
 	glutDisplayFunc(render);
 	glutKeyboardFunc(handleKeyboard);
+	glutSpecialFunc(handleSpecialKeyboard);
 }
 
 void render (void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	testPlane->render();
-	testCube->render();
+	testCubeEntity->render();
 
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
 
 void handleKeyboard (unsigned char key, int x, int y){
-	//
+	 //glutGetModifiers()
+}
+void handleSpecialKeyboard (int key, int x, int y){
+	if(key==GLUT_KEY_UP)
+		testCubeEntity->getRotation()->x += 1;
+	if(key==GLUT_KEY_DOWN)
+		testCubeEntity->getRotation()->x -= 1;
+	if(key==GLUT_KEY_LEFT)
+		testCubeEntity->getRotation()->y += 1;
+	if(key==GLUT_KEY_RIGHT)
+		testCubeEntity->getRotation()->y -= 1;
 }
 
 void setProjection() {

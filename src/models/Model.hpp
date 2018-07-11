@@ -11,7 +11,7 @@ namespace Modeling {
 			virtual void load() const=0;
 			virtual void render() const=0;
 	};
-}
-} /* namespace ExcellentPuppy::Modeling */
+} /* namespace Modeling */
+} /* namespace ExcellentPuppy */
 
 #endif /* MODELS_MODEL_HPP_ */
