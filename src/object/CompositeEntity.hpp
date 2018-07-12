@@ -7,7 +7,6 @@
 
 namespace ExcellentPuppy {
 namespace Objects {
-
 	class CompositeEntity: public Entity {
 		private:
 			std::list<Entity*> _entities;
@@ -21,8 +20,7 @@ namespace Objects {
 			void setEntities(const std::list<Entity*>& entities);
 
 			virtual void subrender();
-};
-
+	};
 } /* namespace Objects */
 } /* namespace ExcellentPuppy */
 

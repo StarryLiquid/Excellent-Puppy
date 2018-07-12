@@ -5,7 +5,6 @@
 
 namespace ExcellentPuppy {
 namespace Objects {
-
 	class Entity {
 		private:
 			GEvector _position;
@@ -23,7 +22,6 @@ namespace Objects {
 			void render();
 			virtual void subrender()=0;
 	};
-
 } /* namespace Modeling */
 } /* namespace ExcelllentPuppy */
 
