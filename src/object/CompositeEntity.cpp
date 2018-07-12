@@ -3,9 +3,9 @@
 namespace ExcellentPuppy {
 namespace Objects {
 
-CompositeEntity::CompositeEntity(GEvertex3D position, GEvec3D rotation) :
+CompositeEntity::CompositeEntity(GEvector position, GEvector rotation) :
 	Entity(position, rotation) { }
-CompositeEntity::CompositeEntity(GEvertex3D position, GEvec3D rotation, std::list<Entity*> entities) :
+CompositeEntity::CompositeEntity(GEvector position, GEvector rotation, std::list<Entity*> entities) :
 	Entity(position, rotation),
 	_entities(entities) { }
 CompositeEntity::~CompositeEntity() { }

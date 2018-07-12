@@ -8,8 +8,8 @@
 
 typedef struct {
 	GEcolor color;
-	GEvec3D normal;
-	GEvertex3D vertex;
+	GEvector normal;
+	GEvector vertex;
 } GEcnv;
 
 namespace ExcellentPuppy {

@@ -8,17 +8,17 @@ namespace Objects {
 
 	class Entity {
 		private:
-			GEvertex3D _position;
-			GEvec3D _rotation;
+			GEvector _position;
+			GEvector _rotation;
 
 		public:
-			Entity(GEvertex3D position, GEvec3D rotation);
+			Entity(GEvector position, GEvector rotation);
 			virtual ~Entity();
 
-			inline void setPosition(GEvertex3D position);
-			virtual GEvertex3D *getPosition();
-			inline void setRotation(GEvec3D rotation);
-			virtual GEvec3D *getRotation();
+			inline void setPosition(GEvector position);
+			virtual GEvector *getPosition();
+			inline void setRotation(GEvector rotation);
+			virtual GEvector *getRotation();
 
 			void render();
 			virtual void subrender()=0;

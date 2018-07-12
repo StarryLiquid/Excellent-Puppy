@@ -4,7 +4,7 @@
 
 using namespace ExcellentPuppy::Objects;
 
-SimpleEntity::SimpleEntity(GEvertex3D position, GEvec3D rotation, ExcellentPuppy::Modeling::Model const *model) :
+SimpleEntity::SimpleEntity(GEvector position, GEvector rotation, ExcellentPuppy::Modeling::Model const *model) :
 	Entity(position, rotation),
 	_model(model) { }
 SimpleEntity::~SimpleEntity() { }

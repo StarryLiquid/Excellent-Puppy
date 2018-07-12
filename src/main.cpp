@@ -130,9 +130,9 @@ void init (void) {
 	glLoadIdentity();
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_NORMAL_ARRAY);
+	//glEnableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -166,34 +166,34 @@ void render (void) {
 	glutPostRedisplay();
 }
 
+static GErotation cameraYRotation = {0, 0, 1, 0};
+static GErotation cameraXRotation = {0, 1, 0, 0};
+static GEvector cameraPosition = {0, 0, 3};
 void handleKeyboard (unsigned char key, int x, int y) {
 }
-static float cameraZPos = 3, cameraXPos = 0;
 void handleSpecialKeyboard (int key, int x, int y) {
 	if(key==GLUT_KEY_UP)
-		cameraZPos -= 1;
+		cameraPosition.z -= 1;
 	if(key==GLUT_KEY_DOWN)
-		cameraZPos += 1;
+		cameraPosition.z += 1;
 	if(key==GLUT_KEY_LEFT)
-		cameraXPos -= 1;
+		cameraPosition.x -= 1;
 	if(key==GLUT_KEY_RIGHT)
-		cameraXPos += 1;
+		cameraPosition.x += 1;
 
 	setProjection();
 }
 
 static int lastX = -1, lastY = -1;
-static float cameraYDegrees = 0;
-static float cameraXDegrees = 0;
 void handleMouseMotion (int x, int y) {
 	if(lastX != -1) {
-		cameraYDegrees += x-lastX;
-		cameraXDegrees -= y-lastY;
+		cameraYRotation.degrees += x-lastX;
+		cameraXRotation.degrees -= y-lastY;
 
-		if(cameraXDegrees < -90)
-			cameraXDegrees = -90;
-		if(cameraXDegrees > 90)
-			cameraXDegrees = 90;
+		if(cameraXRotation.degrees < -90)
+			cameraXRotation.degrees = -90;
+		if(cameraXRotation.degrees > 90)
+			cameraXRotation.degrees = 90;
 	}
 	lastX = x;
 	lastY = y;
@@ -210,9 +210,9 @@ void setProjection() {
 	gluLookAt(0.0, 1.0, 0.0,
 	          0.0, 1.0, 3.0,
 	          0.0, 1.0, 0.0);
-	glRotatef(cameraXDegrees, 1, 0, 0);
-	glRotatef(cameraYDegrees, 0, 1, 0);
-	glTranslatef(cameraXPos, 0, cameraZPos);
+	geRotate(cameraXRotation);
+	geRotate(cameraYRotation);
+	geTranslate(cameraPosition);
 	glMatrixMode(GL_MODELVIEW);
 }
 

@@ -13,8 +13,8 @@ namespace Objects {
 			std::list<Entity*> _entities;
 
 		public:
-			CompositeEntity(GEvertex3D position, GEvec3D rotation);
-			CompositeEntity(GEvertex3D position, GEvec3D rotation, std::list<Entity*> entities);
+			CompositeEntity(GEvector position, GEvector rotation);
+			CompositeEntity(GEvector position, GEvector rotation, std::list<Entity*> entities);
 			virtual ~CompositeEntity();
 
 			std::list<Entity*>& getEntities();

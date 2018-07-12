@@ -4,8 +4,8 @@
 #include <GL\freeglut.h>
 
 typedef struct {
-	GLfloat u;
-	GLfloat v;
+	GLfloat s;
+	GLfloat t;
 } GEtexCoords;
 typedef struct {
 	GLclampf r;
@@ -17,6 +17,28 @@ typedef struct {
 	GLfloat x;
 	GLfloat y;
 	GLfloat z;
-} GEvec3D, GEvertex3D;
+} GEvector;
+typedef struct {
+	GLfloat degrees;
+	GLfloat x;
+	GLfloat y;
+	GLfloat z;
+} GErotation;
+
+inline void geTexCoord(const GEtexCoords& coords) {
+	glTexCoord2f(coords.s, coords.t);
+}
+inline void geColor(const GEcolor& color) {
+	glColor3f(color.r, color.g, color.b);
+}
+inline void geVertex(const GEvector& vertex) {
+	glVertex3fv((const float *) &vertex);
+}
+inline void geTranslate(const GEvector& vec) {
+	glTranslated(vec.x, vec.y, vec.z);
+}
+inline void geRotate(const GErotation& rotation) {
+	glRotatef(rotation.degrees, rotation.x, rotation.y, rotation.z);
+}
 
 #endif /* TYPES_HPP_ */
