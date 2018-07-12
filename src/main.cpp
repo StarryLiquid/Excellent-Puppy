@@ -3,6 +3,7 @@
 #include "models/ModelCNV.hpp"
 #include "object/CompositeEntity.hpp"
 #include "object/SimpleEntity.hpp"
+#include "engine/Camera.hpp"
 #include "types.hpp"
 
 using namespace ExcellentPuppy;
@@ -10,6 +11,7 @@ using namespace ExcellentPuppy;
 // A very small number
 #define EPSILON 0.0001
 
+static Engine::Camera camera = Engine::Camera((GEvector){0, 0, 3});
 GEcnv const cubeSpec[] = {
 	{
 		{ 0, 0, 1, 1 },
@@ -101,8 +103,6 @@ void handleKeyboard (unsigned char, int, int);
 void handleSpecialKeyboard (int, int, int);
 // Handle mouse movement
 void handleMouseMotion(int, int);
-// Sets the projection
-void setProjection();
 
 void setup (int* argc, char** argv) {
 	glutInit(argc, argv);
@@ -126,7 +126,7 @@ void init (void) {
 	Objects::SimpleEntity *planeEntity = new Objects::SimpleEntity({0, 0, 0},  {0, 0 ,0}, testPlane);
 	testEntity = new Objects::CompositeEntity({0, 0, 0},  {0, 0 ,0}, {cubeEntity, planeEntity});
 
-	setProjection();
+	camera.setGLProjection();
 	glLoadIdentity();
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -134,7 +134,6 @@ void init (void) {
 	//glEnableClientState(GL_NORMAL_ARRAY);
 	//glEnableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_CULL_FACE);
-	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
 
@@ -166,54 +165,36 @@ void render (void) {
 	glutPostRedisplay();
 }
 
-static GErotation cameraYRotation = {0, 0, 1, 0};
-static GErotation cameraXRotation = {0, 1, 0, 0};
-static GEvector cameraPosition = {0, 0, 3};
 void handleKeyboard (unsigned char key, int x, int y) {
 }
 void handleSpecialKeyboard (int key, int x, int y) {
 	if(key==GLUT_KEY_UP)
-		cameraPosition.z -= 1;
+		camera.getPosition().z -= 1;
 	if(key==GLUT_KEY_DOWN)
-		cameraPosition.z += 1;
+		camera.getPosition().z += 1;
 	if(key==GLUT_KEY_LEFT)
-		cameraPosition.x -= 1;
+		camera.getPosition().x -= 1;
 	if(key==GLUT_KEY_RIGHT)
-		cameraPosition.x += 1;
+		camera.getPosition().x += 1;
 
-	setProjection();
+	camera.setGLProjection();
 }
 
 static int lastX = -1, lastY = -1;
 void handleMouseMotion (int x, int y) {
 	if(lastX != -1) {
-		cameraYRotation.degrees += x-lastX;
-		cameraXRotation.degrees -= y-lastY;
+		camera.getRotationY() += x-lastX;
+		camera.getRotationX() -= y-lastY;
 
-		if(cameraXRotation.degrees < -90)
-			cameraXRotation.degrees = -90;
-		if(cameraXRotation.degrees > 90)
-			cameraXRotation.degrees = 90;
+		if(camera.getRotationX() < -90)
+			camera.getRotationX() = -90;
+		if(camera.getRotationX() > 90)
+			camera.getRotationX() = 90;
 	}
 	lastX = x;
 	lastY = y;
 
-	setProjection();
-}
-
-void setProjection() {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glFrustum(-1.0, 1.0,
-			  -1.0, 1.0,
-			   1.0, 6.0);
-	gluLookAt(0.0, 1.0, 0.0,
-	          0.0, 1.0, 3.0,
-	          0.0, 1.0, 0.0);
-	geRotate(cameraXRotation);
-	geRotate(cameraYRotation);
-	geTranslate(cameraPosition);
-	glMatrixMode(GL_MODELVIEW);
+	camera.setGLProjection();
 }
 
 int main (int argc, char** argv) {
