@@ -8,15 +8,12 @@
 #include "../engine/Camera.hpp"
 #include "../object/TestEntity.hpp"
 #include "../types.hpp"
+#include "MouseController.hpp"
 
 using namespace ExcellentPuppy::Engine;
 
-// Handles keyboard input
-void handleKeyboard (unsigned char, int, int);
 // Handles special keyboard input
 void handleSpecialKeyboard (int, int, int);
-// Handle mouse movement
-void handleMouseMotion(int, int);
 
 Camera* Engine::_camera = NULL;
 Camera*& Engine::getCamera() {
@@ -79,9 +76,10 @@ void Engine::initScene() {
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
-	glutKeyboardFunc(handleKeyboard);
 	glutSpecialFunc(handleSpecialKeyboard);
-	glutPassiveMotionFunc(handleMouseMotion);
+	MouseController::registerCallbacks();
+	//TODO: remove
+	MouseController::setCameraControlling(true);
 }
 
 void Engine::render (void) {
@@ -96,8 +94,6 @@ void Engine::render (void) {
 	// TODO: everything
 }
 
-void handleKeyboard (unsigned char key, int x, int y) {
-}
 void handleSpecialKeyboard (int key, int x, int y) {
 	Camera *camera = Engine::getCamera();
 	if(camera != NULL){
@@ -112,24 +108,4 @@ void handleSpecialKeyboard (int key, int x, int y) {
 
 		camera->setGLProjection();
 	}
-}
-
-static int lastX = -1, lastY = -1;
-void handleMouseMotion (int x, int y) {
-	Camera *camera = Engine::getCamera();
-	if(camera != NULL){
-		if(lastX != -1) {
-			Engine::getCamera()->getRotationY() += x-lastX;
-			Engine::getCamera()->getRotationX() -= y-lastY;
-
-			if(Engine::getCamera()->getRotationX() < -90)
-				Engine::getCamera()->getRotationX() = -90;
-			if(Engine::getCamera()->getRotationX() > 90)
-				Engine::getCamera()->getRotationX() = 90;
-		}
-		Engine::getCamera()->setGLProjection();
-	}
-
-	lastX = x;
-	lastY = y;
 }
