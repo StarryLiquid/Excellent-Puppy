@@ -4,7 +4,7 @@
 #include "../types.hpp"
 
 namespace ExcellentPuppy {
-namespace Objects {
+namespace Entities {
 	class Entity {
 		private:
 			GEvector _position;

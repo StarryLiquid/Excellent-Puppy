@@ -7,7 +7,7 @@ namespace ExcellentPuppy {
 namespace Modeling {
 	class Model;
 }
-namespace Objects {
+namespace Entities {
 	class SimpleEntity : virtual public Entity {
 		private:
 			ExcellentPuppy::Modeling::Model const *_model;

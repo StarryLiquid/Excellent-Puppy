@@ -111,7 +111,7 @@ void Engine::setCamera(Camera* camera) {
 	Engine::_camera = camera;
 }
 
-static ExcellentPuppy::Objects::Entity *testEntity;
+static ExcellentPuppy::Entities::Entity *testEntity;
 void Engine::init(int argc, char** argv) {
 	initWindow(argc, argv);
 	initSubsystems();
@@ -142,9 +142,9 @@ void Engine::initScene() {
 	Modeling::Model *testPlane = new Modeling::ModelCNV(planeSpec,
 			new Modeling::TriangleGeometry(planeFaces,
 				sizeof(planeFaces)/sizeof(GEtriangle)));
-	Objects::SimpleEntity *cubeEntity = new Objects::SimpleEntity({0, 0.5, 0},  {0, 0 ,0}, testCube);
-	Objects::SimpleEntity *planeEntity = new Objects::SimpleEntity({0, 0, 0},  {0, 0 ,0}, testPlane);
-	testEntity = new Objects::CompositeEntity({0, 0, 0},  {0, 0 ,0}, {cubeEntity, planeEntity});
+	Entities::SimpleEntity *cubeEntity = new Entities::SimpleEntity({0, 0.5, 0},  {0, 0 ,0}, testCube);
+	Entities::SimpleEntity *planeEntity = new Entities::SimpleEntity({0, 0, 0},  {0, 0 ,0}, testPlane);
+	testEntity = new Entities::CompositeEntity({0, 0, 0},  {0, 0 ,0}, {cubeEntity, planeEntity});
 
 	Engine::_camera = new Camera((GEvector){0, 0, 3}); // TODO: move this somewhere else?
 	Engine::_camera->setGLProjection();

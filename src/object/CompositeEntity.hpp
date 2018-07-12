@@ -6,7 +6,7 @@
 #include <list>
 
 namespace ExcellentPuppy {
-namespace Objects {
+namespace Entities {
 	class CompositeEntity: public Entity {
 		private:
 			std::list<Entity*> _entities;

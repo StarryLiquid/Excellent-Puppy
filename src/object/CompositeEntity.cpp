@@ -1,6 +1,6 @@
 #include "CompositeEntity.hpp"
 
-using namespace ExcellentPuppy::Objects;
+using namespace ExcellentPuppy::Entities;
 
 CompositeEntity::CompositeEntity(GEvector position, GEvector rotation) :
 	Entity(position, rotation) { }

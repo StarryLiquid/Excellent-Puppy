@@ -2,7 +2,7 @@
 
 #include "../models/Model.hpp"
 
-using namespace ExcellentPuppy::Objects;
+using namespace ExcellentPuppy::Entities;
 
 SimpleEntity::SimpleEntity(GEvector position, GEvector rotation, ExcellentPuppy::Modeling::Model const *model) :
 	Entity(position, rotation),
