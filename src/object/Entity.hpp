@@ -11,7 +11,9 @@ namespace Entities {
 			GEvector _rotation;
 
 		public:
-			Entity(GEvector position, GEvector rotation);
+			Entity(
+					GEvector position = {0, 0, 0},
+					GEvector rotation = {0, 0, 0});
 			virtual ~Entity();
 
 			inline void setPosition(GEvector position);

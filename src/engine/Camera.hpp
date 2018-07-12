@@ -8,8 +8,8 @@ namespace Engine {
 	class Camera {
 		private:
 			GEvector _position;
-			GErotation _rotationY;
 			GErotation _rotationX;
+			GErotation _rotationY;
 
 		public:
 			Camera(const GEvector& position = { 0, 0, 0 },

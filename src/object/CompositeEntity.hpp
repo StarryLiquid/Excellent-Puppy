@@ -12,8 +12,10 @@ namespace Entities {
 			std::list<Entity*> _entities;
 
 		public:
-			CompositeEntity(GEvector position, GEvector rotation);
-			CompositeEntity(GEvector position, GEvector rotation, std::list<Entity*> entities);
+			CompositeEntity(
+					GEvector position = {0, 0, 0},
+					GEvector rotation = {0, 0, 0},
+					std::list<Entity*> entities = {});
 			virtual ~CompositeEntity();
 
 			std::list<Entity*>& getEntities();
