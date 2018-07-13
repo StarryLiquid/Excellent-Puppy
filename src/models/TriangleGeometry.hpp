@@ -15,13 +15,13 @@ typedef struct {
 
 namespace ExcellentPuppy {
 namespace Modeling {
-	class TriangleGeometry : public virtual Geometry {
+	class TriangleGeometry : public Geometry {
 		private:
 			GEtriangle const *_faces;
 			const GLsizei _nVertices;
 
 		public:
-			TriangleGeometry(GEtriangle const *faces, const GLsizei nVertices);
+			TriangleGeometry(const GEtriangle *faces, const GLsizei nFaces);
 			virtual ~TriangleGeometry();
 
 			virtual void render() const;

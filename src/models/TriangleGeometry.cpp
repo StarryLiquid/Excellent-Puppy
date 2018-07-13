@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-TriangleGeometry::TriangleGeometry(const GEtriangle* faces, const GLsizei nFaces) :
+TriangleGeometry::TriangleGeometry(const GEtriangle *faces, const GLsizei nFaces) :
 		_faces(faces),
 		_nVertices(nFaces * GE_TRI_COUNT) { }
 TriangleGeometry::~TriangleGeometry() { }

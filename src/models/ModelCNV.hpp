@@ -16,13 +16,13 @@ namespace ExcellentPuppy {
 namespace Modeling {
 	class Geometry;
 
-	class ModelCNV : public virtual Model {
+	class ModelCNV : public Model {
 		private:
 			GEcnv const *_specs;
-			Geometry const *_geo;
+			Geometry const *_geometry;
 
 		public:
-			ModelCNV(GEcnv const *specs, Geometry const *geo);
+			ModelCNV(GEcnv const *specs, Geometry const *geometry);
 			virtual ~ModelCNV();
 
 			virtual void load() const;
