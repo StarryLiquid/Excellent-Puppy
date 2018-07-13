@@ -35,7 +35,7 @@ void Camera::setGLProjection() const {
 		glLoadIdentity();
 		glFrustum(-1.0, 1.0,
 				  -1.0, 1.0,
-				   1.0, 20.0);
+				   1.0, 100.0);
 		gluLookAt(0.0, 0.0, 0.0,
 				  0.0, 0.0, -3.0,
 				  0.0, 1.0, 0.0);

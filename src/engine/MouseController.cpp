@@ -2,6 +2,7 @@
 
 #include "Engine.hpp"
 #include "Camera.hpp"
+
 using namespace ExcellentPuppy::Engine;
 
 bool MouseController::_cameraControlling = false;

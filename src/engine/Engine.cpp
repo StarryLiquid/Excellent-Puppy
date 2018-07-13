@@ -90,6 +90,32 @@ void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glColor3f(0.8, 0.3, 0.3);
+	glBegin(GL_QUADS);
+		glVertex3f(-10, 0 , -15);
+		glVertex3f(-10, 20, -15);
+		glVertex3f(-10, 20, 15 );
+		glVertex3f(-10, 0 , 15 );
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex3f(-10, 0 , 15 );
+		glVertex3f(-10, 20, 15 );
+		glVertex3f(10 , 20, 15 );
+		glVertex3f(10 , 0 , 15 );
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex3f(10 , 0 , 15 );
+		glVertex3f(10 , 20, 15 );
+		glVertex3f(10 , 20, -15);
+		glVertex3f(10 , 0 , -15);
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex3f(10 , 0 , -15);
+		glVertex3f(10 , 20, -15);
+		glVertex3f(-10, 20, -15);
+		glVertex3f(-10, 0 , -15);
+	glEnd();
+
 	for(Entities::Entity *current : _entities)
 		current->render();
 
