@@ -1,9 +1,11 @@
 #ifndef ENGINE_ENGINE_HPP_
 #define ENGINE_ENGINE_HPP_
 
+#include <list>
+
 //#include "TextureManager.hpp"
-//#include "MouseController.hpp"
 //#include "Animator.hpp"
+#include "../object/Entity.hpp"
 #include "Camera.hpp"
 
 namespace ExcellentPuppy {
@@ -12,18 +14,16 @@ namespace Engine {
 		private:
 			// TODO
 			// TextureManager
-			// MouseController
 			// Animators
 			// Settings
 			static Camera* _camera;
-			// Entities
+			static std::list<Entities::Entity*> _entities;
 
 		public:
 			// TODO
 			// tm getter
-			// mouse getter
 			// animation adder/remover
-			// entities adder/remover
+			static std::list<Entities::Entity*>& getEntities();
 			static Camera*& getCamera();
 			static void setCamera(Camera* camera);
 

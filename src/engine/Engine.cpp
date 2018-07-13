@@ -22,8 +22,11 @@ Camera*& Engine::getCamera() {
 void Engine::setCamera(Camera* camera) {
 	Engine::_camera = camera;
 }
+std::list<ExcellentPuppy::Entities::Entity*> Engine::_entities;
+std::list<ExcellentPuppy::Entities::Entity*>& Engine::getEntities() {
+	return _entities;
+}
 
-static ExcellentPuppy::Entities::CompositeEntity* testEntity = NULL;
 void Engine::init(int argc, char** argv) {
 	initWindow(argc, argv);
 	initSubsystems();
@@ -47,18 +50,13 @@ void Engine::initScene() {
 	glClearColor(1, 1, 1, 1);
 
 	// Some exmple entities
-	// TODO: put into list
 	// TODO: remove when not needed
-	testEntity = ExcellentPuppy::Entities::TestEntity::testEntity();
+	_entities.push_back(ExcellentPuppy::Entities::TestEntity::testEntity());
 
 	Engine::_camera = new Camera((GEvector){0, 0, 3}); // TODO: move this somewhere else?
 	Engine::_camera->setGLProjection();
 
 	// GL settings
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	//glEnableClientState(GL_VERTEX_ARRAY);
-	//glEnableClientState(GL_NORMAL_ARRAY);
-	//glEnableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
@@ -86,7 +84,8 @@ void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	testEntity->render();
+	for(Entities::Entity *current : _entities)
+		current->render();
 
 	glutSwapBuffers();
 	glutPostRedisplay();

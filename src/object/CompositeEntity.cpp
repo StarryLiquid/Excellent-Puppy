@@ -5,7 +5,13 @@ using namespace ExcellentPuppy::Entities;
 CompositeEntity::CompositeEntity(GEvector position, GEvector rotation, std::list<Entity*> entities) :
 	Entity(position, rotation),
 	_entities(entities) { }
-CompositeEntity::~CompositeEntity() { }
+CompositeEntity::~CompositeEntity() {
+	while(!_entities.empty()){
+		Entity *first = *(_entities.begin());
+		delete(first);
+		_entities.pop_front();
+	}
+}
 
 std::list<Entity*>& CompositeEntity::getEntities() {
 	return _entities;
