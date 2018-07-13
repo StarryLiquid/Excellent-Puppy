@@ -11,7 +11,7 @@ namespace ExcellentPuppy {
 		 */
 		class Camera {
 			private:
-				// The negative position of the camera
+				// The position of the camera
 				GEvector _position;
 				// The rotation of the camera around the X axis,
 				// up and down pitch movement

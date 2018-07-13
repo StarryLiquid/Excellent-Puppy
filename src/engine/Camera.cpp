@@ -47,9 +47,9 @@ void Camera::setGLProjection() const {
 	glPopMatrix();
 	glPushMatrix();
 	// Rotate and move the scene based on the camera position
-	geRotate(_rotationX);
-	geRotate(_rotationY);
-	geTranslate(_position);
+	geRotate(-_rotationX);
+	geRotate(-_rotationY);
+	geTranslate(-_position);
 	// Reset the matrix mode
 	glMatrixMode(matrixMode);
 }

@@ -74,6 +74,11 @@ struct GEvector {
 struct GErotation {
 	GLfloat degrees;
 	GEvector axle;
+
+	// Reverse the rotation
+	inline GErotation operator-() const {
+		return {-degrees, axle};
+	}
 };
 
 // Calls glTexCoord for a given GEtexCoords value

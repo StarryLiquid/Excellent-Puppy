@@ -36,14 +36,15 @@ void MouseController::handleMouseMotion (int x, int y) {
 	Camera *camera = Engine::getCamera();
 	int dX = x-_refX, dY = y-_refY;
 	if(_cameraControlling && camera != NULL && (dX != 0 || dY != 0)){
-		Engine::getCamera()->getRotationY() += dX;
-		Engine::getCamera()->getRotationX() += dY;
+		camera->getRotationY() -= dX;
+		camera->getRotationX() -= dY;
 
-		if(Engine::getCamera()->getRotationX() < -90)
-			Engine::getCamera()->getRotationX() = -90;
-		if(Engine::getCamera()->getRotationX() > 90)
-			Engine::getCamera()->getRotationX() = 90;
-		Engine::getCamera()->setGLProjection();
+		// Clamp x rotation so the camera will never go upside down
+		if(camera->getRotationX() < -90)
+			camera->getRotationX() = -90;
+		if(camera->getRotationX() > 90)
+			camera->getRotationX() = 90;
+		camera->setGLProjection();
 		resetMouse();
 	}
 }

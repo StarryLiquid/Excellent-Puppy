@@ -57,7 +57,7 @@ void Engine::initScene() {
 	_entities.push_back(flooring);
 
 	// Set a camera
-	Engine::_camera = new Camera(-(GEvector){0, 3, 3}); // TODO: move this somewhere else?
+	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
 	Engine::_camera->setGLProjection();
 
 	// GL settings
