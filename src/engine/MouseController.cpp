@@ -34,9 +34,10 @@ void MouseController::registerCallbacks() {
 }
 void MouseController::handleMouseMotion (int x, int y) {
 	Camera *camera = Engine::getCamera();
-	if(_cameraControlling && camera != NULL && (x-_refX != 0 || y-_refY != 0)){
-		Engine::getCamera()->getRotationY() += x-_refX;
-		Engine::getCamera()->getRotationX() -= y-_refY;
+	int dX = x-_refX, dY = y-_refY;
+	if(_cameraControlling && camera != NULL && (dX != 0 || dY != 0)){
+		Engine::getCamera()->getRotationY() += dX;
+		Engine::getCamera()->getRotationX() += dY;
 
 		if(Engine::getCamera()->getRotationX() < -90)
 			Engine::getCamera()->getRotationX() = -90;
