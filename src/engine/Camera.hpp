@@ -4,27 +4,27 @@
 #include "../types.hpp"
 
 namespace ExcellentPuppy {
-namespace Engine {
-	class Camera {
-		private:
-			GEvector _position;
-			GErotation _rotationX;
-			GErotation _rotationY;
+	namespace Engine {
+		class Camera {
+			private:
+				GEvector _position;
+				GErotation _rotationX;
+				GErotation _rotationY;
 
-		public:
-			Camera(const GEvector& position = { 0, 0, 0 },
-			       const GLfloat& rotationX = 0,
-			       const GLfloat& rotationY = 0);
-			virtual ~Camera();
+			public:
+				Camera(const GEvector& position = { },
+					   const GLfloat& rotationX = 0,
+					   const GLfloat& rotationY = 0);
+				virtual ~Camera();
 
-			GEvector& getPosition();
-			void setPosition(const GEvector& position);
-			GLfloat& getRotationX();
-			GLfloat& getRotationY();
+				GEvector& getPosition();
+				void setPosition(const GEvector& position);
+				GLfloat& getRotationX();
+				GLfloat& getRotationY();
 
-			void setGLProjection() const;
-};
-} /* namespace Engine */
+				void setGLProjection() const;
+		};
+	} /* namespace Engine */
 } /* namespace ExcellentPuppy */
 
 #endif /* ENGINE_CAMERA_HPP_ */

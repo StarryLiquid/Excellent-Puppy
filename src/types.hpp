@@ -3,27 +3,74 @@
 
 #include <GL\freeglut.h>
 
-typedef struct {
+struct GEtexCoords {
 	GLfloat s;
 	GLfloat t;
-} GEtexCoords;
-typedef struct {
+};
+struct GEcolor {
 	GLclampf r;
 	GLclampf g;
 	GLclampf b;
 	GLclampf a;
-} GEcolor;
-typedef struct {
+};
+struct GEvector {
 	GLfloat x;
 	GLfloat y;
 	GLfloat z;
-} GEvector;
-typedef struct {
+
+	inline GEvector& operator+=(const GEvector& rVec) {
+		x += rVec.x;
+		y += rVec.y;
+		z += rVec.z;
+		return *this;
+	}
+	friend GEvector operator+(GEvector lVec, const GEvector& rVec) {
+		lVec += rVec;
+		return lVec;
+	}
+	inline GEvector& operator-=(const GEvector& rVec) {
+		x -= rVec.x;
+		y -= rVec.y;
+		z -= rVec.z;
+		return *this;
+	}
+	friend GEvector operator-(GEvector lVec, const GEvector& rVec) {
+		lVec -= rVec;
+		return lVec;
+	}
+	inline GEvector& operator-() {
+		x = -x;
+		y = -y;
+		z = -z;
+		return *this;
+	}
+	inline GEvector& operator*=(const GLfloat& scalar) {
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		return *this;
+	}
+	friend GEvector operator*(GEvector lVec, const GLfloat& scalar) {
+		lVec *= scalar;
+		return lVec;
+	}
+	inline GEvector& operator/=(const GLfloat& scalar) {
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
+		return *this;
+	}
+	friend GEvector operator/(GEvector lVec, const GLfloat& scalar) {
+		lVec /= scalar;
+		return lVec;
+	}
+};
+struct GErotation {
 	GLfloat degrees;
 	GLfloat x;
 	GLfloat y;
 	GLfloat z;
-} GErotation;
+};
 
 inline void geTexCoord(const GEtexCoords& coords) {
 	glTexCoord2f(coords.s, coords.t);

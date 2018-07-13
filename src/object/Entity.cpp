@@ -1,7 +1,5 @@
 #include "Entity.hpp"
 
-#include <GL/freeglut.h>
-
 using namespace ExcellentPuppy::Entities;
 
 Entity::Entity(GEvector position, GEvector rotation) :

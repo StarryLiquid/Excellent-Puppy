@@ -2,6 +2,7 @@
 
 #include "../models/ModelNV.hpp"
 #include "../models/QuadGeometry.hpp"
+#include "../types.hpp"
 
 using namespace ExcellentPuppy::Entities;
 
@@ -57,12 +58,18 @@ const GEcolor gray  = {0.3, 0.3, 0.3};
 const GEcolor colors[] = {white, black};
 const GEvector horizontalTranslate = {tileDimension, 0, 0};
 const GEvector verticalTranslate = {0, 0, -tileDimension};
+
+static const ExcellentPuppy::Modeling::ModelNV tileModel =
+		ExcellentPuppy::Modeling::ModelNV(
+				tileSpec,
+				new ExcellentPuppy::Modeling::QuadGeometry(
+						tileFaces,
+						sizeof(tileFaces)/sizeof(GEquad)));
 		
-Flooring::Flooring(int flooringWidth, int flooringHeight, const GEvector& position, const GEvector& rotation) :
+Flooring::Flooring(unsigned int flooringWidth, unsigned int flooringHeight, const GEvector& position, const GEvector& rotation) :
 	Entity(position, rotation),
 	_flooringWidth(flooringWidth),
-	_flooringHeight(flooringHeight),
-	_model(tileSpec, new Modeling::QuadGeometry(tileFaces, sizeof(tileFaces)/sizeof(GEquad))) { }
+	_flooringHeight(flooringHeight) { }
 Flooring::~Flooring() { }
 
 void Flooring::subrender() {
@@ -74,7 +81,7 @@ void Flooring::subrender() {
 		glPushMatrix();
 		for(int j=0; j<_flooringHeight; j++) {
 			geColor(colors[color]);
-			_model.render();
+			tileModel.render();
 			geTranslate(horizontalTranslate);
 			color = !color;
 		}
@@ -94,4 +101,9 @@ void Flooring::subrender() {
 		glVertex3f(0, underColor, -fHeight);
 	glEnd();
 	glPopMatrix();
+}
+
+GEvector Flooring::extent() {
+	GEvector result = horizontalTranslate;
+	return result + (GEvector)verticalTranslate;
 }

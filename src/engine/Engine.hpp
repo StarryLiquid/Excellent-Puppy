@@ -5,39 +5,42 @@
 
 //#include "TextureManager.hpp"
 //#include "Animator.hpp"
-#include "../object/Entity.hpp"
-#include "Camera.hpp"
 
 namespace ExcellentPuppy {
-namespace Engine {
-	class Engine {
-		private:
-			// TODO
-			// TextureManager
-			// Animators
-			// Settings
-			static Camera* _camera;
-			static std::list<Entities::Entity*> _entities;
+	namespace Entities {
+		class Entity;
+	}
+	namespace Engine {
+		class Camera;
 
-		public:
-			// TODO
-			// tm getter
-			// animation adder/remover
-			static std::list<Entities::Entity*>& getEntities();
-			static Camera*& getCamera();
-			static void setCamera(Camera* camera);
+		class Engine {
+			private:
+				// TODO
+				// TextureManager
+				// Animators
+				// Settings
+				static Camera* _camera;
+				static std::list<Entities::Entity*> _entities;
 
-			static void init(int argc, char** argv);
+			public:
+				// TODO
+				// tm getter
+				// animation adder/remover
+				static std::list<Entities::Entity*>& getEntities();
+				static Camera*& getCamera();
+				static void setCamera(Camera* camera);
 
-		private:
-			static void initWindow(int argc, char** argv);
-			static void initSubsystems();
-			static void initScene();
-			static void registerCallbacks();
-			//TODO: void animate();
-			static void render();
-	};
-} /* namespace Engine */
+				static void init(int argc, char** argv);
+
+			private:
+				static void initWindow(int argc, char** argv);
+				static void initSubsystems();
+				static void initScene();
+				static void registerCallbacks();
+				//TODO: void animate();
+				static void render();
+		};
+	} /* namespace Engine */
 } /* namespace ExcellentPuppy */
 
 #endif /* ENGINE_ENGINE_HPP_ */

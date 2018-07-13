@@ -2,7 +2,7 @@
 #define MODELS_TRIANGLEGEOMETRY_HPP_
 
 #include "Geometry.hpp"
-#include "../types.hpp"
+#include <GL/freeglut.h>
 
 #define GE_TRI_TYPE GL_UNSIGNED_INT
 const unsigned int GE_TRI_COUNT = 3;
@@ -14,19 +14,19 @@ typedef struct {
 } GEtriangle;
 
 namespace ExcellentPuppy {
-namespace Modeling {
-	class TriangleGeometry : public Geometry {
-		private:
-			GEtriangle const *_faces;
-			const GLsizei _nVertices;
+	namespace Modeling {
+		class TriangleGeometry : public Geometry {
+			private:
+				GEtriangle const *_faces;
+				const GLsizei _nVertices;
 
-		public:
-			TriangleGeometry(const GEtriangle *faces, const GLsizei nFaces);
-			virtual ~TriangleGeometry();
+			public:
+				TriangleGeometry(const GEtriangle *faces, const GLsizei nFaces);
+				virtual ~TriangleGeometry();
 
-			virtual void render() const;
-	};
-} /* namespace Modeling */
+				virtual void render() const;
+		};
+	} /* namespace Modeling */
 } /* namespace ExcelllentPuppy */
 
 #endif /* MODELS_TRIANGLEGEOMETRY_HPP_ */

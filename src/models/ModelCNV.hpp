@@ -13,23 +13,23 @@ typedef struct {
 } GEcnv;
 
 namespace ExcellentPuppy {
-namespace Modeling {
-	class Geometry;
+	namespace Modeling {
+		class Geometry;
 
-	class ModelCNV : public Model {
-		private:
-			GEcnv const *_specs;
-			Geometry const *_geometry;
+		class ModelCNV : public Model {
+			private:
+				GEcnv const *_specs;
+				Geometry const *_geometry;
 
-		public:
-			ModelCNV(GEcnv const *specs, Geometry const *geometry);
-			virtual ~ModelCNV();
+			public:
+				ModelCNV(GEcnv const *specs, Geometry const *geometry);
+				virtual ~ModelCNV();
 
-			virtual void load() const;
-			virtual void render() const;
-	};
+				virtual void load() const;
+				virtual void render() const;
+		};
 
-} /* namespace Modeling */
+	} /* namespace Modeling */
 } /* namespace ExcelllentPuppy */
 
 #endif /* MODELS_MODELCNV_HPP_ */

@@ -2,6 +2,7 @@
 
 #include "../models/ModelCNV.hpp"
 #include "../models/TriangleGeometry.hpp"
+#include "CompositeEntity.hpp"
 #include "SimpleEntity.hpp"
 
 using namespace ExcellentPuppy::Entities;
@@ -99,7 +100,7 @@ CompositeEntity* TestEntity::testEntity(const GEvector& position, const GEvector
 	Modeling::Model *testPlane = new Modeling::ModelCNV(planeSpec,
 			new Modeling::TriangleGeometry(planeFaces,
 				sizeof(planeFaces)/sizeof(GEtriangle)));
-	Entities::SimpleEntity *cubeEntity = new Entities::SimpleEntity(testCube, {0, 0.5, 0},  {0, 0 ,0});
-	Entities::SimpleEntity *planeEntity = new Entities::SimpleEntity(testPlane, {0, 0, 0},  {0, 0 ,0});
+	Entities::SimpleEntity *cubeEntity = new Entities::SimpleEntity(testCube, {0, 0.5, 0});
+	Entities::SimpleEntity *planeEntity = new Entities::SimpleEntity(testPlane);
 	return new CompositeEntity(position, rotation, {cubeEntity, planeEntity});
 }
