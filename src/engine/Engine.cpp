@@ -88,8 +88,6 @@ void Engine::render (void) {
 	for(Entities::Entity *current : _entities)
 		current->render();
 
-
-
 	glutSwapBuffers();
 	glutPostRedisplay();
 

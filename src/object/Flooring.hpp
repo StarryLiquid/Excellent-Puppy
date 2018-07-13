@@ -12,7 +12,10 @@ namespace Entities {
 			Modeling::ModelNV _model;
 
 		public:
-			Flooring(int flooringWidth, int flooringHeight);
+			Flooring(int flooringWidth,
+			         int flooringHeight,
+			         const GEvector& position = {},
+			         const GEvector& rotation = {});
 			virtual ~Flooring();
 
 			virtual void subrender();

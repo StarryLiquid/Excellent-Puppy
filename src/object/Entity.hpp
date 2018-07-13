@@ -12,8 +12,8 @@ namespace Entities {
 
 		public:
 			Entity(
-					GEvector position = {0, 0, 0},
-					GEvector rotation = {0, 0, 0});
+					GEvector position = {},
+					GEvector rotation = {});
 			virtual ~Entity();
 
 			inline void setPosition(GEvector position);

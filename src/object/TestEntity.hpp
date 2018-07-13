@@ -7,7 +7,9 @@ namespace ExcellentPuppy {
 namespace Entities {
 	class TestEntity {
 		public:
-			static CompositeEntity* testEntity();
+			static CompositeEntity* testEntity(
+				const GEvector& position = {},
+				const GEvector& rotation = {});
 	};
 } /* namespace Entities */
 } /* namespace ExcellentPuppy */

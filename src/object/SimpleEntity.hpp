@@ -13,7 +13,10 @@ namespace Entities {
 			ExcellentPuppy::Modeling::Model const *_model;
 
 		public:
-			SimpleEntity(GEvector position, GEvector rotation, ExcellentPuppy::Modeling::Model const *model);
+			SimpleEntity(
+				ExcellentPuppy::Modeling::Model const *model,
+				const GEvector& position = {},
+				const GEvector& rotation = {});
 			virtual ~SimpleEntity();
 
 			virtual void subrender();

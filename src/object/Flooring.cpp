@@ -58,13 +58,16 @@ const GEcolor colors[] = {white, black};
 const GEvector horizontalTranslate = {tileDimension, 0, 0};
 const GEvector verticalTranslate = {0, 0, -tileDimension};
 		
-Flooring::Flooring(int flooringWidth, int flooringHeight) :
+Flooring::Flooring(int flooringWidth, int flooringHeight, const GEvector& position, const GEvector& rotation) :
+	Entity(position, rotation),
 	_flooringWidth(flooringWidth),
 	_flooringHeight(flooringHeight),
 	_model(tileSpec, new Modeling::QuadGeometry(tileFaces, sizeof(tileFaces)/sizeof(GEquad))) { }
 Flooring::~Flooring() { }
 
 void Flooring::subrender() {
+	glPushMatrix();
+	glTranslatef(-_flooringWidth*tileDimension/2, 0, _flooringHeight*tileDimension/2);
 	int color = 0;
 	glPushMatrix();
 	for(int i=0; i<_flooringWidth; i++) {
@@ -90,4 +93,5 @@ void Flooring::subrender() {
 		glVertex3f(fWidth, underColor, -fHeight);
 		glVertex3f(0, underColor, -fHeight);
 	glEnd();
+	glPopMatrix();
 }
