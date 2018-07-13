@@ -6,6 +6,7 @@
 #include "../object/CompositeEntity.hpp"
 #include "../object/SimpleEntity.hpp"
 #include "../engine/Camera.hpp"
+#include "../object/Flooring.hpp"
 #include "../object/TestEntity.hpp"
 #include "../types.hpp"
 #include "MouseController.hpp"
@@ -42,7 +43,6 @@ void Engine::initWindow(int argc, char** argv) {
 	glutCreateWindow("Rotation display");
 }
 void Engine::initSubsystems() {
-	// TODO: init mouse
 	// TODO: init texture manager
 }
 void Engine::initScene() {
@@ -52,6 +52,7 @@ void Engine::initScene() {
 	// Some exmple entities
 	// TODO: remove when not needed
 	_entities.push_back(ExcellentPuppy::Entities::TestEntity::testEntity());
+	_entities.push_back(new ExcellentPuppy::Entities::Flooring(10,10));
 
 	Engine::_camera = new Camera((GEvector){0, 0, 3}); // TODO: move this somewhere else?
 	Engine::_camera->setGLProjection();
@@ -86,6 +87,8 @@ void Engine::render (void) {
 
 	for(Entities::Entity *current : _entities)
 		current->render();
+
+
 
 	glutSwapBuffers();
 	glutPostRedisplay();
