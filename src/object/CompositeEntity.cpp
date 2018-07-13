@@ -21,6 +21,7 @@ void CompositeEntity::setEntities(const std::list<Entity*>& entities) {
 }
 
 void CompositeEntity::subrender() {
+	// Iterate over the entities and render each
 	for(Entity *entity : _entities) {
 		entity->render();
 	}

@@ -8,8 +8,12 @@ namespace ExcellentPuppy {
 		class Model;
 	} /* namespace Model */
 	namespace Entities {
+		/**
+		 * A simple entity composed of a single model
+		 */
 		class SimpleEntity : virtual public Entity {
 			private:
+				// The model of the entity
 				ExcellentPuppy::Modeling::Model const *_model;
 
 			public:

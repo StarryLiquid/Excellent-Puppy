@@ -24,11 +24,13 @@ GLfloat& Camera::getRotationY() {
 	return _rotationY.degrees;
 }
 
+// Only load the frustrum and look at projections once
 static bool firstProjection = true;
 void Camera::setGLProjection() const {
 	GLint matrixMode;
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
 	glMatrixMode(GL_PROJECTION);
+	// Projection matrix has yet to be initialized
 	if(firstProjection) {
 		glLoadIdentity();
 		glFrustum(-1.0, 1.0,
@@ -41,10 +43,13 @@ void Camera::setGLProjection() const {
 
 		firstProjection = false;
 	}
+	// Reset to basic projection matrix
 	glPopMatrix();
 	glPushMatrix();
+	// Rotate and move the scene based on the camera position
 	geRotate(_rotationX);
 	geRotate(_rotationY);
 	geTranslate(_position);
+	// Reset the matrix mode
 	glMatrixMode(matrixMode);
 }

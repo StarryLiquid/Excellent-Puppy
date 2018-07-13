@@ -21,12 +21,16 @@ GEvector& Entity::getRotation() {
 }
 
 void Entity::render(){
+	// Push the current matrix
 	glPushMatrix();
 	GEvector& rotation = getRotation();
+	// Translate and rotate
 	geTranslate(_position);
 	glRotatef(rotation.x, 1, 0, 0);
 	glRotatef(rotation.y, 0, 1, 0);
 	glRotatef(rotation.z, 0, 0, 1);
+	// Render the entity
 	subrender();
+	// Restore the starting matrix
 	glPopMatrix();
 }

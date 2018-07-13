@@ -40,13 +40,13 @@ void Engine::initWindow(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
-	glutCreateWindow("Rotation display");
+	glutCreateWindow("Excellent Puppy");
 }
 void Engine::initSubsystems() {
 	// TODO: init texture manager
 }
 void Engine::initScene() {
-	// Set clear color
+	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
 
 	// Some exmple entities
@@ -56,6 +56,7 @@ void Engine::initScene() {
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
 
+	// Set a camera
 	Engine::_camera = new Camera(-(GEvector){0, 3, 3}); // TODO: move this somewhere else?
 	Engine::_camera->setGLProjection();
 
@@ -64,7 +65,9 @@ void Engine::initScene() {
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
 
-/**#ifdef LIGHTING
+	/*
+	// Set lighting
+	// TODO should probably move this to the lamp
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
@@ -73,7 +76,7 @@ void Engine::initScene() {
 	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1);
 	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1);
 	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0);
-#endif*/
+	 */
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
@@ -96,6 +99,7 @@ void Engine::render (void) {
 	// TODO: everything
 }
 
+//TODO: should get rid of this eventually
 void handleSpecialKeyboard (int key, int x, int y) {
 	Camera *camera = Engine::getCamera();
 	if(camera != NULL){

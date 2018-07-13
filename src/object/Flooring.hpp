@@ -10,8 +10,13 @@ namespace ExcellentPuppy {
 		class ModelNV;
 	}
 	namespace Entities {
+		/**
+		 * Black and white tiling with gray in-between.
+		 * The tiles are spread from the entity's origin towards the positive directions of x and z.
+		 */
 		class Flooring: public Entity {
 			private:
+				// Number of tiles along the x and y axis
 				int _flooringWidth, _flooringHeight;
 
 			public:
@@ -22,6 +27,7 @@ namespace ExcellentPuppy {
 				virtual ~Flooring();
 
 				virtual void subrender();
+				// The 2d size of the entire tile flooring
 				GEvector extent();
 		};
 	} /* namespace Modeling */

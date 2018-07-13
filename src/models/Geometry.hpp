@@ -3,11 +3,15 @@
 
 namespace ExcellentPuppy {
 	namespace Modeling {
+		/**
+		 * The geometry of a model, usually expressed by a list of face vertices
+		 */
 		class Geometry {
 			public:
 				Geometry();
-				virtual ~Geometry();
+				virtual ~Geometry()=0;
 
+				// Render the geometry
 				virtual void render() const=0;
 		};
 	} /* namespace Modeling */
