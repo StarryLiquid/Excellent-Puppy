@@ -17,9 +17,9 @@ namespace ExcellentPuppy {
 				virtual ~Entity();
 
 				inline void setPosition(GEvector position);
-				virtual GEvector *getPosition();
+				virtual GEvector& getPosition();
 				inline void setRotation(GEvector rotation);
-				virtual GEvector *getRotation();
+				virtual GEvector& getRotation();
 
 				void render();
 				virtual void subrender()=0;

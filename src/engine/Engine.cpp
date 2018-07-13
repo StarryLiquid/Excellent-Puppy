@@ -52,7 +52,9 @@ void Engine::initScene() {
 	// Some exmple entities
 	// TODO: remove when not needed
 	_entities.push_back(ExcellentPuppy::Entities::TestEntity::testEntity());
-	_entities.push_back(new ExcellentPuppy::Entities::Flooring(10,10));
+	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,10);
+	flooring->getPosition() -= flooring->extent()/2;
+	_entities.push_back(flooring);
 
 	Engine::_camera = new Camera((GEvector){0, 0, 3}); // TODO: move this somewhere else?
 	Engine::_camera->setGLProjection();

@@ -73,8 +73,6 @@ Flooring::Flooring(unsigned int flooringWidth, unsigned int flooringHeight, cons
 Flooring::~Flooring() { }
 
 void Flooring::subrender() {
-	glPushMatrix();
-	glTranslatef(-_flooringWidth*tileDimension/2, 0, _flooringHeight*tileDimension/2);
 	int color = 0;
 	glPushMatrix();
 	for(int i=0; i<_flooringWidth; i++) {
@@ -100,10 +98,8 @@ void Flooring::subrender() {
 		glVertex3f(fWidth, underColor, -fHeight);
 		glVertex3f(0, underColor, -fHeight);
 	glEnd();
-	glPopMatrix();
 }
 
 GEvector Flooring::extent() {
-	GEvector result = horizontalTranslate;
-	return result + (GEvector)verticalTranslate;
+	return {tileDimension * _flooringWidth, 0, -tileDimension * _flooringHeight};
 }
