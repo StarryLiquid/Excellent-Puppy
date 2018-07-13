@@ -6,7 +6,7 @@
 
 using namespace ExcellentPuppy::Entities;
 
-const GLfloat tileDimension = 1.5;
+const GLfloat tileDimension = 2.0;
 const GLfloat indent = 0.05;
 const GLfloat underColor = -0.08;
 const GLfloat bottom = -0.1;
@@ -80,11 +80,11 @@ void Flooring::subrender() {
 		for(int j=0; j<_flooringHeight; j++) {
 			geColor(colors[color]);
 			tileModel.render();
-			geTranslate(horizontalTranslate);
+			geTranslate(verticalTranslate);
 			color = !color;
 		}
 		glPopMatrix();
-		geTranslate(verticalTranslate);
+		geTranslate(horizontalTranslate);
 		if(_flooringHeight%2 == 0)
 			color = !color;
 	}

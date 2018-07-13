@@ -47,12 +47,12 @@ void Engine::initSubsystems() {
 }
 void Engine::initScene() {
 	// Set clear color
-	glClearColor(1, 1, 1, 1);
+	glClearColor(0.8, 0.9, 1, 1);
 
 	// Some exmple entities
 	// TODO: remove when not needed
 	_entities.push_back(ExcellentPuppy::Entities::TestEntity::testEntity());
-	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,10);
+	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,15);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
 
