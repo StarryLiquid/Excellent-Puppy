@@ -10,12 +10,12 @@
 const unsigned int GE_QUAD_COUNT = 4;
 
 // A struct holding a single face in the geometry
-typedef struct {
+struct GEquad {
 	GLuint vert1;
 	GLuint vert2;
 	GLuint vert3;
 	GLuint vert4;
-} GEquad;
+};
 
 namespace ExcellentPuppy {
 	namespace Modeling {

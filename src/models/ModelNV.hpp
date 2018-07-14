@@ -28,7 +28,7 @@ namespace ExcellentPuppy {
 				Geometry const *_geometry;
 
 			public:
-				ModelNV(GEnv const *specs, Geometry const *geometry);
+				ModelNV(const GEnv *specs, const Geometry *geometry);
 				virtual ~ModelNV();
 
 				virtual void load() const;

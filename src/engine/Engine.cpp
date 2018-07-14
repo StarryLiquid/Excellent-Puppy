@@ -3,7 +3,7 @@
 #include <GL/freeglut.h>
 
 #include "../models/Material.hpp"
-#include "../models/WallModel.hpp"
+#include "../models/CubeModel.hpp"
 #include "../object/CompositeEntity.hpp"
 #include "../object/Flooring.hpp"
 #include "../object/SimpleEntity.hpp"
@@ -57,9 +57,9 @@ void Engine::initScene() {
 	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,15);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
-	ExcellentPuppy::Modeling::Model* wallModel = new ExcellentPuppy::Modeling::WallModel();
+	ExcellentPuppy::Modeling::Model *wallModel = new ExcellentPuppy::Modeling::CubeModel({20, 20, 30}, {0, 0, 1, 1, 1, 1}, true);
 	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel));
+	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-10, 0, 15}));
 
 	// Set a camera
 	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?

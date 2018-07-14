@@ -29,13 +29,12 @@ namespace ExcellentPuppy {
 				Geometry const *_geometry;
 
 			public:
-				ModelCNV(GEcnv const *specs, Geometry const *geometry);
+				ModelCNV(const GEcnv *specs, const Geometry *geometry);
 				virtual ~ModelCNV();
 
 				virtual void load() const;
 				virtual void draw() const;
 		};
-
 	} /* namespace Modeling */
 } /* namespace ExcelllentPuppy */
 

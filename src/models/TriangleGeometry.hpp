@@ -10,11 +10,11 @@
 const unsigned int GE_TRI_COUNT = 3;
 
 // A struct holding a single face in the geometry
-typedef struct {
+struct GEtriangle {
 	GLuint vert1;
 	GLuint vert2;
 	GLuint vert3;
-} GEtriangle;
+};
 
 namespace ExcellentPuppy {
 	namespace Modeling {

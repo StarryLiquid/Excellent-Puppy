@@ -98,15 +98,19 @@ struct GEMaterial {
 
 // Calls glTexCoord for a given GEtexCoords value
 inline void geTexCoord(const GEtexCoords& coords) {
-	glTexCoord2f(coords.s, coords.t);
+	glTexCoord2fv((const GLfloat*)&coords);
 }
 // Calls glColor for a given GEcolor value
 inline void geColor(const GEcolor& color) {
-	glColor4f(color.r, color.g, color.b, color.a);
+	glColor4fv((const GLfloat*) &color);
 }
 // Calls glVertex for a given GEvector value
 inline void geVertex(const GEvector& vertex) {
-	glVertex3fv((const float *) &vertex);
+	glVertex3fv((const GLfloat*) &vertex);
+}
+// Calls glNormal for a given GEvector value
+inline void geNormal(const GEvector& normal) {
+	glNormal3fv((const GLfloat*) &normal);
 }
 // Calls glTranslate for a given GEvector value
 inline void geTranslate(const GEvector& vec) {
@@ -118,11 +122,11 @@ inline void geRotate(const GErotation& rotation) {
 }
 inline void geMaterial(const GEMaterial& material) {
 	if(material.bitmask.ambient)
-		glMaterialfv(GL_FRONT, GL_AMBIENT , (const float*)&material.ambient);
+		glMaterialfv(GL_FRONT, GL_AMBIENT , (const GLfloat*)&material.ambient);
 	if(material.bitmask.diffuse)
-		glMaterialfv(GL_FRONT, GL_DIFFUSE , (const float*)&material.diffuse);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE , (const GLfloat*)&material.diffuse);
 	if(material.bitmask.emission)
-		glMaterialfv(GL_FRONT, GL_EMISSION, (const float*)&material.emission);
+		glMaterialfv(GL_FRONT, GL_EMISSION, (const GLfloat*)&material.emission);
 	if(material.bitmask.shininess)
 		glMaterialf(GL_FRONT, GL_SHININESS, material.shininess);
 }
