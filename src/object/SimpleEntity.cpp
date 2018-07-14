@@ -11,6 +11,9 @@ SimpleEntity::SimpleEntity(ExcellentPuppy::Modeling::Model const *model,
 	_model(model) { }
 SimpleEntity::~SimpleEntity() { }
 
+void SimpleEntity::load() {
+	_model->load();
+}
 void SimpleEntity::subrender(){
 	_model->render();
 }

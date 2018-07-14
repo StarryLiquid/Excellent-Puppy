@@ -11,7 +11,7 @@ ModelCNV::~ModelCNV() { }
 
 void ModelCNV::load() const {
 }
-void ModelCNV::render() const {
+void ModelCNV::draw() const {
 	glInterleavedArrays(GE_CNV_FORMAT, sizeof(GEcnv), _specs);
 	_geometry->render();
 }

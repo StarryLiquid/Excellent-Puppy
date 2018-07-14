@@ -48,6 +48,8 @@ namespace ExcellentPuppy {
 				static void initScene();
 				// Bind the callback functions
 				static void registerCallbacks();
+				// Load all the entities
+				static void loadEntities();
 				//TODO: void animate();
 				// Callback to render the scene
 				static void render();

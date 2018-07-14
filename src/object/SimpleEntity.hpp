@@ -23,6 +23,7 @@ namespace ExcellentPuppy {
 					const GEvector& rotation = {});
 				virtual ~SimpleEntity();
 
+				virtual void load();
 				virtual void subrender();
 		};
 

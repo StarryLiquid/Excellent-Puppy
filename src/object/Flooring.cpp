@@ -71,6 +71,7 @@ const GEvector horizontalTranslate = {tileDimension, 0, 0};
 const GEvector verticalTranslate = {0, 0, -tileDimension};
 
 // A const model of a tile, without color
+static bool tileModelLoaded = false;
 static const ExcellentPuppy::Modeling::ModelNV tileModel =
 		ExcellentPuppy::Modeling::ModelNV(
 				tileSpec,
@@ -84,6 +85,12 @@ Flooring::Flooring(unsigned int flooringWidth, unsigned int flooringHeight, cons
 	_flooringHeight(flooringHeight) { }
 Flooring::~Flooring() { }
 
+void Flooring::load() {
+	if(!tileModelLoaded) {
+		tileModel.load();
+		tileModelLoaded = true;
+	}
+}
 void Flooring::subrender() {
 	int color = 0;
 	// Iterate vertically and horizontally to render the tiles

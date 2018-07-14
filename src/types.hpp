@@ -14,7 +14,7 @@ struct GEcolor {
 	GLclampf r;
 	GLclampf g;
 	GLclampf b;
-	GLclampf a;
+	GLclampf a = 1.0;
 };
 // A structure of a single 3 coordinates vector
 // Can be used as a regular vector or vertex, with w assumed to be 1
@@ -80,6 +80,21 @@ struct GErotation {
 		return {-degrees, axle};
 	}
 };
+// A strcuture for selecting which light material settings to set
+struct GEMaterialBitMask {
+	bool ambient : 1;
+	bool diffuse : 1;
+	bool emission : 1;
+	bool shininess : 1;
+};
+// A structure to hold material settings
+struct GEMaterial {
+	GEcolor ambient;
+	GEcolor diffuse;
+	GEcolor emission;
+	GLfloat shininess;
+	GEMaterialBitMask bitmask;
+};
 
 // Calls glTexCoord for a given GEtexCoords value
 inline void geTexCoord(const GEtexCoords& coords) {
@@ -87,7 +102,7 @@ inline void geTexCoord(const GEtexCoords& coords) {
 }
 // Calls glColor for a given GEcolor value
 inline void geColor(const GEcolor& color) {
-	glColor3f(color.r, color.g, color.b);
+	glColor4f(color.r, color.g, color.b, color.a);
 }
 // Calls glVertex for a given GEvector value
 inline void geVertex(const GEvector& vertex) {
@@ -100,6 +115,16 @@ inline void geTranslate(const GEvector& vec) {
 // Calls glRotate for a given GErotation value
 inline void geRotate(const GErotation& rotation) {
 	glRotatef(rotation.degrees, rotation.axle.x, rotation.axle.y, rotation.axle.z);
+}
+inline void geMaterial(const GEMaterial& material) {
+	if(material.bitmask.ambient)
+		glMaterialfv(GL_FRONT, GL_AMBIENT , (const float*)&material.ambient);
+	if(material.bitmask.diffuse)
+		glMaterialfv(GL_FRONT, GL_DIFFUSE , (const float*)&material.diffuse);
+	if(material.bitmask.emission)
+		glMaterialfv(GL_FRONT, GL_EMISSION, (const float*)&material.emission);
+	if(material.bitmask.shininess)
+		glMaterialf(GL_FRONT, GL_SHININESS, material.shininess);
 }
 
 #endif /* TYPES_HPP_ */

@@ -33,7 +33,7 @@ namespace ExcellentPuppy {
 				virtual ~ModelCNV();
 
 				virtual void load() const;
-				virtual void render() const;
+				virtual void draw() const;
 		};
 
 	} /* namespace Modeling */

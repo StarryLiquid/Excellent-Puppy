@@ -27,6 +27,7 @@ namespace ExcellentPuppy {
 				std::list<Entity*>& getEntities();
 				void setEntities(const std::list<Entity*>& entities);
 
+				virtual void load();
 				virtual void subrender();
 		};
 	} /* namespace Objects */

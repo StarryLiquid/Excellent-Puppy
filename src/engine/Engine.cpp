@@ -1,14 +1,15 @@
 #include "Engine.hpp"
 
 #include <GL/freeglut.h>
-#include "../models/TriangleGeometry.hpp"
-#include "../models/ModelCNV.hpp"
+
+#include "../models/Material.hpp"
+#include "../models/WallModel.hpp"
 #include "../object/CompositeEntity.hpp"
-#include "../object/SimpleEntity.hpp"
-#include "../engine/Camera.hpp"
 #include "../object/Flooring.hpp"
+#include "../object/SimpleEntity.hpp"
 #include "../object/TestEntity.hpp"
 #include "../types.hpp"
+#include "Camera.hpp"
 #include "MouseController.hpp"
 
 using namespace ExcellentPuppy::Engine;
@@ -32,6 +33,7 @@ void Engine::init(int argc, char** argv) {
 	initWindow(argc, argv);
 	initSubsystems();
 	initScene();
+	loadEntities();
 	registerCallbacks();
 	glutMainLoop();
 }
@@ -55,6 +57,9 @@ void Engine::initScene() {
 	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,15);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
+	ExcellentPuppy::Modeling::Model* wallModel = new ExcellentPuppy::Modeling::WallModel();
+	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
+	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel));
 
 	// Set a camera
 	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
@@ -85,36 +90,14 @@ void Engine::registerCallbacks() {
 	//TODO: remove
 	MouseController::setCameraControlling(true);
 }
+void Engine::loadEntities() {
+	for(Entities::Entity *current : _entities)
+		current->load();
+}
 
 void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glColor3f(0.8, 0.3, 0.3);
-	glBegin(GL_QUADS);
-		glVertex3f(-10, 0 , -15);
-		glVertex3f(-10, 20, -15);
-		glVertex3f(-10, 20, 15 );
-		glVertex3f(-10, 0 , 15 );
-	glEnd();
-	glBegin(GL_QUADS);
-		glVertex3f(-10, 0 , 15 );
-		glVertex3f(-10, 20, 15 );
-		glVertex3f(10 , 20, 15 );
-		glVertex3f(10 , 0 , 15 );
-	glEnd();
-	glBegin(GL_QUADS);
-		glVertex3f(10 , 0 , 15 );
-		glVertex3f(10 , 20, 15 );
-		glVertex3f(10 , 20, -15);
-		glVertex3f(10 , 0 , -15);
-	glEnd();
-	glBegin(GL_QUADS);
-		glVertex3f(10 , 0 , -15);
-		glVertex3f(10 , 20, -15);
-		glVertex3f(-10, 20, -15);
-		glVertex3f(-10, 0 , -15);
-	glEnd();
 
 	for(Entities::Entity *current : _entities)
 		current->render();

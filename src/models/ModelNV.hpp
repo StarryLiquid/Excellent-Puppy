@@ -20,7 +20,7 @@ namespace ExcellentPuppy {
 		/**
 		 * A model based on a normal and vertex interleaved array
 		 */
-		class ModelNV: public Model {
+		class ModelNV : public Model {
 			private:
 				// The nv interleaved array
 				GEnv const *_specs;
@@ -32,7 +32,7 @@ namespace ExcellentPuppy {
 				virtual ~ModelNV();
 
 				virtual void load() const;
-				virtual void render() const;
+				virtual void draw() const;
 		};
 	} /* namespace Modeling */
 } /* namespace ExcellentPuppy */

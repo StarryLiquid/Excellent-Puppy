@@ -26,6 +26,7 @@ namespace ExcellentPuppy {
 						 const GEvector& rotation = {});
 				virtual ~Flooring();
 
+				virtual void load();
 				virtual void subrender();
 				// The 2d size of the entire tile flooring
 				GEvector extent();

@@ -29,6 +29,8 @@ namespace ExcellentPuppy {
 
 				// Sets up translation and rotation and renders using the subrender method
 				void render();
+				// Load the entity and possibly models in the entity
+				virtual void load()=0;
 				// The actual rendering of this entity
 				virtual void subrender()=0;
 		};

@@ -20,6 +20,12 @@ void CompositeEntity::setEntities(const std::list<Entity*>& entities) {
 	_entities = entities;
 }
 
+void CompositeEntity::load() {
+	// Iterate over the entities and load each
+	for(Entity *entity : _entities) {
+		entity->load();
+	}
+}
 void CompositeEntity::subrender() {
 	// Iterate over the entities and render each
 	for(Entity *entity : _entities) {
