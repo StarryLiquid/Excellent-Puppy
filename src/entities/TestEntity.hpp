@@ -1,5 +1,5 @@
-#ifndef OBJECT_TESTENTITY_HPP_
-#define OBJECT_TESTENTITY_HPP_
+#ifndef ENTITIES_TESTENTITY_HPP_
+#define ENTITIES_TESTENTITY_HPP_
 
 #include "../types.hpp"
 
@@ -21,4 +21,4 @@ namespace ExcellentPuppy {
 	} /* namespace Entities */
 } /* namespace ExcellentPuppy */
 
-#endif /* OBJECT_TESTENTITY_HPP_ */
+#endif /* ENTITIES_TESTENTITY_HPP_ */

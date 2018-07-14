@@ -1,9 +1,9 @@
-#include "TestEntity.hpp"
+#include "../entities/TestEntity.hpp"
 
+#include "../entities/CompositeEntity.hpp"
+#include "../entities/SimpleEntity.hpp"
 #include "../models/ModelCNV.hpp"
-#include "../models/TriangleGeometry.hpp"
-#include "CompositeEntity.hpp"
-#include "SimpleEntity.hpp"
+#include "../models/geometries/TriangleGeometry.hpp"
 
 using namespace ExcellentPuppy::Entities;
 

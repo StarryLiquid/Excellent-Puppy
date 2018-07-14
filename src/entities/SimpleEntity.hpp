@@ -1,7 +1,7 @@
-#ifndef OBJECT_SIMPLEENTITY_HPP_
-#define OBJECT_SIMPLEENTITY_HPP_
+#ifndef ENTITIES_SIMPLEENTITY_HPP_
+#define ENTITIES_SIMPLEENTITY_HPP_
 
-#include "Entity.hpp"
+#include "../entities/Entity.hpp"
 
 namespace ExcellentPuppy {
 	namespace Modeling {
@@ -30,4 +30,4 @@ namespace ExcellentPuppy {
 	} /* namespace Objects */
 } /* namespace ExcelllentPuppy */
 
-#endif /* OBJECT_SIMPLEENTITY_HPP_ */
+#endif /* ENTITIES_SIMPLEENTITY_HPP_ */

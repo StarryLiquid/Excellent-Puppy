@@ -2,12 +2,10 @@
 
 #include <GL/freeglut.h>
 
-#include "../models/Material.hpp"
+#include "../entities/Flooring.hpp"
+#include "../entities/SimpleEntity.hpp"
+#include "../models/materials/ColorMaterial.hpp"
 #include "../models/CubeModel.hpp"
-#include "../object/CompositeEntity.hpp"
-#include "../object/Flooring.hpp"
-#include "../object/SimpleEntity.hpp"
-#include "../object/TestEntity.hpp"
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "MouseController.hpp"

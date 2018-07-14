@@ -1,9 +1,8 @@
-#ifndef OBJECT_COMPOSITEENTITY_HPP_
-#define OBJECT_COMPOSITEENTITY_HPP_
-
-#include "Entity.hpp"
+#ifndef ENTITIES_COMPOSITEENTITY_HPP_
+#define ENTITIES_COMPOSITEENTITY_HPP_
 
 #include <list>
+#include "../entities/Entity.hpp"
 
 struct GEvector;
 
@@ -33,4 +32,4 @@ namespace ExcellentPuppy {
 	} /* namespace Objects */
 } /* namespace ExcellentPuppy */
 
-#endif /* OBJECT_COMPOSITEENTITY_HPP_ */
+#endif /* ENTITIES_COMPOSITEENTITY_HPP_ */

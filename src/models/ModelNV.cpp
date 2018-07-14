@@ -1,8 +1,7 @@
 #include "ModelNV.hpp"
 
 #include <GL/freeglut.h>
-
-#include "Geometry.hpp"
+#include "geometries/Geometry.hpp"
 
 void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *pointer);
 

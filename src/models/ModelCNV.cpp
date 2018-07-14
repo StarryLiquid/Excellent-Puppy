@@ -1,6 +1,6 @@
 #include "ModelCNV.hpp"
 
-#include "Geometry.hpp"
+#include "geometries/Geometry.hpp"
 
 using namespace ExcellentPuppy::Modeling;
 

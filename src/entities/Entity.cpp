@@ -1,4 +1,4 @@
-#include "Entity.hpp"
+#include "../entities/Entity.hpp"
 
 using namespace ExcellentPuppy::Entities;
 

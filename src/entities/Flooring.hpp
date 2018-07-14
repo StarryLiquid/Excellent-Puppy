@@ -1,7 +1,7 @@
-#ifndef OBJECT_FLOORING_HPP_
-#define OBJECT_FLOORING_HPP_
+#ifndef ENTITIES_FLOORING_HPP_
+#define ENTITIES_FLOORING_HPP_
 
-#include "Entity.hpp"
+#include "../entities/Entity.hpp"
 
 struct GEvector;
 
@@ -34,4 +34,4 @@ namespace ExcellentPuppy {
 	} /* namespace Modeling */
 } /* namespace ExcellentPuppy */
 
-#endif /* OBJECT_FLOORING_HPP_ */
+#endif /* ENTITIES_FLOORING_HPP_ */

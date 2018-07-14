@@ -1,5 +1,5 @@
-#ifndef OBJECT_ENTITY_HPP_
-#define OBJECT_ENTITY_HPP_
+#ifndef ENTITIES_ENTITY_HPP_
+#define ENTITIES_ENTITY_HPP_
 
 #include "../types.hpp"
 
@@ -37,4 +37,4 @@ namespace ExcellentPuppy {
 	} /* namespace Modeling */
 } /* namespace ExcelllentPuppy */
 
-#endif /* OBJECT_ENTITY_HPP_ */
+#endif /* ENTITIES_ENTITY_HPP_ */

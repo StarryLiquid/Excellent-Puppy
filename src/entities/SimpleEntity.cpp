@@ -1,4 +1,4 @@
-#include "SimpleEntity.hpp"
+#include "../entities/SimpleEntity.hpp"
 
 #include "../models/Model.hpp"
 

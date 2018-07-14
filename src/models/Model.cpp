@@ -1,6 +1,6 @@
 #include "Model.hpp"
 
-#include "Material.hpp"
+#include "materials/Material.hpp"
 
 using namespace ExcellentPuppy::Modeling;
 
