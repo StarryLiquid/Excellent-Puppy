@@ -3,6 +3,7 @@
 
 #include "Model.hpp"
 #include "../types.hpp"
+#include <list>
 
 // The format for this model
 #define GE_CNV_FORMAT GL_C4F_N3F_V3F
@@ -24,12 +25,12 @@ namespace ExcellentPuppy {
 		class ModelCNV : public Model {
 			private:
 				// The cnv interleaved array
-				GEcnv const *_specs;
+				const GEcnv *_specs;
 				// The geometry to render this model in
-				Geometry const *_geometry;
+				const std::list<Geometry*> _geometries;
 
 			public:
-				ModelCNV(const GEcnv *specs, const Geometry *geometry);
+				ModelCNV(const GEcnv *specs, const std::list<Geometry*> geometries);
 				virtual ~ModelCNV();
 
 				virtual void load() const;

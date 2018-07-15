@@ -5,7 +5,8 @@
 #include "../entities/Flooring.hpp"
 #include "../entities/SimpleEntity.hpp"
 #include "../models/materials/ColorMaterial.hpp"
-#include "../models/CubeModel.hpp"
+#include "../models/shapes/CubeModel.hpp"
+#include "../models/shapes/SphereModel.hpp"
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "MouseController.hpp"
@@ -51,13 +52,15 @@ void Engine::initScene() {
 
 	// Some exmple entities
 	// TODO: remove when not needed
-	_entities.push_back(ExcellentPuppy::Entities::TestEntity::testEntity());
 	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,15);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
 	ExcellentPuppy::Modeling::Model *wallModel = new ExcellentPuppy::Modeling::CubeModel({20, 20, 30}, {0, 0, 1, 1, 1, 1}, true);
 	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-10, 0, 15}));
+	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 10, 10);
+	lampBaseModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.5, 0.5, 0.5}));
+	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 2, 0}, {180, 0, 0}));
 
 	// Set a camera
 	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?

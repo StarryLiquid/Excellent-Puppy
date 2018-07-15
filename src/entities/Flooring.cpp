@@ -75,9 +75,9 @@ static bool tileModelLoaded = false;
 static const ExcellentPuppy::Modeling::ModelNV tileModel =
 		ExcellentPuppy::Modeling::ModelNV(
 				tileSpec,
-				new ExcellentPuppy::Modeling::QuadGeometry(
+				{new ExcellentPuppy::Modeling::QuadGeometry(
 						tileFaces,
-						sizeof(tileFaces)/sizeof(GEquad)));
+						sizeof(tileFaces)/sizeof(GEquad))});
 
 Flooring::Flooring(unsigned int flooringWidth, unsigned int flooringHeight, const GEvector& position, const GEvector& rotation) :
 	Entity(position, rotation),

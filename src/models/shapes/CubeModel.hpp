@@ -1,8 +1,8 @@
 #ifndef MODELS_CUBEMODEL_HPP_
 #define MODELS_CUBEMODEL_HPP_
 
-#include "Model.hpp"
-#include "../types.hpp"
+#include "../Model.hpp"
+#include "../../types.hpp"
 
 struct GEcubeSide {
 	bool bottom : 1; // y0

@@ -95,11 +95,11 @@ GEtriangle const planeFaces[] = {
 
 CompositeEntity* TestEntity::testEntity(const GEvector& position, const GEvector& rotation) {
 	Modeling::Model *testCube = new Modeling::ModelCNV(cubeSpec,
-			new Modeling::TriangleGeometry(cubeFaces,
-				sizeof(cubeFaces)/sizeof(GEtriangle)));
+			{new Modeling::TriangleGeometry(cubeFaces,
+				sizeof(cubeFaces)/sizeof(GEtriangle))});
 	Modeling::Model *testPlane = new Modeling::ModelCNV(planeSpec,
-			new Modeling::TriangleGeometry(planeFaces,
-				sizeof(planeFaces)/sizeof(GEtriangle)));
+			{new Modeling::TriangleGeometry(planeFaces,
+				sizeof(planeFaces)/sizeof(GEtriangle))});
 	Entities::SimpleEntity *cubeEntity = new Entities::SimpleEntity(testCube, {0, 0.5, 0});
 	Entities::SimpleEntity *planeEntity = new Entities::SimpleEntity(testPlane);
 	return new CompositeEntity(position, rotation, {cubeEntity, planeEntity});

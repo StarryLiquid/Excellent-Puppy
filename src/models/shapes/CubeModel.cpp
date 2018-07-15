@@ -1,6 +1,6 @@
 #include "CubeModel.hpp"
 
-#include "geometries/QuadGeometry.hpp"
+#include "../geometries/QuadGeometry.hpp"
 
 using namespace ExcellentPuppy::Modeling;
 

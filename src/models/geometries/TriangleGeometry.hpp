@@ -24,7 +24,7 @@ namespace ExcellentPuppy {
 		class TriangleGeometry : public Geometry {
 			private:
 				// The faces of the geometry
-				GEtriangle const *_faces;
+				const GEtriangle *_faces;
 				// The number of vertex indices in the geometry
 				const GLsizei _nVertices;
 

@@ -4,14 +4,15 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-ModelCNV::ModelCNV(const GEcnv* specs, const Geometry* geometry) :
+ModelCNV::ModelCNV(const GEcnv* specs, const std::list<Geometry*> geometries) :
 	_specs(specs),
-	_geometry(geometry) { }
+	_geometries(geometries) { }
 ModelCNV::~ModelCNV() { }
 
 void ModelCNV::load() const {
 }
 void ModelCNV::draw() const {
 	glInterleavedArrays(GE_CNV_FORMAT, sizeof(GEcnv), _specs);
-	_geometry->render();
+	for(Geometry* geometry : _geometries)
+		geometry->render();
 }

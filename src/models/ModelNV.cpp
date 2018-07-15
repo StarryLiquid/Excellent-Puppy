@@ -7,14 +7,15 @@ void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *pointer);
 
 using namespace ExcellentPuppy::Modeling;
 
-ModelNV::ModelNV(const GEnv* specs, const Geometry* geometry) :
+ModelNV::ModelNV(const GEnv* specs, std::list<Geometry*> const & geometries) :
 	_specs(specs),
-	_geometry(geometry) { }
+	_geometries(geometries) { }
 ModelNV::~ModelNV() { }
 
 void ModelNV::load() const {
 }
 void ModelNV::draw() const {
 	glInterleavedArrays(GE_NV_FORMAT, sizeof(GEnv), _specs);
-	_geometry->render();
+	for(Geometry* geometry : _geometries)
+		geometry->render();
 }
