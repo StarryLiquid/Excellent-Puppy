@@ -120,6 +120,11 @@ inline void geTranslate(const GEvector& vec) {
 inline void geRotate(const GErotation& rotation) {
 	glRotatef(rotation.degrees, rotation.axle.x, rotation.axle.y, rotation.axle.z);
 }
+// Calls glScale for a given scaling vector
+inline void geScale(const GEvector& scale) {
+	glScalef(scale.x, scale.y, scale.z);
+}
+// Calls glMaterial for each material parameter
 inline void geMaterial(const GEMaterial& material) {
 	if(material.bitmask.ambient)
 		glMaterialfv(GL_FRONT, GL_AMBIENT , (const GLfloat*)&material.ambient);
