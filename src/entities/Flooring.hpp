@@ -23,7 +23,8 @@ namespace ExcellentPuppy {
 				Flooring(unsigned int flooringWidth,
 						 unsigned int flooringHeight,
 						 const GEvector& position = {},
-						 const GEvector& rotation = {});
+						 const GEvector& rotation = {},
+						 const GEvector& scaling = {1, 1, 1});
 				virtual ~Flooring();
 
 				virtual void load();

@@ -16,7 +16,8 @@ namespace ExcellentPuppy {
 				// Returns a test entity
 				static CompositeEntity* testEntity(
 					const GEvector& position = {},
-					const GEvector& rotation = {});
+					const GEvector& rotation = {},
+					const GEvector& scaling = {1, 1, 1});
 		};
 	} /* namespace Entities */
 } /* namespace ExcellentPuppy */

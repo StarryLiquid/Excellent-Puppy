@@ -79,8 +79,8 @@ static const ExcellentPuppy::Modeling::ModelNV tileModel =
 						tileFaces,
 						sizeof(tileFaces)/sizeof(GEquad))});
 
-Flooring::Flooring(unsigned int flooringWidth, unsigned int flooringHeight, const GEvector& position, const GEvector& rotation) :
-	Entity(position, rotation),
+Flooring::Flooring(unsigned int flooringWidth, unsigned int flooringHeight, const GEvector& position, const GEvector& rotation, const GEvector& scaling) :
+	Entity(position, rotation, scaling),
 	_flooringWidth(flooringWidth),
 	_flooringHeight(flooringHeight) { }
 Flooring::~Flooring() { }

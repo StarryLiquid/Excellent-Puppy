@@ -18,9 +18,10 @@ namespace ExcellentPuppy {
 
 			public:
 				CompositeEntity(
+						std::list<Entity*> entities = {},
 						const GEvector& position = {},
 						const GEvector& rotation = {},
-						std::list<Entity*> entities = {});
+						const GEvector& scaling = {1, 1, 1});
 				virtual ~CompositeEntity();
 
 				std::list<Entity*>& getEntities();

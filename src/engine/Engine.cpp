@@ -58,9 +58,11 @@ void Engine::initScene() {
 	ExcellentPuppy::Modeling::Model *wallModel = new ExcellentPuppy::Modeling::CubeModel({20, 20, 30}, {0, 0, 1, 1, 1, 1}, true);
 	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-10, 0, 15}));
-	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 10, 10);
+
+	// TODO: lamp
+	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
 	lampBaseModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.5, 0.5, 0.5}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 2, 0}, {180, 0, 0}));
+	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0}));
 
 	// Set a camera
 	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?

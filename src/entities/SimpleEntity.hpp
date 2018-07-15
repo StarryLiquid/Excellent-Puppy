@@ -20,7 +20,8 @@ namespace ExcellentPuppy {
 				SimpleEntity(
 					ExcellentPuppy::Modeling::Model const *model,
 					const GEvector& position = {},
-					const GEvector& rotation = {});
+					const GEvector& rotation = {},
+					const GEvector& scaling = {1, 1, 1});
 				virtual ~SimpleEntity();
 
 				virtual void load();

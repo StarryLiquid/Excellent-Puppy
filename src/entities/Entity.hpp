@@ -15,17 +15,22 @@ namespace ExcellentPuppy {
 				GEvector _position;
 				// The angles of this entity around each axis
 				GEvector _rotation;
+				// The scaling of this entity
+				GEvector _scaling;
 
 			public:
 				Entity(
-						GEvector position = {},
-						GEvector rotation = {});
+						const GEvector& position = {},
+						const GEvector& rotation = {},
+						const GEvector& scaling  = {1, 1, 1});
 				virtual ~Entity();
 
 				inline void setPosition(GEvector position);
 				virtual GEvector& getPosition();
 				inline void setRotation(GEvector rotation);
 				virtual GEvector& getRotation();
+				inline void setScaling(GEvector scaling);
+				virtual GEvector& getScaling();
 
 				// Sets up translation and rotation and renders using the subrender method
 				void render();

@@ -2,8 +2,8 @@
 
 using namespace ExcellentPuppy::Entities;
 
-CompositeEntity::CompositeEntity(const GEvector& position, const GEvector& rotation, std::list<Entity*> entities) :
-	Entity(position, rotation),
+CompositeEntity::CompositeEntity(std::list<Entity*> entities, const GEvector& position, const GEvector& rotation, const GEvector& scaling) :
+	Entity(position, rotation, scaling),
 	_entities(entities) { }
 CompositeEntity::~CompositeEntity() {
 	while(!_entities.empty()){
