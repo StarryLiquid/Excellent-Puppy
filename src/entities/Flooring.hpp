@@ -31,6 +31,15 @@ namespace ExcellentPuppy {
 				virtual void subrender();
 				// The 2d size of the entire tile flooring
 				GEvector extent();
+
+				// The size of each tile
+				static const GLfloat tileDimension;
+				// The upwards indentation of each tile
+				static const GLfloat indent;
+				// The height of the in-between color
+				static const GLfloat underColor;
+				// The bottom height of the tiles
+				static const GLfloat bottom;
 		};
 	} /* namespace Modeling */
 } /* namespace ExcellentPuppy */

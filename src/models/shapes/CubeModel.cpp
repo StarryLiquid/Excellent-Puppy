@@ -35,10 +35,14 @@ CubeModel::~CubeModel() {}
 
 void CubeModel::load() const { }
 void CubeModel::draw() const {
-	if(_facingInside)
+	// Need to reverse normals if rendering inside out
+	GLdouble normalSide=1;
+	if(_facingInside) {
 		glFrontFace(GL_CW);
+		normalSide = -1;
+	}
 	if(_sides.bottom) {
-		geNormal(bottomNormal);
+		geNormal(bottomNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(0, 0, 0);
 			glVertex3f(0, 0, -_dimensions.z);
@@ -47,7 +51,7 @@ void CubeModel::draw() const {
 		glEnd();
 	}
 	if(_sides.top) {
-		geNormal(topNormal);
+		geNormal(topNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(_dimensions.x, _dimensions.y, 0);
 			glVertex3f(_dimensions.x, _dimensions.y, -_dimensions.z);
@@ -56,7 +60,7 @@ void CubeModel::draw() const {
 		glEnd();
 	}
 	if(_sides.back) {
-		geNormal(backNormal);
+		geNormal(backNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(0, _dimensions.y, 0);
 			glVertex3f(0, 0, 0);
@@ -65,7 +69,7 @@ void CubeModel::draw() const {
 		glEnd();
 	}
 	if(_sides.front) {
-		geNormal(frontNormal);
+		geNormal(frontNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(_dimensions.x, _dimensions.y, -_dimensions.z);
 			glVertex3f(_dimensions.x, 0, -_dimensions.z);
@@ -74,7 +78,7 @@ void CubeModel::draw() const {
 		glEnd();
 	}
 	if(_sides.left) {
-		geNormal(leftNormal);
+		geNormal(leftNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(0, _dimensions.y, -_dimensions.z);
 			glVertex3f(0, 0, -_dimensions.z);
@@ -83,7 +87,7 @@ void CubeModel::draw() const {
 		glEnd();
 	}
 	if(_sides.right) {
-		geNormal(rightNormal);
+		geNormal(rightNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(_dimensions.x, _dimensions.y, 0);
 			glVertex3f(_dimensions.x, 0, 0);

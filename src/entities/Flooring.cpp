@@ -6,48 +6,44 @@
 
 using namespace ExcellentPuppy::Entities;
 
-// The size of each tile
-const GLfloat tileDimension = 2.0;
-// The upwards indentation of each tile
-const GLfloat indent = 0.05;
-// The height of the in-between color
-const GLfloat underColor = -0.08;
-// The bottom height of the tiles
-const GLfloat bottom = -0.1;
+const GLfloat Flooring::tileDimension = 2.0;
+const GLfloat Flooring::indent = 0.05;
+const GLfloat Flooring::underColor = -0.08;
+const GLfloat Flooring::bottom = -0.1;
 
 // The NV array of a single tile
 const GEnv tileSpec[] = {
 	{
 		{-1, 1, 1},
-		{0, bottom, 0}
+		{0, Flooring::bottom, 0}
 	},
 	{
 		{1, 1, 1},
-		{tileDimension, bottom, 0}
+		{Flooring::tileDimension, Flooring::bottom, 0}
 	},
 	{
 		{1, 1, -1},
-		{tileDimension, bottom, -tileDimension}
+		{Flooring::tileDimension, Flooring::bottom, -Flooring::tileDimension}
 	},
 	{
 		{-1, 1, -1},
-		{0, bottom, -tileDimension}
+		{0, Flooring::bottom, -Flooring::tileDimension}
 	},
 	{
 		{0, 1, 0},
-		{indent, 0, -indent}
+		{Flooring::indent, 0, -Flooring::indent}
 	},
 	{
 		{0, 1, 0},
-		{tileDimension-indent, 0, -indent}
+		{Flooring::tileDimension-Flooring::indent, 0, -Flooring::indent}
 	},
 	{
 		{0, 1, 0},
-		{tileDimension-indent, 0, -tileDimension+indent}
+		{Flooring::tileDimension-Flooring::indent, 0, -Flooring::tileDimension+Flooring::indent}
 	},
 	{
 		{0, 1, 0},
-		{indent, 0, -tileDimension+indent}
+		{Flooring::indent, 0, -Flooring::tileDimension+Flooring::indent}
 	},
 };
 // The faces of a single tile
@@ -66,9 +62,9 @@ const GEcolor gray  = {0.3, 0.3, 0.3};
 // A helper array for alternating colors
 const GEcolor *colors[] = {&white, &black};
 // A helper vector for iterating horizontally over tiles
-const GEvector horizontalTranslate = {tileDimension, 0, 0};
+const GEvector horizontalTranslate = {Flooring::tileDimension, 0, 0};
 // A helper vector for iterating vertically over tiles
-const GEvector verticalTranslate = {0, 0, -tileDimension};
+const GEvector verticalTranslate = {0, 0, -Flooring::tileDimension};
 
 // A const model of a tile, without color
 static bool tileModelLoaded = false;

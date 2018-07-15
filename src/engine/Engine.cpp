@@ -15,6 +15,11 @@
 
 using namespace ExcellentPuppy::Engine;
 
+// Room dimensions
+const GLint ROOM_WIDTH  = 20;
+const GLint ROOM_HEIGHT = 20;
+const GLint ROOM_DEPTH  = 30;
+
 // Handles special keyboard input
 void handleSpecialKeyboard (int, int, int);
 
@@ -52,12 +57,17 @@ void Engine::initScene() {
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
 
-	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,15);
+	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(
+			ROOM_WIDTH/ExcellentPuppy::Entities::Flooring::tileDimension,
+			ROOM_DEPTH/ExcellentPuppy::Entities::Flooring::tileDimension);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
-	ExcellentPuppy::Modeling::Model *wallModel = new ExcellentPuppy::Modeling::CubeModel({20, 20, 30}, {0, 0, 1, 1, 1, 1}, true);
+	ExcellentPuppy::Modeling::Model *wallModel = new ExcellentPuppy::Modeling::CubeModel(
+			{ROOM_WIDTH, ROOM_HEIGHT - ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH},
+			{0, 0, 1, 1, 1, 1},
+			true);
 	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-10, 0, 15}));
+	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
 	// TODO: lamp
 	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::ColorMaterial({0.5, 0.5, 0.5});
@@ -82,18 +92,18 @@ void Engine::initScene() {
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
 
-	/*
 	// Set lighting
-	// TODO should probably move this to the lamp
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
+	glShadeModel(GL_SMOOTH);
 
-	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1);
+	// Set a light
+	glEnable(GL_LIGHT0);
+
+	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.5);
 	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1);
 	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0);
-	 */
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
@@ -116,8 +126,6 @@ void Engine::render (void) {
 
 	glutSwapBuffers();
 	glutPostRedisplay();
-
-	// TODO: everything
 }
 
 //TODO: should get rid of this eventually
