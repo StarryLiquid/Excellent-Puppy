@@ -4,9 +4,11 @@
 
 #include "../entities/Flooring.hpp"
 #include "../entities/SimpleEntity.hpp"
+#include "../entities/CompositeEntity.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../models/shapes/CubeModel.hpp"
 #include "../models/shapes/SphereModel.hpp"
+#include "../models/shapes/CylinderModel.hpp"
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "MouseController.hpp"
@@ -50,8 +52,6 @@ void Engine::initScene() {
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
 
-	// Some exmple entities
-	// TODO: remove when not needed
 	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(10,15);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
@@ -60,9 +60,18 @@ void Engine::initScene() {
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-10, 0, 15}));
 
 	// TODO: lamp
+	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::ColorMaterial({0.5, 0.5, 0.5});
+	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::ColorMaterial({1, 1, 1});
 	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
-	lampBaseModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.5, 0.5, 0.5}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0}));
+	lampBaseModel->setMaterial(lampMaterial);
+	ExcellentPuppy::Entities::Entity *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
+	ExcellentPuppy::Modeling::Model *lampPoleModel = new ExcellentPuppy::Modeling::CylinderModel(0.1, 5+0.2, 30, 1);
+	lampPoleModel->setMaterial(lampMaterial);
+	ExcellentPuppy::Entities::Entity *lampPole = new ExcellentPuppy::Entities::SimpleEntity(lampPoleModel, {0,  1 - 0.1, 0}, {-90, 0, 0});
+	ExcellentPuppy::Modeling::Model *lampBulbModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 30, 15);
+	lampBulbModel->setMaterial(lampBulbMaterial);
+	ExcellentPuppy::Entities::Entity *lampBulb = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 1 + 5 + 1/2, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
+	_entities.push_back(new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb}));
 
 	// Set a camera
 	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
