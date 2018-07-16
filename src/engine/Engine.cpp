@@ -36,6 +36,10 @@ std::list<ExcellentPuppy::Entities::Entity*> Engine::_entities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getEntities() {
 	return _entities;
 }
+std::list<Light*> Engine::_lights;
+std::list<Light*>& Engine::getLights() {
+	 return _lights;
+}
 
 void Engine::init(int argc, char** argv) {
 	initWindow(argc, argv);
@@ -55,7 +59,6 @@ void Engine::initWindow(int argc, char** argv) {
 void Engine::initSubsystems() {
 	// TODO: init texture manager
 }
-Light *light;
 void Engine::initScene() {
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
@@ -102,14 +105,14 @@ void Engine::initScene() {
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
 
 	// Set a light
-	light = new Light(GL_LIGHT0, ((GEvector){0, 3 , -10}));
-	light->load();
-	light->setAmbient({0.1, 0.1, 0.1});
-	light->setDiffuse({1, 1, 1});
-	light->setSpecular({1, 1, 1});
-	light->setConstantAttenuation(0.2);
-	light->setLinearAttenuation(0.1);
-	light->setQuadraticAttenuation(0);
+	Light * lampLight = new Light(GL_LIGHT0, lampBulb->getPosition());
+	lampLight->setAmbient({0.1, 0.1, 0.1});
+	lampLight->setDiffuse({1, 1, 1});
+	lampLight->setSpecular({1, 1, 1});
+	lampLight->setConstantAttenuation(0.2);
+	lampLight->setLinearAttenuation(0.1);
+	lampLight->setQuadraticAttenuation(0);
+	_lights.push_back(lampLight);
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
@@ -121,18 +124,23 @@ void Engine::registerCallbacks() {
 void Engine::loadEntities() {
 	for(Entities::Entity *current : _entities)
 		current->load();
+	for(Light *current : _lights)
+		current->load();
 }
 
 void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Set the light in the scene
-	light->setLight();
+	// Set the lights in the scene
+	for(Light *current : _lights)
+		current->setLight();
 
+	// Render all the entities
 	for(Entities::Entity *current : _entities)
 		current->render();
 
+	// Swap buffers and signal to render next frame
 	glutSwapBuffers();
 	glutPostRedisplay();
 }

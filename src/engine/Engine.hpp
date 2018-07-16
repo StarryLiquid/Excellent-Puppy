@@ -12,6 +12,7 @@ namespace ExcellentPuppy {
 	}
 	namespace Engine {
 		class Camera;
+		class Light;
 
 		/**
 		 * The game engine, initiates and managed the game
@@ -27,12 +28,15 @@ namespace ExcellentPuppy {
 				static Camera* _camera;
 				// The entities to render in the scene
 				static std::list<Entities::Entity*> _entities;
+				// The lights to render in the scene
+				static std::list<Light*> _lights;
 
 			public:
 				// TODO
 				// tm getter
 				// animation adder/remover
 				static std::list<Entities::Entity*>& getEntities();
+				static std::list<Light*>& getLights();
 				static Camera*& getCamera();
 				static void setCamera(Camera* camera);
 
