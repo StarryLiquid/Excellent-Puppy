@@ -5,6 +5,7 @@
 #include "../entities/Flooring.hpp"
 #include "../entities/SimpleEntity.hpp"
 #include "../entities/CompositeEntity.hpp"
+#include "../entities/LightEntity.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../models/materials/LightMaterial.hpp"
 #include "../models/shapes/CubeModel.hpp"
@@ -22,6 +23,8 @@ const GLint ROOM_WIDTH  = 20;
 const GLint ROOM_HEIGHT = 20;
 const GLint ROOM_DEPTH  = 30;
 
+// Handles keyboard input
+void handlelKeyboard (unsigned char, int, int);
 // Handles special keyboard input
 void handleSpecialKeyboard (int, int, int);
 
@@ -35,10 +38,6 @@ void Engine::setCamera(Camera* camera) {
 std::list<ExcellentPuppy::Entities::Entity*> Engine::_entities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getEntities() {
 	return _entities;
-}
-std::list<Light*> Engine::_lights;
-std::list<Light*>& Engine::getLights() {
-	 return _lights;
 }
 
 void Engine::init(int argc, char** argv) {
@@ -63,6 +62,23 @@ void Engine::initScene() {
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
 
+	// GL settings
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glCullFace(GL_BACK);
+
+	// Set lighting
+	glEnable(GL_LIGHTING);
+	glEnable(GL_NORMALIZE);
+	glShadeModel(GL_SMOOTH);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
+
+	// Set a camera
+	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
+	Engine::_camera->setGLProjection();
+
+	// Set up scene world geometry (walls, floor, roof)
+	// TODO: roof
 	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(
 			ROOM_WIDTH/ExcellentPuppy::Entities::Flooring::tileDimension,
 			ROOM_DEPTH/ExcellentPuppy::Entities::Flooring::tileDimension);
@@ -75,6 +91,15 @@ void Engine::initScene() {
 	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
+	// Create a light
+	Light * lampLight = new Light(GL_LIGHT0);
+	lampLight->setAmbient({0.1, 0.1, 0.1});
+	lampLight->setDiffuse({1, 1, 1});
+	lampLight->setSpecular({1, 1, 1});
+	lampLight->setConstantAttenuation(0.2);
+	lampLight->setLinearAttenuation(0.1);
+	lampLight->setQuadraticAttenuation(0);
+
 	// Lamp
 	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.5, 0.5, 0.5}, {0.1, 0.1, 0.1}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
 	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
@@ -86,36 +111,14 @@ void Engine::initScene() {
 	ExcellentPuppy::Entities::Entity *lampPole = new ExcellentPuppy::Entities::SimpleEntity(lampPoleModel, {0,  1 - 0.1, 0}, {-90, 0, 0});
 	ExcellentPuppy::Modeling::Model *lampBulbModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 30, 15);
 	lampBulbModel->setMaterial(lampBulbMaterial);
-	ExcellentPuppy::Entities::Entity *lampBulb = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 1 + 5 + 1/2, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
-	_entities.push_back(new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb}));
-
-	// Set a camera
-	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
-	Engine::_camera->setGLProjection();
-
-	// GL settings
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	glCullFace(GL_BACK);
-
-	// Set lighting
-	glEnable(GL_LIGHTING);
-	glEnable(GL_NORMALIZE);
-	glShadeModel(GL_SMOOTH);
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
-
-	// Set a light
-	Light * lampLight = new Light(GL_LIGHT0, lampBulb->getPosition());
-	lampLight->setAmbient({0.1, 0.1, 0.1});
-	lampLight->setDiffuse({1, 1, 1});
-	lampLight->setSpecular({1, 1, 1});
-	lampLight->setConstantAttenuation(0.2);
-	lampLight->setLinearAttenuation(0.1);
-	lampLight->setQuadraticAttenuation(0);
-	_lights.push_back(lampLight);
+	ExcellentPuppy::Entities::Entity *lampBulbModelEntity = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 0, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
+	ExcellentPuppy::Entities::Entity *lampBulbLight = new ExcellentPuppy::Entities::LightEntity(lampLight);
+	ExcellentPuppy::Entities::Entity *lampBulb = new ExcellentPuppy::Entities::CompositeEntity({lampBulbModelEntity, lampBulbLight}, {0, 1 + 5 + 1/2, 0});
+	_entities.push_back(new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb}, {5, 0, -10}));
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
+	glutKeyboardFunc(handlelKeyboard);
 	glutSpecialFunc(handleSpecialKeyboard);
 	MouseController::registerCallbacks();
 	//TODO: remove
@@ -124,17 +127,11 @@ void Engine::registerCallbacks() {
 void Engine::loadEntities() {
 	for(Entities::Entity *current : _entities)
 		current->load();
-	for(Light *current : _lights)
-		current->load();
 }
 
 void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Set the lights in the scene
-	for(Light *current : _lights)
-		current->setLight();
 
 	// Render all the entities
 	for(Entities::Entity *current : _entities)
@@ -146,6 +143,17 @@ void Engine::render (void) {
 }
 
 //TODO: should get rid of this eventually
+void handlelKeyboard (unsigned char key, int x, int y) {
+	Camera *camera = Engine::getCamera();
+	if(camera != NULL){
+		if(key==' ')
+			camera->getPosition().y += 0.1;
+		if(key=='c')
+			camera->getPosition().y -= 0.1;
+
+		camera->setGLProjection();
+	}
+}
 void handleSpecialKeyboard (int key, int x, int y) {
 	Camera *camera = Engine::getCamera();
 	if(camera != NULL){
