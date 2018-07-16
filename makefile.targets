@@ -1,7 +1,0 @@
-main-build: dll
-
-dll:
-	-@echo 'Copying dlls'
-	-cp ../bin/* bin
-
-.PHONY: dll
