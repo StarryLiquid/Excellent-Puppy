@@ -73,7 +73,7 @@ void Engine::initScene() {
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
 	// Lamp
-	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.3, 0.3, 0.3}, {0, 0, 0}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
+	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.5, 0.5, 0.5}, {0.1, 0.1, 0.1}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
 	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
 	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
 	lampBaseModel->setMaterial(lampMaterial);
@@ -98,8 +98,8 @@ void Engine::initScene() {
 	// Set lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_NORMALIZE);
-	//glShadeModel(GL_SMOOTH);
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	glShadeModel(GL_SMOOTH);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
 
 	// Set a light
 	light = new Light(GL_LIGHT0, ((GEvector){0, 3 , -10}));
@@ -126,6 +126,9 @@ void Engine::loadEntities() {
 void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Set the light in the scene
+	light->setLight();
 
 	for(Entities::Entity *current : _entities)
 		current->render();

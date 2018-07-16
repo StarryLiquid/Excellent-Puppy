@@ -14,34 +14,22 @@ namespace ExcellentPuppy {
 				const GLenum _name;
 				// The position of the light
 				GEvector _position;
-				// The ambient constant color of the light
-				GEcolor _ambient;
-				// The diffuse color of the light
-				GEcolor _diffuse;
-				// The specular  color of the light
-				GEcolor _specualr;
-				// The constant radial intesity attenuation
-				GLfloat _constantAttenuation;
-				// The linear radial intesity attenuation
-				GLfloat _linearAttenuation;
-				// The quadratic radial intesity attenuation
-				GLfloat _quadraticAttenuation;
 
 			public:
 				const GLenum& getName();
-				const GEvector& getPosition();
+				GEvector& getPosition();
 				void setPosition(const GEvector& position);
-				const GEcolor& getAmbient();
+				// The ambient constant color of the light
 				void setAmbient(const GEcolor& ambient);
-				const GEcolor& getDiffuse();
+				// The diffuse color of the light
 				void setDiffuse(const GEcolor& diffuse);
-				const GEcolor& getSpecular();
+				// The specular  color of the light
 				void setSpecular(const GEcolor& specular);
-				const GLfloat& getConstantAttenuation();
+				// The constant radial intesity attenuation
 				void setConstantAttenuation(const GLfloat& constantAttenuation);
-				const GLfloat& getLinearAttenuation();
+				// The linear radial intesity attenuation
 				void setLinearAttenuation(const GLfloat& linearAttenuation);
-				const GLfloat& getQuadraticAttenuation();
+				// The quadratic radial intesity attenuation
 				void setQuadraticAttenuation(const GLfloat& quadraticAttenuation);
 
 				Light(
@@ -51,12 +39,14 @@ namespace ExcellentPuppy {
 
 				// Enables the light
 				void load() const;
+				// Set light in the scene
+				void setLight() const;
 
 				// Helper methods for setting properties for this light
-				void setProperty(const GLenum& property, const GLfloat& value);
-				void setProperty(const GLenum& property, const GLfloat* const & value);
-				void setProperty(const GLenum& property, const GLint& value);
-				void setProperty(const GLenum& property, const GLint* const & value);
+				void setProperty(const GLenum& property, const GLfloat& value) const;
+				void setProperty(const GLenum& property, const GLfloat* const & value) const;
+				void setProperty(const GLenum& property, const GLint& value) const;
+				void setProperty(const GLenum& property, const GLint* const & value) const;
 				// Helper methods for setting light model properties
 				static void setModelProperty(const GLenum& property, const GLfloat& value);
 				static void setModelProperty(const GLenum& property, const GLfloat* const & value);

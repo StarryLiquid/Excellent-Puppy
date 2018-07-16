@@ -29,13 +29,15 @@ static bool firstProjection = true;
 void Camera::setGLProjection() const {
 	GLint matrixMode;
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
-	glMatrixMode(GL_PROJECTION);
 	// Projection matrix has yet to be initialized
 	if(firstProjection) {
+		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glFrustum(-1.0, 1.0,
 				  -1.0, 1.0,
 				   1.0, 100.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 		gluLookAt(0.0, 0.0, 0.0,
 				  0.0, 0.0, -3.0,
 				  0.0, 1.0, 0.0);
@@ -43,11 +45,15 @@ void Camera::setGLProjection() const {
 
 		firstProjection = false;
 	}
-	// Reset to basic projection matrix
-	glPopMatrix();
-	glPushMatrix();
+	// Reset to projection matrix
+	else {
+		glPopMatrix();
+		glPushMatrix();
+	}
 	// Rotate and move the scene based on the camera position
+	glTranslatef(0, 0, 1);
 	geRotate(-_rotationX);
+	glTranslatef(0, 0, -1);
 	geRotate(-_rotationY);
 	geTranslate(-_position);
 	// Reset the matrix mode
