@@ -84,8 +84,8 @@ struct GErotation {
 struct GEMaterialBitMask {
 	bool ambient : 1;
 	bool diffuse : 1;
-	bool emission : 1;
 	bool specular : 1;
+	bool emission : 1;
 	bool shininess : 1;
 };
 // A structure to hold material settings
@@ -105,9 +105,10 @@ inline void geTexCoord(const GEtexCoords& coords) {
 // Calls glColor for a given GEcolor value
 inline void geColor(const GEcolor& color) {
 	glEnable(GL_COLOR_MATERIAL);
-	const float emission[4] = {0, 0, 0, 1};
-	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
-	const float shininess = 128;
+	const float nilColor[4] = {0, 0, 0, 1};
+	glMaterialfv(GL_FRONT, GL_EMISSION, nilColor);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, nilColor);
+	const float shininess = 1;
 	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 	glColor4fv((const GLfloat*) &color);
 }
@@ -133,11 +134,13 @@ inline void geScale(const GEvector& scale) {
 }
 // Calls glMaterial for each material parameter
 inline void geMaterial(const GEMaterial& material) {
-	glDisable(GL_COLOR_MATERIAL);
-	if(material.bitmask.ambient)
-		glMaterialfv(GL_FRONT, GL_AMBIENT , (const GLfloat*)&material.ambient);
-	if(material.bitmask.diffuse)
-		glMaterialfv(GL_FRONT, GL_DIFFUSE , (const GLfloat*)&material.diffuse);
+	if(material.bitmask.ambient || material.bitmask.diffuse) {
+		glDisable(GL_COLOR_MATERIAL);
+		if(material.bitmask.ambient)
+			glMaterialfv(GL_FRONT, GL_AMBIENT , (const GLfloat*)&material.ambient);
+		if(material.bitmask.diffuse)
+			glMaterialfv(GL_FRONT, GL_DIFFUSE , (const GLfloat*)&material.diffuse);
+	}
 	if(material.bitmask.specular)
 		glMaterialfv(GL_FRONT, GL_SPECULAR , (const GLfloat*)&material.specular);
 	if(material.bitmask.emission)

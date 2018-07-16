@@ -57,6 +57,8 @@ const GEquad tileFaces[] = {
 // The colors of the tiles
 const GEcolor white = {0.9, 0.9, 0.9};
 const GEcolor black = {0, 0, 0};
+// Material for the tiles
+GEMaterial tileMaterial = {{}, {}, {1, 1, 1}, {}, 128, {0, 0, 1, 0, 1}};
 // The in-between color
 const GEcolor gray  = {0.3, 0.3, 0.3};
 // A helper array for alternating colors
@@ -96,6 +98,7 @@ void Flooring::subrender() {
 		for(int j=0; j<_flooringHeight; j++) {
 			// Render the current tile
 			geColor(*colors[color]);
+			geMaterial(tileMaterial);
 			tileModel.render();
 			// Move to next tile
 			geTranslate(verticalTranslate);
