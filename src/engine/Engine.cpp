@@ -55,6 +55,7 @@ void Engine::initWindow(int argc, char** argv) {
 void Engine::initSubsystems() {
 	// TODO: init texture manager
 }
+Light *light;
 void Engine::initScene() {
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
@@ -72,8 +73,8 @@ void Engine::initScene() {
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
 	// Lamp
-	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.3, 0.3, 0.3}, {0.3, 0.3, 0.3}, {0, 0, 0}, 2, {1, 1, 1, 1}});
-	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0.9, 0.9, 0.9}, 128, {1, 1, 1, 1}});
+	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.3, 0.3, 0.3}, {0, 0, 0}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
+	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
 	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
 	lampBaseModel->setMaterial(lampMaterial);
 	ExcellentPuppy::Entities::Entity *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
@@ -97,14 +98,15 @@ void Engine::initScene() {
 	// Set lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_NORMALIZE);
-	glShadeModel(GL_SMOOTH);
+	//glShadeModel(GL_SMOOTH);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
 	// Set a light
-	Light *light = new Light(GL_LIGHT0, lampBulb->getPosition());
+	light = new Light(GL_LIGHT0, ((GEvector){0, 3 , -10}));
 	light->load();
 	light->setAmbient({0.1, 0.1, 0.1});
 	light->setDiffuse({1, 1, 1});
-	light->setSpecular({0.1, 0.1, 0.1});
+	light->setSpecular({1, 1, 1});
 	light->setConstantAttenuation(0.2);
 	light->setLinearAttenuation(0.1);
 	light->setQuadraticAttenuation(0);
@@ -137,13 +139,13 @@ void handleSpecialKeyboard (int key, int x, int y) {
 	Camera *camera = Engine::getCamera();
 	if(camera != NULL){
 		if(key==GLUT_KEY_UP)
-			camera->getPosition().z -= 1;
+			camera->getPosition().z -= 0.1;
 		if(key==GLUT_KEY_DOWN)
-			camera->getPosition().z += 1;
+			camera->getPosition().z += 0.1;
 		if(key==GLUT_KEY_LEFT)
-			camera->getPosition().x -= 1;
+			camera->getPosition().x -= 0.1;
 		if(key==GLUT_KEY_RIGHT)
-			camera->getPosition().x += 1;
+			camera->getPosition().x += 0.1;
 
 		camera->setGLProjection();
 	}

@@ -85,12 +85,14 @@ struct GEMaterialBitMask {
 	bool ambient : 1;
 	bool diffuse : 1;
 	bool emission : 1;
+	bool specular : 1;
 	bool shininess : 1;
 };
 // A structure to hold material settings
 struct GEMaterial {
 	GEcolor ambient;
 	GEcolor diffuse;
+	GEcolor specular;
 	GEcolor emission;
 	GLfloat shininess;
 	GEMaterialBitMask bitmask;
@@ -136,10 +138,13 @@ inline void geMaterial(const GEMaterial& material) {
 		glMaterialfv(GL_FRONT, GL_AMBIENT , (const GLfloat*)&material.ambient);
 	if(material.bitmask.diffuse)
 		glMaterialfv(GL_FRONT, GL_DIFFUSE , (const GLfloat*)&material.diffuse);
+	if(material.bitmask.specular)
+		glMaterialfv(GL_FRONT, GL_SPECULAR , (const GLfloat*)&material.specular);
 	if(material.bitmask.emission)
 		glMaterialfv(GL_FRONT, GL_EMISSION, (const GLfloat*)&material.emission);
 	if(material.bitmask.shininess)
 		glMaterialf(GL_FRONT, GL_SHININESS, material.shininess);
+	// TODO: default params
 }
 
 #endif /* TYPES_HPP_ */
