@@ -102,6 +102,11 @@ inline void geTexCoord(const GEtexCoords& coords) {
 }
 // Calls glColor for a given GEcolor value
 inline void geColor(const GEcolor& color) {
+	glEnable(GL_COLOR_MATERIAL);
+	const float emission[4] = {0, 0, 0, 1};
+	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
+	const float shininess = 128;
+	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 	glColor4fv((const GLfloat*) &color);
 }
 // Calls glVertex for a given GEvector value
@@ -126,6 +131,7 @@ inline void geScale(const GEvector& scale) {
 }
 // Calls glMaterial for each material parameter
 inline void geMaterial(const GEMaterial& material) {
+	glDisable(GL_COLOR_MATERIAL);
 	if(material.bitmask.ambient)
 		glMaterialfv(GL_FRONT, GL_AMBIENT , (const GLfloat*)&material.ambient);
 	if(material.bitmask.diffuse)

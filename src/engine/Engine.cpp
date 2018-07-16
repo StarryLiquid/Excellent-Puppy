@@ -6,11 +6,13 @@
 #include "../entities/SimpleEntity.hpp"
 #include "../entities/CompositeEntity.hpp"
 #include "../models/materials/ColorMaterial.hpp"
+#include "../models/materials/LightMaterial.hpp"
 #include "../models/shapes/CubeModel.hpp"
 #include "../models/shapes/SphereModel.hpp"
 #include "../models/shapes/CylinderModel.hpp"
 #include "../types.hpp"
 #include "Camera.hpp"
+#include "Light.hpp"
 #include "MouseController.hpp"
 
 using namespace ExcellentPuppy::Engine;
@@ -69,9 +71,9 @@ void Engine::initScene() {
 	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
 	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
-	// TODO: lamp
-	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::ColorMaterial({0.5, 0.5, 0.5});
-	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::ColorMaterial({1, 1, 1});
+	// Lamp
+	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.3, 0.3, 0.3}, {0.3, 0.3, 0.3}, {0, 0, 0}, 2, {1, 1, 1, 1}});
+	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0.9, 0.9, 0.9}, 128, {1, 1, 1, 1}});
 	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
 	lampBaseModel->setMaterial(lampMaterial);
 	ExcellentPuppy::Entities::Entity *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
@@ -95,15 +97,17 @@ void Engine::initScene() {
 	// Set lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_NORMALIZE);
-	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
 
 	// Set a light
-	glEnable(GL_LIGHT0);
-
-	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.5);
-	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1);
-	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0);
+	Light *light = new Light(GL_LIGHT0, lampBulb->getPosition());
+	light->load();
+	light->setAmbient({0.1, 0.1, 0.1});
+	light->setDiffuse({1, 1, 1});
+	light->setSpecular({0.1, 0.1, 0.1});
+	light->setConstantAttenuation(0.2);
+	light->setLinearAttenuation(0.1);
+	light->setQuadraticAttenuation(0);
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
