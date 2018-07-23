@@ -1,7 +1,7 @@
-#ifndef ENTITIES_FLOORING_HPP_
-#define ENTITIES_FLOORING_HPP_
+#ifndef ENTITIES_OBJECTS_FLOORING_HPP_
+#define ENTITIES_OBJECTS_FLOORING_HPP_
 
-#include "../entities/Entity.hpp"
+#include "../Entity.hpp"
 
 struct GEvector;
 

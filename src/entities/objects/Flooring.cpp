@@ -1,8 +1,8 @@
-#include "../entities/Flooring.hpp"
+#include "Flooring.hpp"
 
-#include "../models/ModelNV.hpp"
-#include "../models/geometries/QuadGeometry.hpp"
-#include "../types.hpp"
+#include "../../models/ModelNV.hpp"
+#include "../../models/geometries/QuadGeometry.hpp"
+#include "../../types.hpp"
 
 using namespace ExcellentPuppy::Entities;
 

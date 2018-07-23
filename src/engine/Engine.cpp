@@ -2,7 +2,7 @@
 
 #include <GL/freeglut.h>
 
-#include "../entities/Flooring.hpp"
+#include "../entities/objects/Flooring.hpp"
 #include "../entities/SimpleEntity.hpp"
 #include "../entities/CompositeEntity.hpp"
 #include "../entities/LightEntity.hpp"
@@ -27,6 +27,8 @@ const GLint ROOM_DEPTH  = 30;
 void handlelKeyboard (unsigned char, int, int);
 // Handles special keyboard input
 void handleSpecialKeyboard (int, int, int);
+// Creates the lamp entity
+ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light);
 
 Camera* Engine::_camera = NULL;
 Camera*& Engine::getCamera() {
@@ -101,20 +103,9 @@ void Engine::initScene() {
 	lampLight->setQuadraticAttenuation(0);
 
 	// Lamp
-	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.5, 0.5, 0.5}, {0.1, 0.1, 0.1}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
-	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
-	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
-	lampBaseModel->setMaterial(lampMaterial);
-	ExcellentPuppy::Entities::Entity *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
-	ExcellentPuppy::Modeling::Model *lampPoleModel = new ExcellentPuppy::Modeling::CylinderModel(0.1, 5+0.2, 30, 1);
-	lampPoleModel->setMaterial(lampMaterial);
-	ExcellentPuppy::Entities::Entity *lampPole = new ExcellentPuppy::Entities::SimpleEntity(lampPoleModel, {0,  1 - 0.1, 0}, {-90, 0, 0});
-	ExcellentPuppy::Modeling::Model *lampBulbModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 30, 15);
-	lampBulbModel->setMaterial(lampBulbMaterial);
-	ExcellentPuppy::Entities::Entity *lampBulbModelEntity = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 0, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
-	ExcellentPuppy::Entities::Entity *lampBulbLight = new ExcellentPuppy::Entities::LightEntity(lampLight);
-	ExcellentPuppy::Entities::Entity *lampBulb = new ExcellentPuppy::Entities::CompositeEntity({lampBulbModelEntity, lampBulbLight}, {0, 1 + 5 + 1/2, 0});
-	_entities.push_back(new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb}, {5, 0, -10}));
+	ExcellentPuppy::Entities::Entity* lamp = createLamp(lampLight);
+	lamp->setPosition({5, 0, -10});
+	_entities.push_back(lamp);
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
@@ -168,4 +159,21 @@ void handleSpecialKeyboard (int key, int x, int y) {
 
 		camera->setGLProjection();
 	}
+}
+
+ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light) {
+	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.5, 0.5, 0.5}, {0.1, 0.1, 0.1}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
+	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
+	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
+	lampBaseModel->setMaterial(lampMaterial);
+	ExcellentPuppy::Entities::Entity *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
+	ExcellentPuppy::Modeling::Model *lampPoleModel = new ExcellentPuppy::Modeling::CylinderModel(0.1, 5+0.2, 30, 1);
+	lampPoleModel->setMaterial(lampMaterial);
+	ExcellentPuppy::Entities::Entity *lampPole = new ExcellentPuppy::Entities::SimpleEntity(lampPoleModel, {0,  1 - 0.1, 0}, {-90, 0, 0});
+	ExcellentPuppy::Modeling::Model *lampBulbModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 30, 15);
+	lampBulbModel->setMaterial(lampBulbMaterial);
+	ExcellentPuppy::Entities::Entity *lampBulbModelEntity = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 0, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
+	ExcellentPuppy::Entities::Entity *lampBulbLight = new ExcellentPuppy::Entities::LightEntity(light);
+	ExcellentPuppy::Entities::Entity *lampBulb = new ExcellentPuppy::Entities::CompositeEntity({lampBulbModelEntity, lampBulbLight}, {0, 1 + 5 + 1/2, 0});
+	return new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb});
 }

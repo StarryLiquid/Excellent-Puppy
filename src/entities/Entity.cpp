@@ -8,19 +8,19 @@ Entity::Entity(const GEvector& position, const GEvector& rotation, const GEvecto
 	_scaling(scaling) { }
 Entity::~Entity() { }
 
-inline void Entity::setPosition(GEvector position) {
+void Entity::setPosition(GEvector position) {
 	_position = position;
 }
 GEvector& Entity::getPosition() {
 	return _position;
 }
-inline void Entity::setRotation(GEvector rotation) {
+void Entity::setRotation(GEvector rotation) {
 	_rotation = rotation;
 }
 GEvector& Entity::getRotation() {
 	return _rotation;
 }
-inline void Entity::setScaling(GEvector scaling) {
+void Entity::setScaling(GEvector scaling) {
 	_scaling = scaling;
 }
 GEvector& Entity::getScaling() {

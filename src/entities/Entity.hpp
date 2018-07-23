@@ -25,11 +25,11 @@ namespace ExcellentPuppy {
 						const GEvector& scaling  = {1, 1, 1});
 				virtual ~Entity();
 
-				inline void setPosition(GEvector position);
+				void setPosition(GEvector position);
 				virtual GEvector& getPosition();
-				inline void setRotation(GEvector rotation);
+				void setRotation(GEvector rotation);
 				virtual GEvector& getRotation();
-				inline void setScaling(GEvector scaling);
+				void setScaling(GEvector scaling);
 				virtual GEvector& getScaling();
 
 				// Sets up translation and rotation and renders using the subrender method
