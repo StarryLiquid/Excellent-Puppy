@@ -9,7 +9,7 @@ namespace ExcellentPuppy {
 		/**
 		 * A simple cylinder model, based on the glut cylinder
 		 */
-		class CylinderModel: public Model {
+		class CylinderModel : public Model {
 			private:
 				// The radius of the cylinder
 				double _radius;

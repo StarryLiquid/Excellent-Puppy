@@ -3,6 +3,7 @@
 #include <GL/freeglut.h>
 
 #include "../entities/objects/Flooring.hpp"
+#include "../entities/objects/Dog.hpp"
 #include "../entities/SimpleEntity.hpp"
 #include "../entities/CompositeEntity.hpp"
 #include "../entities/LightEntity.hpp"
@@ -106,6 +107,10 @@ void Engine::initScene() {
 	ExcellentPuppy::Entities::Entity* lamp = createLamp(lampLight);
 	lamp->setPosition({5, 0, -10});
 	_entities.push_back(lamp);
+
+	// Dog
+	ExcellentPuppy::Entities::Entity* dog = new ExcellentPuppy::Entities::Dog();
+	_entities.push_back(dog);
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
