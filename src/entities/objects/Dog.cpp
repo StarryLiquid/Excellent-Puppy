@@ -32,7 +32,7 @@ Dog::Dog(std::list<Entity*> entities ,
 	bodyCenter->setMaterial(dogMaterial);
 	getEntities().push_back(new SimpleEntity(bodySphere, {0, BODY_HEIGHT, BODY_HALF_WIDTH}, {-90}, {BODY_RADIUS, BODY_RADIUS, BODY_RADIUS}));
 	getEntities().push_back(new SimpleEntity(bodySphere, {0, BODY_HEIGHT, -BODY_HALF_WIDTH}, {90}, {BODY_RADIUS, BODY_RADIUS, BODY_RADIUS}));
-	_tail = new Tail(dogMaterial, {}, {0, BODY_HEIGHT, BODY_HALF_WIDTH+BODY_RADIUS});
+	_tail = new Tail(dogMaterial, {0, BODY_HEIGHT, BODY_HALF_WIDTH+BODY_RADIUS});
 	getEntities().push_back(_tail);
 }
 Dog::~Dog() { }

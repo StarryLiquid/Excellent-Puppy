@@ -10,6 +10,11 @@ namespace ExcellentPuppy {
 		 * The foot of a dog, minus the paw pads
 		 */
 		class FootFrame : public ModelNV {
+			public:
+				static constexpr GLfloat FEET_HEIGHT = 0.5;
+				static constexpr GLfloat FEET_CURVE_HEIGHT = 0.1;
+				static constexpr GLfloat FEET_WALL_HEIGHT = FEET_HEIGHT - FEET_CURVE_HEIGHT*2;
+
 			private:
 				// Geometries to delete with this model
 				std::list<Geometry*> _geometriesToDelete;

@@ -15,7 +15,6 @@ namespace ExcellentPuppy {
 		class Tail: public CompositeEntity {
 			public:
 				Tail(ExcellentPuppy::Modeling::Material *material,
-						std::list<Entity*> entities = {},
 						const GEvector& position = {},
 						const GEvector& rotation = {},
 						const GEvector& scaling = {1, 1, 1});

@@ -1,5 +1,6 @@
 #include "FootFrame.hpp"
 
+#include "../geometries/Geometry.hpp"
 #include "../geometries/FanGeometry.hpp"
 #include "../geometries/QuadGeometry.hpp"
 #include "../geometries/TriangleGeometry.hpp"
@@ -9,58 +10,54 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-const GLfloat FEET_HEIGHT = 0.5;
-const GLfloat FEET_CURVE_HEIGHT = 0.1;
-const GLfloat FEET_WALL_HEIGHT = FEET_HEIGHT - FEET_CURVE_HEIGHT*2;
-
 const GEnv footVertex[] = {
 	{ // Paw base mid point								// 0
 		{0, -1, 1},
-		{0, FEET_CURVE_HEIGHT, 0}
+		{0, FootFrame::FEET_CURVE_HEIGHT, 0}
 	},
 	{ // Start paw curve
 		{0, -1, 1},
-		{-0.4, FEET_CURVE_HEIGHT, 0}
+		{-0.4, FootFrame::FEET_CURVE_HEIGHT, 0}
 	},
 	{
 		{-0.3, -1, 0.2},
-		{-0.47, FEET_CURVE_HEIGHT, -0.07}
+		{-0.47, FootFrame::FEET_CURVE_HEIGHT, -0.07}
 	},
 	{ // Reach first toe curve
 		{-1, -1, 0},
-		{-0.6, FEET_CURVE_HEIGHT, -0.7}
+		{-0.6, FootFrame::FEET_CURVE_HEIGHT, -0.7}
 	},
 	{
 		{-1, -1, -1},
-		{-0.55, FEET_CURVE_HEIGHT, -0.9}
+		{-0.55, FootFrame::FEET_CURVE_HEIGHT, -0.9}
 	},
 	{													// 5
 		{0, -1, -1},
-		{-0.48, FEET_CURVE_HEIGHT, -0.95}
+		{-0.48, FootFrame::FEET_CURVE_HEIGHT, -0.95}
 	},
 	{
 		{0.1, -1, -1},
-		{-0.39, FEET_CURVE_HEIGHT, -0.94}
+		{-0.39, FootFrame::FEET_CURVE_HEIGHT, -0.94}
 	},
 	{ // Reach second toe curve
 		{-1, -1, -1},
-		{-0.305, FEET_CURVE_HEIGHT, -0.9}
+		{-0.305, FootFrame::FEET_CURVE_HEIGHT, -0.9}
 	},
 	{
 		{-1, -1, -0.7},
-		{-0.31, FEET_CURVE_HEIGHT, -1.1}
+		{-0.31, FootFrame::FEET_CURVE_HEIGHT, -1.1}
 	},
 	{
 		{-0.7, -1, -1},
-		{-0.26, FEET_CURVE_HEIGHT, -1.25}
+		{-0.26, FootFrame::FEET_CURVE_HEIGHT, -1.25}
 	},
 	{													// 10
 		{0, -1, -1},
-		{-0.11, FEET_CURVE_HEIGHT, -1.3}
+		{-0.11, FootFrame::FEET_CURVE_HEIGHT, -1.3}
 	},
 	{ // End toe curve
 		{0, -1, 0},
-		{0, FEET_CURVE_HEIGHT, -1.2}
+		{0, FootFrame::FEET_CURVE_HEIGHT, -1.2}
 	},
 	{ // Paw base mid point - INNER
 		{0, -1, 0},
@@ -108,51 +105,51 @@ const GEnv footVertex[] = {
 	},
 	{ // The higher ends of the foot wall
 		{0, 0, 1},
-		{0, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, 0}
+		{0, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, 0}
 	},
 	{
 		{0, 0, 1},
-		{-0.4, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, 0}
+		{-0.4, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, 0}
 	},
 	{													// 25
 		{-0.3, 0, 0.2},
-		{-0.47, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -0.07}
+		{-0.47, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -0.07}
 	},
 	{
 		{-1, 0, 0},
-		{-0.6, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -0.7}
+		{-0.6, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -0.7}
 	},
 	{
 		{-1, 0, -1},
-		{-0.55, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -0.9}
+		{-0.55, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -0.9}
 	},
 	{
 		{0, 0, -1},
-		{-0.48, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -0.95}
+		{-0.48, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -0.95}
 	},
 	{
 		{0.1, 0, -1},
-		{-0.39, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -0.94}
+		{-0.39, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -0.94}
 	},
 	{													// 30
 		{-1, 0, -1},
-		{-0.305, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -0.9}
+		{-0.305, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -0.9}
 	},
 	{
 		{-1, 0, -0.7},
-		{-0.31, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -1.1}
+		{-0.31, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -1.1}
 	},
 	{
 		{-0.7, 0, -1},
-		{-0.26, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -1.25}
+		{-0.26, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -1.25}
 	},
 	{
 		{0, 0, -1},
-		{-0.11, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -1.3}
+		{-0.11, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -1.3}
 	},
 	{
 		{0, 0, 0},
-		{0, FEET_CURVE_HEIGHT+FEET_WALL_HEIGHT, -1.2}
+		{0, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -1.2}
 	},
 };
 const GEfan footPawIndices = {

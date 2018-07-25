@@ -12,11 +12,10 @@ const GLfloat TAIL_LINK_LENGTH = 0.3;
 
 // TODO: add ways to move the tails
 Tail::Tail(ExcellentPuppy::Modeling::Material *material,
-		std::list<Entity*> entities ,
 		const GEvector& position,
 		const GEvector& rotation,
 		const GEvector& scaling) :
-			CompositeEntity(entities, position, rotation, scaling){
+			CompositeEntity({}, position, rotation, scaling){
 	ExcellentPuppy::Modeling::Model* tailLinkSphere = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 10, 10);
 	tailLinkSphere->setMaterial(material);
 	ExcellentPuppy::Modeling::Model* tailLinkCylinder = new ExcellentPuppy::Modeling::CylinderModel(TAIL_RADIUS, TAIL_LINK_LENGTH, 10, 10);
