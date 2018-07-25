@@ -12,8 +12,6 @@
 #include "../models/shapes/CubeModel.hpp"
 #include "../models/shapes/SphereModel.hpp"
 #include "../models/shapes/CylinderModel.hpp"
-#include "../models/shapes/PawPad.hpp" // TODO remove
-#include "../models/shapes/FootFrame.hpp"
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -113,18 +111,6 @@ void Engine::initScene() {
 	// Dog
 	ExcellentPuppy::Entities::Entity* dog = new ExcellentPuppy::Entities::Dog();
 	_entities.push_back(dog);
-
-	// TODO Paw test
-	Modeling::FootFrame *frame = ExcellentPuppy::Modeling::FootFrame::create();
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(frame, {2,2,0}));
-	Modeling::PawPad *pad = ExcellentPuppy::Modeling::PawPad::create();
-	pad->setMaterial(new Modeling::ColorMaterial({0.01, 0.01, 0.01}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(pad, {2,2,0}));
-	Modeling::SphereModel *smallPad = Modeling::SphereModel::generate(360, 90, 10, 10);
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(smallPad, (GEvector){2,2,0} + (GEvector){-0.4,0,-0.65}, {}, {0.2/2, 0.1, 0.35/2}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(smallPad, (GEvector){2,2,0} + (GEvector){0.4,0,-0.65}, {}, {0.2/2, 0.1, 0.35/2}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(smallPad, (GEvector){2,2,0} + (GEvector){-0.15,0,-1.0}, {}, {0.2/2, 0.1, 0.35/2}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(smallPad, (GEvector){2,2,0} + (GEvector){0.15,0,-1.0}, {}, {0.2/2, 0.1, 0.35/2}));
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
