@@ -27,7 +27,7 @@ namespace ExcellentPuppy {
 				const GEfan *_fan;
 
 			public:
-				FanGeometry(GEfan* const& fan);
+				FanGeometry(const GEfan* const& fan);
 				virtual ~FanGeometry();
 
 				virtual void render() const;

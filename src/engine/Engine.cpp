@@ -12,6 +12,7 @@
 #include "../models/shapes/CubeModel.hpp"
 #include "../models/shapes/SphereModel.hpp"
 #include "../models/shapes/CylinderModel.hpp"
+#include "../models/shapes/FootFrame.hpp" // TODO remove
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -111,6 +112,9 @@ void Engine::initScene() {
 	// Dog
 	ExcellentPuppy::Entities::Entity* dog = new ExcellentPuppy::Entities::Dog();
 	_entities.push_back(dog);
+
+	// TODO Paw test
+	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(ExcellentPuppy::Modeling::FootFrame::create(), {2,2,0}));
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);

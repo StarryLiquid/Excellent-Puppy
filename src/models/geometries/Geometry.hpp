@@ -9,7 +9,7 @@ namespace ExcellentPuppy {
 		class Geometry {
 			public:
 				Geometry();
-				virtual ~Geometry()=0;
+				virtual ~Geometry();
 
 				// Render the geometry
 				virtual void render() const=0;

@@ -2,13 +2,13 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-GEfan::GEfan(GLuint* const & perimeter, unsigned int const & indicesCount) :
-	indices(perimeter), indicesCount(indicesCount) {}
+GEfan::GEfan(GLuint* const & indices, unsigned int const & indicesCount) :
+	indices(indices), indicesCount(indicesCount) {}
 GEfan::~GEfan() {
 	delete(indices);
 }
 
-FanGeometry::FanGeometry(GEfan* const & fan) :
+FanGeometry::FanGeometry(const GEfan* const & fan) :
 		_fan(fan) { }
 FanGeometry::~FanGeometry() { }
 

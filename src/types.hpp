@@ -149,5 +149,15 @@ inline void geMaterial(const GEMaterial& material) {
 		glMaterialf(GL_FRONT, GL_SHININESS, material.shininess);
 	// TODO: default params
 }
+// Reverses the front faces clock order
+inline void geSwitchFrontFace() {
+	GLint currentMode;
+	glGetIntegerv(GL_FRONT_FACE, &currentMode);
+	if(currentMode == GL_CCW)
+		currentMode = GL_CW;
+	else
+		currentMode = GL_CCW;
+	glFrontFace(currentMode);
+}
 
 #endif /* TYPES_HPP_ */

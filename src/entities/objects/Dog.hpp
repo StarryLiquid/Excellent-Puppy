@@ -5,10 +5,16 @@
 
 namespace ExcellentPuppy {
 	namespace Entities {
+		class Tail;
+		class Paw;
+
 		/**
 		 * The entity of the dog, including the modelling and positioning
 		 */
 		class Dog : public CompositeEntity {
+			private:
+				Tail *_tail;
+
 			public:
 				Dog(std::list<Entity*> entities = {},
 						const GEvector& position = {},
