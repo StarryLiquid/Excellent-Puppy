@@ -7,6 +7,10 @@
 namespace ExcellentPuppy {
 	namespace Modeling {
 		class PawPad: public ModelNV {
+			public:
+				// The height of the paw pads
+				static constexpr GLfloat PAD_HEIGHT = 0.1;
+
 			private:
 				// Geometries to delete with this model
 				std::list<Geometry*> _geometriesToDelete;

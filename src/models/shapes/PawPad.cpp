@@ -10,8 +10,6 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-const GLfloat PAD_HEIGHT = -0.1;
-
 const GLfloat PI = 3.141592653589793238462643383279502884197169399;
 const GEnv padVertex[] = {
 	{	// Paw pad base mid point							// 0
@@ -60,31 +58,31 @@ const GEnv padVertex[] = {
 	},
 	{	// Paw pad base mid point - INNER
 		{0, -1, 0},
-		{0, PAD_HEIGHT, -0.2}
+		{0, -PawPad::PAD_HEIGHT, -0.2}
 	},
 	{	// Curve focal point - INNER
 		{0, -1, 0},
-		{-0.3, PAD_HEIGHT, -0.22}
+		{-0.3, -PawPad::PAD_HEIGHT, -0.22}
 	},
 	{	// Curve back and upwards - INNER
 		{0, -1, 0},
-		{-0.3, PAD_HEIGHT, -0.31}
+		{-0.3, -PawPad::PAD_HEIGHT, -0.31}
 	},
 	{
 		{0, -1, 0},
-		{-0.23, PAD_HEIGHT, -0.4}
+		{-0.23, -PawPad::PAD_HEIGHT, -0.4}
 	},
 	{														// 15
 		{0, -1, 0},
-		{-0.13, PAD_HEIGHT, -0.51}
+		{-0.13, -PawPad::PAD_HEIGHT, -0.51}
 	},
 	{
 		{0, -1, 0},
-		{-0.07, PAD_HEIGHT, -0.625}
+		{-0.07, -PawPad::PAD_HEIGHT, -0.625}
 	},
 	{	// End half curve at top midpoint - INNER
 		{0, -1, 0},
-		{-0, PAD_HEIGHT, -0.68}
+		{-0, -PawPad::PAD_HEIGHT, -0.68}
 	},
 };
 const GEfan padInnerIndices = {

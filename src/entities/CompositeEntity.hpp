@@ -11,7 +11,7 @@ namespace ExcellentPuppy {
 		/**
 		 * An entity composed of several other entities
 		 */
-		class CompositeEntity: public Entity {
+		class CompositeEntity : public Entity {
 			private:
 				// The sub entities of this entity
 				std::list<Entity*> _entities;
