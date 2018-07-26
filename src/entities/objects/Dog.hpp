@@ -7,6 +7,7 @@ namespace ExcellentPuppy {
 	namespace Entities {
 		class Tail;
 		class Leg;
+		class Head;
 
 		/**
 		 * The entity of the dog, including the modelling and positioning
@@ -14,9 +15,9 @@ namespace ExcellentPuppy {
 		class Dog : public CompositeEntity {
 			public:
 				// Half the width of the body
-				static constexpr GLfloat BODY_HALF_WIDTH = 0.75;
+				static constexpr GLfloat BODY_HALF_WIDTH = 0.5;
 				// Radius of the body
-				static constexpr GLfloat BODY_RADIUS = 0.4;
+				static constexpr GLfloat BODY_RADIUS = 0.3;
 				// Height of the body, correcting for body radius
 				static constexpr GLfloat BODY_HEIGHT = 0.8 + BODY_RADIUS;
 
@@ -26,6 +27,7 @@ namespace ExcellentPuppy {
 				Leg *_frontRightLeg;
 				Leg *_backLeftLeg;
 				Leg *_backRightLeg;
+				Head *_head;
 
 			public:
 				Dog(const GEvector& position = {},

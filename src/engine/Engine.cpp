@@ -82,17 +82,17 @@ void Engine::initScene() {
 
 	// Set up scene world geometry (walls, floor, roof)
 	// TODO: roof
-	ExcellentPuppy::Entities::Flooring *flooring = new ExcellentPuppy::Entities::Flooring(
-			ROOM_WIDTH/ExcellentPuppy::Entities::Flooring::tileDimension,
-			ROOM_DEPTH/ExcellentPuppy::Entities::Flooring::tileDimension);
+	Entities::Flooring *flooring = new Entities::Flooring(
+			ROOM_WIDTH/Entities::Flooring::tileDimension,
+			ROOM_DEPTH/Entities::Flooring::tileDimension);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
-	ExcellentPuppy::Modeling::Model *wallModel = new ExcellentPuppy::Modeling::CubeModel(
-			{ROOM_WIDTH, ROOM_HEIGHT - ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH},
+	Modeling::Model *wallModel = new Modeling::CubeModel(
+			{ROOM_WIDTH, ROOM_HEIGHT - Entities::Flooring::bottom, ROOM_DEPTH},
 			{0, 0, 1, 1, 1, 1},
 			true);
-	wallModel->setMaterial(new ExcellentPuppy::Modeling::ColorMaterial({0.8, 0.3, 0.3}));
-	_entities.push_back(new ExcellentPuppy::Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, ExcellentPuppy::Entities::Flooring::bottom, ROOM_DEPTH/2}));
+	wallModel->setMaterial(new Modeling::ColorMaterial({0.8, 0.3, 0.3}));
+	_entities.push_back(new Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
 	// Create a light
 	Light * lampLight = new Light(GL_LIGHT0);
@@ -104,12 +104,12 @@ void Engine::initScene() {
 	lampLight->setQuadraticAttenuation(0);
 
 	// Lamp
-	ExcellentPuppy::Entities::Entity* lamp = createLamp(lampLight);
+	Entities::Entity* lamp = createLamp(lampLight);
 	lamp->setPosition({5, 0, -10});
 	_entities.push_back(lamp);
 
 	// Dog
-	ExcellentPuppy::Entities::Entity* dog = new ExcellentPuppy::Entities::Dog(_camera->getPosition() + (GEvector){0, -1, -2}, {0, 90, 0});
+	Entities::Entity* dog = new Entities::Dog(_camera->getPosition() + (GEvector){0, -1, -2}, {0, 90, 0});
 	_entities.push_back(dog);
 }
 void Engine::registerCallbacks() {
