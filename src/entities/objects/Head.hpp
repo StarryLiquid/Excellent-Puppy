@@ -13,7 +13,7 @@ namespace ExcellentPuppy {
 		static constexpr GLfloat NOSE_SCALE = 0.5091843605041504*HEAD_SCALE;
 		/**
 		 * The head of the dog.
-		 * Made of a base modeled in blender, two eyes, a nose (also made in blender) and a tongue.
+		 * Made of a base modeled in blender, two eyes (sphere), a nose, ears (also made in blender) and a tongue (small triangle fan with a line through it).
 		 */
 		class Head : public CompositeEntity {
 			public:
