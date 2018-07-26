@@ -109,7 +109,7 @@ void Engine::initScene() {
 	_entities.push_back(lamp);
 
 	// Dog
-	ExcellentPuppy::Entities::Entity* dog = new ExcellentPuppy::Entities::Dog();
+	ExcellentPuppy::Entities::Entity* dog = new ExcellentPuppy::Entities::Dog(_camera->getPosition() + (GEvector){0, -1, -2}, {0, 90, 0});
 	_entities.push_back(dog);
 }
 void Engine::registerCallbacks() {
