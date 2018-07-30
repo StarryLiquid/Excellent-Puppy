@@ -28,7 +28,7 @@ const GLint ROOM_DEPTH  = 30;
 ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light);
 
 // Action handlers
-decltype(MouseController::_onMove) moveCamera = [] (int dX, int dY) {
+decltype(MouseController::_onMove) Engine::_moveCamera = [] (int dX, int dY) {
 	auto camera = Engine::getCamera();
 	if(camera != NULL && (dX != 0 || dY != 0)){
 		camera->getRotationY() -= dX;
@@ -40,12 +40,15 @@ decltype(MouseController::_onMove) moveCamera = [] (int dX, int dY) {
 		if(camera->getRotationX() > 90)
 			camera->getRotationX() = 90;
 		camera->setCameraProjection();
+
+		// Update dog rotation
+		_dog->setRotation({0, camera->getRotationY() ,0});
 	}
 };
-decltype(MouseController::_onClick) switchToMenu = [] (double x, double y) {
+decltype(MouseController::_onClick) Engine::_switchToMenu = [] (double x, double y) {
 	MouseController::setMouseLocked(!MouseController::isMouseLocked());
 	if(MouseController::isMouseLocked())
-		MouseController::_onMove = moveCamera;
+		MouseController::_onMove = Engine::_moveCamera;
 	else
 		MouseController::_onMove = NULL;
 };
@@ -89,11 +92,12 @@ void Engine::initWindow(int argc, char** argv) {
 void Engine::initSubsystems() {
 	// TODO: init texture manager
 }
+ExcellentPuppy::Entities::Dog *Engine::_dog = NULL;
 void Engine::initScene() {
 	// Lock the mouse
 	MouseController::setMouseLocked(true);
-	MouseController::_onClick = switchToMenu;
-	MouseController::_onMove = moveCamera;
+	MouseController::_onClick = _switchToMenu;
+	MouseController::_onMove = _moveCamera;
 
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
@@ -110,7 +114,7 @@ void Engine::initScene() {
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
 
 	// Set a camera
-	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
+	Engine::_camera = new Camera({0, 2.8, 0}); // TODO: move this somewhere else?
 	Engine::_camera->setCameraProjection();
 
 	// Set up scene world geometry (walls, floor, roof)
@@ -142,8 +146,8 @@ void Engine::initScene() {
 	_entities.push_back(lamp);
 
 	// Dog
-	Entities::Entity* dog = new Entities::Dog(_camera->getPosition() + (GEvector){0, -1, -2}, {0, 90, 0});
-	_entities.push_back(dog);
+	_dog = new Entities::Dog();
+	_entities.push_back(_dog);
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
@@ -170,17 +174,7 @@ void Engine::render (void) {
 	glutPostRedisplay();
 }
 
-//TODO: should get rid of this eventually
 void Engine::handlelKeyboard (unsigned char key, int x, int y) {
-	Camera *camera = Engine::getCamera();
-	if(camera != NULL){
-		if(key==' ')
-			camera->getPosition().y += 0.1;
-		if(key=='c')
-			camera->getPosition().y -= 0.1;
-
-		camera->setCameraProjection();
-	}
 }
 void Engine::handleSpecialKeyboard (int key, int x, int y) {
 	auto *camera = Engine::getCamera();
@@ -198,6 +192,7 @@ void Engine::handleSpecialKeyboard (int key, int x, int y) {
 		moveBy = moveBy.rotateY(-camera->getRotationY());
 
 		camera->getPosition() += moveBy;
+		_dog->setPosition(_dog->getPosition() + moveBy);
 		camera->setCameraProjection();
 	}
 }

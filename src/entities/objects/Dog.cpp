@@ -49,6 +49,10 @@ Dog::Dog(const GEvector& position,
 	// Add the head
 	_head = new Head(dogMaterial, pawMaterial, pawMaterial, pawMaterial, {0, BODY_HEIGHT+0.4, -BODY_HALF_WIDTH-0.4});
 	getEntities().push_back(_head);
+
+	// Move all entities forward a little, so it will be easier to center the camera above the dog
+	for(auto entity : getEntities())
+		entity->getPosition() += {0, 0, -0.5};
 }
 Dog::~Dog() {
 	delete(_tail);

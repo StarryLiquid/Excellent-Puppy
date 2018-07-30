@@ -2,6 +2,7 @@
 #define ENGINE_ENGINE_HPP_
 
 #include <list>
+#include "MouseController.hpp"
 
 //#include "TextureManager.hpp"
 //#include "Animator.hpp"
@@ -9,6 +10,7 @@
 namespace ExcellentPuppy {
 	namespace Entities {
 		class Entity;
+		class Dog;
 	}
 	namespace Engine {
 		class Camera;
@@ -32,6 +34,13 @@ namespace ExcellentPuppy {
 				static Camera* _camera;
 				// The entities to render in the scene
 				static std::list<Entities::Entity*> _entities;
+				// The dog entity
+				static Entities::Dog *_dog;
+
+				// An action to move the camera when the mosue moves
+				static decltype(MouseController::_onMove) _moveCamera;
+				// An action to switch between mouse look and menu mode
+				static decltype(MouseController::_onClick) _switchToMenu;
 
 			public:
 				// TODO
