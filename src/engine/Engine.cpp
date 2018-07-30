@@ -81,17 +81,17 @@ void Engine::initScene() {
 	Engine::_camera->setGLProjection();
 
 	// Set up scene world geometry (walls, floor, roof)
-	// TODO: roof
 	Entities::Flooring *flooring = new Entities::Flooring(
 			ROOM_WIDTH/Entities::Flooring::tileDimension,
 			ROOM_DEPTH/Entities::Flooring::tileDimension);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
+	auto wallMaterial = new Modeling::LightMaterial({{0.8, 0.3, 0.3}, {0.8, 0.3, 0.3}, {0.8, 0.3, 0.3}, {}, 4, {1, 1, 1, 0, 1}});
+	auto roofMaterial = new Modeling::LightMaterial({{1, 1, 1}, {1, 1, 1}, {0.7, 0.7, 0.7}, {}, 4, {1, 1, 1, 0, 1}});
 	Modeling::Model *wallModel = new Modeling::CubeModel(
 			{ROOM_WIDTH, ROOM_HEIGHT - Entities::Flooring::bottom, ROOM_DEPTH},
-			{0, 0, 1, 1, 1, 1},
+			{NULL, roofMaterial, wallMaterial, wallMaterial, wallMaterial, wallMaterial},
 			true);
-	wallModel->setMaterial(new Modeling::ColorMaterial({0.8, 0.3, 0.3}));
 	_entities.push_back(new Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
 	// Create a light

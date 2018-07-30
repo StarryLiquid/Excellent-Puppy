@@ -1,6 +1,7 @@
 #include "CubeModel.hpp"
 
 #include "../geometries/QuadGeometry.hpp"
+#include "../materials/Material.hpp"
 
 using namespace ExcellentPuppy::Modeling;
 
@@ -12,7 +13,7 @@ static const GEvector leftNormal   = {-1,  0,  0 };
 static const GEvector rightNormal  = { 1,  0,  0 };
 
 unsigned int GEcubeSide::sidesCount() const {
-	return top + bottom + front + back + left + right;
+	return (top != NULL) + (bottom != NULL) + (front != NULL) + (back != NULL) + (left != NULL) + (right != NULL);
 }
 
 const GEvector& CubeModel::getDimensions() {
@@ -35,13 +36,14 @@ CubeModel::~CubeModel() {}
 
 void CubeModel::load() const { }
 void CubeModel::draw() const {
-	// Need to reverse normals if rendering inside out
-	GLdouble normalSide=1;
+	// Need to reverse normals and faces if rendering inside out
+	GLdouble normalSide = 1;
 	if(_facingInside) {
-		glFrontFace(GL_CW);
+		geSwitchFrontFace();
 		normalSide = -1;
 	}
-	if(_sides.bottom) {
+	if(_sides.bottom != NULL) {
+		_sides.bottom->apply();
 		geNormal(bottomNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(0, 0, 0);
@@ -50,7 +52,8 @@ void CubeModel::draw() const {
 			glVertex3f(_dimensions.x, 0, 0);
 		glEnd();
 	}
-	if(_sides.top) {
+	if(_sides.top != NULL) {
+		_sides.top->apply();
 		geNormal(topNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(_dimensions.x, _dimensions.y, 0);
@@ -59,7 +62,8 @@ void CubeModel::draw() const {
 			glVertex3f(0, _dimensions.y, 0);
 		glEnd();
 	}
-	if(_sides.back) {
+	if(_sides.back != NULL) {
+		_sides.back->apply();
 		geNormal(backNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(0, _dimensions.y, 0);
@@ -68,7 +72,8 @@ void CubeModel::draw() const {
 			glVertex3f(_dimensions.x, _dimensions.y, 0);
 		glEnd();
 	}
-	if(_sides.front) {
+	if(_sides.front != NULL) {
+		_sides.front->apply();
 		geNormal(frontNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(_dimensions.x, _dimensions.y, -_dimensions.z);
@@ -77,7 +82,8 @@ void CubeModel::draw() const {
 			glVertex3f(0, _dimensions.y, -_dimensions.z);
 		glEnd();
 	}
-	if(_sides.left) {
+	if(_sides.left != NULL) {
+		_sides.left->apply();
 		geNormal(leftNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(0, _dimensions.y, -_dimensions.z);
@@ -86,7 +92,8 @@ void CubeModel::draw() const {
 			glVertex3f(0, _dimensions.y, 0);
 		glEnd();
 	}
-	if(_sides.right) {
+	if(_sides.right != NULL) {
+		_sides.right->apply();
 		geNormal(rightNormal*normalSide);
 		glBegin(GL_QUADS);
 			glVertex3f(_dimensions.x, _dimensions.y, 0);
@@ -95,5 +102,6 @@ void CubeModel::draw() const {
 			glVertex3f(_dimensions.x, _dimensions.y, -_dimensions.z);
 		glEnd();
 	}
-	glFrontFace(GL_CCW);
+	if(_facingInside)
+		geSwitchFrontFace();
 }

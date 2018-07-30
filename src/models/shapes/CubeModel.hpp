@@ -4,19 +4,19 @@
 #include "../Model.hpp"
 #include "../../types.hpp"
 
-struct GEcubeSide {
-	bool bottom : 1; // y0
-	bool top    : 1; // y+
-	bool left   : 1; // x0
-	bool right  : 1; // x+
-	bool front  : 1; // z0
-	bool back   : 1; // z-
-
-	inline unsigned int sidesCount() const;
-};
-
 namespace ExcellentPuppy {
 	namespace Modeling {
+		struct GEcubeSide {
+			Material *bottom = NULL; // y0
+			Material *top    = NULL; // y+
+			Material *left   = NULL; // x0
+			Material *right  = NULL; // x+
+			Material *front  = NULL; // z0
+			Material *back   = NULL; // z-
+
+			inline unsigned int sidesCount() const;
+		};
+
 		/**
 		 * A model of a cube, from model origins to positive x,y and negative z.
 		 */
@@ -24,7 +24,7 @@ namespace ExcellentPuppy {
 			private:
 				// The dimensions of the cube
 				const GEvector _dimensions;
-				// The sides of the cube to render
+				// The material sides of the cube to render
 				const GEcubeSide _sides;
 				// Whether the cube faces are facing inside
 				const bool _facingInside;
