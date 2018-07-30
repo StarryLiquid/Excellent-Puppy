@@ -4,6 +4,9 @@
 
 using namespace ExcellentPuppy::Modeling;
 
+// Check that the compiler did not pad any of the  structs
+static_assert(sizeof(GEcnv) == sizeof(GEcolor) + sizeof(GEvector)*2, "Struct GEcnv is padded ");
+
 ModelCNV::ModelCNV(const GEcnv* specs, const std::list<Geometry*> geometries) :
 	_specs(specs),
 	_geometries(geometries) { }

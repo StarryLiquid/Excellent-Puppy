@@ -7,6 +7,9 @@ void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *pointer);
 
 using namespace ExcellentPuppy::Modeling;
 
+// Check that the compiler did not pad any of the  structs
+static_assert(sizeof(GEnv) == sizeof(GEvector)*2, "Struct GEnv is padded ");
+
 ModelNV::ModelNV(const GEnv* specs, std::list<Geometry*> const & geometries) :
 	_specs(specs),
 	_geometries(geometries) { }
