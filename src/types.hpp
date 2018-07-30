@@ -2,6 +2,9 @@
 #define TYPES_HPP_
 
 #include <GL\freeglut.h>
+#include <math.h>
+
+const GLfloat PI = 3.141592653589793238462643383279502884197169399;
 
 // A structure of 2d texture coordinates
 struct GEtexCoords {
@@ -69,6 +72,20 @@ struct GEvector {
 		lVec /= scalar;
 		return lVec;
 	}
+	// Rotate the vector around the X axis
+	inline GEvector rotateX(GLfloat angle) {
+		GLfloat radAngle = angle * (2*PI/360);
+		GLfloat cos = std::cos(radAngle);
+		GLfloat sin = std::sin(radAngle);
+		return {x, y*cos - z*sin, y*sin + z*cos};
+	}
+	// Rotate the vector around the Y axis
+	inline GEvector rotateY(GLfloat angle) {
+		GLfloat radAngle = angle * (2*PI/360);
+		GLfloat cos = std::cos(radAngle);
+		GLfloat sin = std::sin(radAngle);
+		return {z*cos - x*sin, y, z*sin + x*cos};
+	}
 };
 // A structure for a single rotation around some vector, in degrees
 struct GErotation {
@@ -80,6 +97,7 @@ struct GErotation {
 		return {-degrees, axle};
 	}
 };
+
 // A strcuture for selecting which light material settings to set
 struct GEMaterialBitMask {
 	bool ambient : 1;

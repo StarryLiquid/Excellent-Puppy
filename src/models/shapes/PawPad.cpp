@@ -10,7 +10,6 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-const GLfloat PI = 3.141592653589793238462643383279502884197169399;
 const GEnv padVertex[] = {
 	{	// Paw pad base mid point							// 0
 		{0, -1, 1},
