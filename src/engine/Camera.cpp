@@ -2,6 +2,8 @@
 
 using namespace ExcellentPuppy::Engine;
 
+GLdouble Camera::_ratio = 1;
+
 Camera::Camera(
 		const GEvector& position,
 		const GLfloat& rotationX,
@@ -23,20 +25,41 @@ GLfloat& Camera::getRotationX() {
 GLfloat& Camera::getRotationY() {
 	return _rotationY.degrees;
 }
+const GLdouble& Camera::getRatio() {
+	return _ratio;
+}
+void Camera::setRatio(const GLdouble& ratio) {
+	_ratio = ratio;
+	setScreenProjection();
+}
 
-// Only load the frustrum and look at projections once
-static bool firstProjection = true;
-void Camera::setGLProjection() const {
+void Camera::registerCallbacks() {
+	glutReshapeFunc(Camera::handleScreenReshape);
+}
+void Camera::setScreenProjection() {
 	GLint matrixMode;
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	if(_ratio < 1)
+		glFrustum(-_ratio, _ratio,
+				-1.0, 1.0,
+				1.0, 100.0);
+	else
+		glFrustum(-1.0, 1.0,
+				-1/_ratio, 1/_ratio,
+				1.0, 100.0);
+	// Reset the matrix mode
+	glMatrixMode(matrixMode);
+}
+// Only load the look at projections once
+static bool firstProjection = true;
+void Camera::setCameraProjection() const {
+	GLint matrixMode;
+	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
+	glMatrixMode(GL_MODELVIEW);
 	// Projection matrix has yet to be initialized
 	if(firstProjection) {
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glFrustum(-1.0, 1.0,
-				  -1.0, 1.0,
-				   1.0, 100.0);
-		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		gluLookAt(0.0, 0.0, 0.0,
 				  0.0, 0.0, -3.0,
@@ -51,11 +74,14 @@ void Camera::setGLProjection() const {
 		glPushMatrix();
 	}
 	// Rotate and move the scene based on the camera position
-	glTranslatef(0, 0, 1);
 	geRotate(-_rotationX);
-	glTranslatef(0, 0, -1);
 	geRotate(-_rotationY);
 	geTranslate(-_position);
 	// Reset the matrix mode
 	glMatrixMode(matrixMode);
+}
+
+void Camera::handleScreenReshape(int width, int height) {
+	glViewport(0, 0, width, height);
+	Camera::setRatio((GLdouble)(width) / height);
 }

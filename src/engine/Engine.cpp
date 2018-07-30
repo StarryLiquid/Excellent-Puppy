@@ -78,7 +78,7 @@ void Engine::initScene() {
 
 	// Set a camera
 	Engine::_camera = new Camera({0, 3, 3}); // TODO: move this somewhere else?
-	Engine::_camera->setGLProjection();
+	Engine::_camera->setCameraProjection();
 
 	// Set up scene world geometry (walls, floor, roof)
 	Entities::Flooring *flooring = new Entities::Flooring(
@@ -116,6 +116,7 @@ void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
 	glutKeyboardFunc(handlelKeyboard);
 	glutSpecialFunc(handleSpecialKeyboard);
+	Camera::registerCallbacks();
 	MouseController::registerCallbacks();
 	//TODO: remove
 	MouseController::setCameraControlling(true);
@@ -147,7 +148,7 @@ void handlelKeyboard (unsigned char key, int x, int y) {
 		if(key=='c')
 			camera->getPosition().y -= 0.1;
 
-		camera->setGLProjection();
+		camera->setCameraProjection();
 	}
 }
 void handleSpecialKeyboard (int key, int x, int y) {
@@ -162,7 +163,7 @@ void handleSpecialKeyboard (int key, int x, int y) {
 		if(key==GLUT_KEY_RIGHT)
 			camera->getPosition().x += 0.1;
 
-		camera->setGLProjection();
+		camera->setCameraProjection();
 	}
 }
 

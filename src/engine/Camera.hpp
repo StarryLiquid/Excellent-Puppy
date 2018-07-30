@@ -19,6 +19,8 @@ namespace ExcellentPuppy {
 				// The rotation of the camera around the Y axis,
 				// left and right yaw movement
 				GErotation _rotationY;
+				// The width to height ratio of the screen
+				static GLdouble _ratio;
 
 			public:
 				Camera(const GEvector& position = { },
@@ -30,9 +32,18 @@ namespace ExcellentPuppy {
 				void setPosition(const GEvector& position);
 				GLfloat& getRotationX();
 				GLfloat& getRotationY();
+				static const GLdouble& getRatio();
+				static void setRatio(const GLdouble& ratio);
 
-				// Set the projection matrix based on the camera position and angles
-				void setGLProjection() const;
+				// Set the ratio and viewport when the screen size changes
+				static void registerCallbacks();
+				// Set the frustum screen projection
+				static void setScreenProjection();
+				// Set the model view matrix based on the camera position and angles
+				void setCameraProjection() const;
+
+			private:
+				static void handleScreenReshape(int width, int height);
 		};
 	} /* namespace Engine */
 } /* namespace ExcellentPuppy */
