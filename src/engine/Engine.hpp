@@ -24,6 +24,10 @@ namespace ExcellentPuppy {
 				// Animators
 				// Settings
 
+				// Width of the screen
+				static int _screenWidth;
+				// Height of the screen
+				static int _screenHeight;
 				// The current camera in use
 				static Camera* _camera;
 				// The entities to render in the scene
@@ -33,6 +37,8 @@ namespace ExcellentPuppy {
 				// TODO
 				// tm getter
 				// animation adder/remover
+				static const int& getScreenWidth();
+				static const int& getScreenHeight();
 				static std::list<Entities::Entity*>& getEntities();
 				static Camera*& getCamera();
 				static void setCamera(Camera* camera);
@@ -54,6 +60,13 @@ namespace ExcellentPuppy {
 				//TODO: void animate();
 				// Callback to render the scene
 				static void render();
+
+				// Handles keyboard input
+				static void handlelKeyboard (unsigned char, int, int);
+				// Handles special keyboard input
+				static void handleSpecialKeyboard (int, int, int);
+				// Handle screen reshape
+				static void handleScreenReshape(int width, int height);
 		};
 	} /* namespace Engine */
 } /* namespace ExcellentPuppy */

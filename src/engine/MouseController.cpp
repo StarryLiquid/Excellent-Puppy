@@ -5,14 +5,16 @@
 
 using namespace ExcellentPuppy::Engine;
 
-bool MouseController::_cameraControlling = false;
+bool MouseController::_mouseLocked = false;
 int MouseController::_refX = -1, MouseController::_refY = -1;
-bool MouseController::getCameraControlling() {
-	return _cameraControlling;
+void (*MouseController::_onClick)(double, double) = NULL;
+void (*MouseController::_onMove)(int, int) = NULL;
+bool MouseController::isMouseLocked() {
+	return _mouseLocked;
 }
-void MouseController::setCameraControlling(bool cameraControlling) {
-	if(cameraControlling != _cameraControlling) {
-		if(cameraControlling) {
+void MouseController::setMouseLocked(bool mouseLocked) {
+	if(mouseLocked != _mouseLocked) {
+		if(mouseLocked) {
 			glutSetCursor(GLUT_CURSOR_NONE);
 			resetMouse();
 		}
@@ -20,7 +22,7 @@ void MouseController::setCameraControlling(bool cameraControlling) {
 			glutSetCursor(GLUT_CURSOR_INHERIT);
 		}
 	}
-	_cameraControlling = cameraControlling;
+	_mouseLocked = mouseLocked;
 }
 
 void MouseController::resetMouse() {
@@ -34,24 +36,20 @@ void MouseController::registerCallbacks() {
 	glutMouseFunc(MouseController::handleMousePresses);
 }
 void MouseController::handleMouseMotion (int x, int y) {
-	Camera *camera = Engine::getCamera();
 	int dX = x-_refX, dY = y-_refY;
-	if(_cameraControlling && camera != NULL && (dX != 0 || dY != 0)){
-		camera->getRotationY() -= dX;
-		camera->getRotationX() -= dY;
-
-		// Clamp x rotation so the camera will never go upside down
-		if(camera->getRotationX() < -90)
-			camera->getRotationX() = -90;
-		if(camera->getRotationX() > 90)
-			camera->getRotationX() = 90;
-		camera->setGLProjection();
-		resetMouse();
+	if(dX != 0 || dY != 0) {
+		_refX = x;
+		_refY = y;
+		auto onMove = _onMove;
+		if(onMove != NULL)
+			onMove(dX, dY);
+		if(_mouseLocked)
+			resetMouse();
 	}
 }
 void MouseController::handleMousePresses(int button, int state, int x, int y) {
-	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		MouseController::setCameraControlling(!MouseController::getCameraControlling());
-	}
-	// TODO: Handle clicks while menuing
+	auto onClick = _onClick;
+	if(onClick != NULL)
+		if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+			_onClick((double)(x)/Engine::getScreenWidth(), (double)(y)/Engine::getScreenHeight());
 }

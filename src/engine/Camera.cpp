@@ -33,9 +33,6 @@ void Camera::setRatio(const GLdouble& ratio) {
 	setScreenProjection();
 }
 
-void Camera::registerCallbacks() {
-	glutReshapeFunc(Camera::handleScreenReshape);
-}
 void Camera::setScreenProjection() {
 	GLint matrixMode;
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
@@ -79,9 +76,4 @@ void Camera::setCameraProjection() const {
 	geTranslate(-_position);
 	// Reset the matrix mode
 	glMatrixMode(matrixMode);
-}
-
-void Camera::handleScreenReshape(int width, int height) {
-	glViewport(0, 0, width, height);
-	Camera::setRatio((GLdouble)(width) / height);
 }

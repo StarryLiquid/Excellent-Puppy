@@ -24,13 +24,41 @@ const GLint ROOM_WIDTH  = 20;
 const GLint ROOM_HEIGHT = 20;
 const GLint ROOM_DEPTH  = 30;
 
-// Handles keyboard input
-void handlelKeyboard (unsigned char, int, int);
-// Handles special keyboard input
-void handleSpecialKeyboard (int, int, int);
 // Creates the lamp entity
 ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light);
 
+// Action handlers
+decltype(MouseController::_onMove) moveCamera = [] (int dX, int dY) {
+	auto camera = Engine::getCamera();
+	if(camera != NULL && (dX != 0 || dY != 0)){
+		camera->getRotationY() -= dX;
+		camera->getRotationX() -= dY;
+
+		// Clamp x rotation so the camera will never go upside down
+		if(camera->getRotationX() < -90)
+			camera->getRotationX() = -90;
+		if(camera->getRotationX() > 90)
+			camera->getRotationX() = 90;
+		camera->setCameraProjection();
+	}
+};
+decltype(MouseController::_onClick) switchToMenu = [] (double x, double y) {
+	MouseController::setMouseLocked(!MouseController::isMouseLocked());
+	if(MouseController::isMouseLocked())
+		MouseController::_onMove = moveCamera;
+	else
+		MouseController::_onMove = NULL;
+};
+
+// Screen dimensions, with starting values
+int Engine::_screenWidth = 800;
+const int& Engine::getScreenWidth() {
+	return _screenWidth;
+}
+int Engine::_screenHeight = 800;
+const int& Engine::getScreenHeight() {
+	return _screenHeight;
+}
 Camera* Engine::_camera = NULL;
 Camera*& Engine::getCamera() {
 	return Engine::_camera;
@@ -55,13 +83,18 @@ void Engine::initWindow(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(800, 800);
+	glutInitWindowSize(_screenWidth, _screenHeight);
 	glutCreateWindow("Excellent Puppy");
 }
 void Engine::initSubsystems() {
 	// TODO: init texture manager
 }
 void Engine::initScene() {
+	// Lock the mouse
+	MouseController::setMouseLocked(true);
+	MouseController::_onClick = switchToMenu;
+	MouseController::_onMove = moveCamera;
+
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
 
@@ -116,10 +149,8 @@ void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
 	glutKeyboardFunc(handlelKeyboard);
 	glutSpecialFunc(handleSpecialKeyboard);
-	Camera::registerCallbacks();
+	glutReshapeFunc(handleScreenReshape);
 	MouseController::registerCallbacks();
-	//TODO: remove
-	MouseController::setCameraControlling(true);
 }
 void Engine::loadEntities() {
 	for(Entities::Entity *current : _entities)
@@ -140,7 +171,7 @@ void Engine::render (void) {
 }
 
 //TODO: should get rid of this eventually
-void handlelKeyboard (unsigned char key, int x, int y) {
+void Engine::handlelKeyboard (unsigned char key, int x, int y) {
 	Camera *camera = Engine::getCamera();
 	if(camera != NULL){
 		if(key==' ')
@@ -151,20 +182,30 @@ void handlelKeyboard (unsigned char key, int x, int y) {
 		camera->setCameraProjection();
 	}
 }
-void handleSpecialKeyboard (int key, int x, int y) {
-	Camera *camera = Engine::getCamera();
+void Engine::handleSpecialKeyboard (int key, int x, int y) {
+	auto *camera = Engine::getCamera();
+	GEvector moveBy = {};
 	if(camera != NULL){
 		if(key==GLUT_KEY_UP)
-			camera->getPosition().z -= 0.1;
+			moveBy.x -= 0.1;
 		if(key==GLUT_KEY_DOWN)
-			camera->getPosition().z += 0.1;
+			moveBy.x += 0.1;
 		if(key==GLUT_KEY_LEFT)
-			camera->getPosition().x -= 0.1;
+			moveBy.z -= 0.1;
 		if(key==GLUT_KEY_RIGHT)
-			camera->getPosition().x += 0.1;
+			moveBy.z += 0.1;
 
+		moveBy = moveBy.rotateY(-camera->getRotationY());
+
+		camera->getPosition() += moveBy;
 		camera->setCameraProjection();
 	}
+}
+void Engine::handleScreenReshape(int width, int height) {
+	Engine::_screenWidth = width;
+	Engine::_screenHeight = height;
+	glViewport(0, 0, width, height);
+	Camera::setRatio((GLdouble)(width) / height);
 }
 
 ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light) {

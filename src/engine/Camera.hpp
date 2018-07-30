@@ -35,15 +35,10 @@ namespace ExcellentPuppy {
 				static const GLdouble& getRatio();
 				static void setRatio(const GLdouble& ratio);
 
-				// Set the ratio and viewport when the screen size changes
-				static void registerCallbacks();
 				// Set the frustum screen projection
 				static void setScreenProjection();
 				// Set the model view matrix based on the camera position and angles
 				void setCameraProjection() const;
-
-			private:
-				static void handleScreenReshape(int width, int height);
 		};
 	} /* namespace Engine */
 } /* namespace ExcellentPuppy */

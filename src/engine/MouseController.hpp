@@ -6,21 +6,27 @@ namespace ExcellentPuppy {
 
 		/**
 		 * Controls the mouse.
-		 * Can rotate the active camera using mouse input.
-		 * Will also hide the cursor when controlling the camera.
+		 * Can lock the mouse, recording movement.
+		 * Will also hide the cursor when mouse is locked.
 		 */
 		class MouseController {
 			private:
-				// Whether the mouse currently controls the camera
-				static bool _cameraControlling;
-				// Last position of the mosue to use as reference for camera movement
+				// Whether the mouse is locked
+				static bool _mouseLocked;
+				// Last position of the mouse to use as reference for camera movement
 				static int _refX, _refY;
-
+				// An action to do on mouse click
+				// Receives location of mouse when clicked
 			public:
-				static bool getCameraControlling();
-				static void setCameraControlling(bool cameraControlling);
+				static void(*_onClick)(double, double);
+				// An action to do on mouse moves
+				// Receives difference in mouse position
+				static void(*_onMove)(int, int);
 
-				// Register the mosue callbacks
+				static bool isMouseLocked();
+				static void setMouseLocked(bool mouseLocked);
+
+				// Register the mouse callbacks
 				static void registerCallbacks();
 
 			private:
