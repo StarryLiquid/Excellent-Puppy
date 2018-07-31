@@ -86,6 +86,10 @@ struct GEvector {
 		GLfloat sin = std::sin(radAngle);
 		return {z*cos - x*sin, y, z*sin + x*cos};
 	}
+	// Returns the length of the vector
+	inline GLfloat length() {
+		return std::sqrt(x*x + y*y + z*z);
+	}
 };
 // A structure for a single rotation around some vector, in degrees
 struct GErotation {

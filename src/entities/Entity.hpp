@@ -17,6 +17,8 @@ namespace ExcellentPuppy {
 				GEvector _rotation;
 				// The scaling of this entity
 				GEvector _scaling;
+				// A generalized radius of the entity for collision checks
+				GLfloat _collisionRadius = 0;
 
 			public:
 				Entity(
@@ -31,6 +33,8 @@ namespace ExcellentPuppy {
 				virtual GEvector& getRotation();
 				void setScaling(GEvector scaling);
 				virtual GEvector& getScaling();
+				void setCollisionRadius(GLfloat radius);
+				virtual GLfloat& getCollisionRadius();
 
 				// Sets up translation and rotation and renders using the subrender method
 				void render();

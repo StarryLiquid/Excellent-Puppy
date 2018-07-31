@@ -26,6 +26,12 @@ void Entity::setScaling(GEvector scaling) {
 GEvector& Entity::getScaling() {
 	return _rotation;
 }
+void Entity::setCollisionRadius(GLfloat radius) {
+	_collisionRadius = radius;
+}
+GLfloat& Entity::getCollisionRadius() {
+	return _collisionRadius;
+}
 
 void Entity::render(){
 	// Push the current matrix

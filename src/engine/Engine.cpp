@@ -207,6 +207,17 @@ void Engine::updateCameraPosition() {
 	_camera->setPosition(_dog->getPosition());
 	_camera->setCameraProjection();
 }
+void Engine::doCollision(Entities::Entity* entity) {
+	// Check collision with walls
+	if(entity->getPosition().x  > ROOM_WIDTH/2 - entity->getCollisionRadius())
+		entity->getPosition().x = ROOM_WIDTH/2 - entity->getCollisionRadius();
+	if(entity->getPosition().x  < -(ROOM_WIDTH/2 - entity->getCollisionRadius()))
+		entity->getPosition().x = -(ROOM_WIDTH/2 - entity->getCollisionRadius());
+	if(entity->getPosition().z  > ROOM_DEPTH/2 - entity->getCollisionRadius())
+		entity->getPosition().z = ROOM_DEPTH/2 - entity->getCollisionRadius();
+	if(entity->getPosition().z  < -(ROOM_DEPTH/2 - entity->getCollisionRadius()))
+		entity->getPosition().z = -(ROOM_DEPTH/2 - entity->getCollisionRadius());
+}
 
 // Action handlers
 decltype(MouseController::_onMove) Engine::_moveCamera = [] (int dX, int dY) {
@@ -270,6 +281,7 @@ void Engine::handleSpecialKeyboard (int key, int x, int y) {
 		moveBy = moveBy.rotateY(-camera->getRotationY());
 
 		_dog->setPosition(_dog->getPosition() + moveBy);
+		doCollision(_dog);
 		updateCameraPosition();
 	}
 }

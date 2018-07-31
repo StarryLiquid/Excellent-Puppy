@@ -90,6 +90,8 @@ namespace ExcellentPuppy {
 				static void render();
 				// Update the camera position based on the displacement
 				static void updateCameraPosition();
+				// Change the entity's position based on collision with objects in scene
+				static void doCollision(Entities::Entity* entity);
 
 				// Handles keyboard input
 				static void handlelKeyboard (unsigned char, int, int);
