@@ -24,34 +24,13 @@ const GLint ROOM_WIDTH  = 20;
 const GLint ROOM_HEIGHT = 20;
 const GLint ROOM_DEPTH  = 30;
 
+// Camera displacements
+const GEvector ABOVE_DOG_DISP = {0, 2.8, 0.5};
+const GEvector DOG_EYES_DISP = {1, 1, 0};
+const GEvector TAIL_DISP = {0, 1, 3};
+
 // Creates the lamp entity
 ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light);
-
-// Action handlers
-decltype(MouseController::_onMove) Engine::_moveCamera = [] (int dX, int dY) {
-	auto camera = Engine::getCamera();
-	if(camera != NULL && (dX != 0 || dY != 0)){
-		camera->getRotationY() -= dX;
-		camera->getRotationX() -= dY;
-
-		// Clamp x rotation so the camera will never go upside down
-		if(camera->getRotationX() < -90)
-			camera->getRotationX() = -90;
-		if(camera->getRotationX() > 90)
-			camera->getRotationX() = 90;
-		camera->setCameraProjection();
-
-		// Update dog rotation
-		_dog->setRotation({0, camera->getRotationY() ,0});
-	}
-};
-decltype(MouseController::_onClick) Engine::_switchToMenu = [] (double x, double y) {
-	MouseController::setMouseLocked(!MouseController::isMouseLocked());
-	if(MouseController::isMouseLocked())
-		MouseController::_onMove = Engine::_moveCamera;
-	else
-		MouseController::_onMove = NULL;
-};
 
 // Screen dimensions, with starting values
 int Engine::_screenWidth = 800;
@@ -72,6 +51,51 @@ void Engine::setCamera(Camera* camera) {
 std::list<ExcellentPuppy::Entities::Entity*> Engine::_entities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getEntities() {
 	return _entities;
+}
+GameState Engine::_currentState = Walking;
+const GameState& Engine::getCurrentState() {
+	return _currentState;
+}
+void Engine::setCurrentState(const GameState& state) {
+	_currentState = state;
+	switch(state) {
+		case Walking: {
+			// Lock the mouse and let the user move, move the camera behind the dog
+			MouseController::setMouseLocked(true);
+			MouseController::_onClick = _switchToMenu;
+			MouseController::_onMove = _moveCamera;
+
+			getCamera()->setPostPosition(ABOVE_DOG_DISP);
+			updateCameraPosition();
+		}
+		break;
+		case Tail: {
+			// Lock the mouse and let the user move the tail, move the camera in front of tail
+			MouseController::setMouseLocked(true);
+			MouseController::_onClick = _switchToMenu;
+			MouseController::_onMove = NULL; // TODO implement tail moving
+
+			getCamera()->setPostPosition(TAIL_DISP);
+			updateCameraPosition();
+		}
+		break;
+		case WalkingFPS: {
+			// Lock the mouse and let the user move, move the camera inside the dog's head
+			MouseController::setMouseLocked(true);
+			MouseController::_onClick = _switchToMenu;
+			MouseController::_onMove = _moveCamera;
+
+			getCamera()->setPostPosition(DOG_EYES_DISP);
+			updateCameraPosition();
+		}
+		break;
+		case Menu: {
+			MouseController::setMouseLocked(false);
+			MouseController::_onClick = _switchToMenu;
+			MouseController::_onMove = NULL;
+		}
+		break;
+	}
 }
 
 void Engine::init(int argc, char** argv) {
@@ -94,11 +118,6 @@ void Engine::initSubsystems() {
 }
 ExcellentPuppy::Entities::Dog *Engine::_dog = NULL;
 void Engine::initScene() {
-	// Lock the mouse
-	MouseController::setMouseLocked(true);
-	MouseController::_onClick = _switchToMenu;
-	MouseController::_onMove = _moveCamera;
-
 	// Set clear color to a sky color
 	glClearColor(0.8, 0.9, 1, 1);
 
@@ -114,7 +133,7 @@ void Engine::initScene() {
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
 
 	// Set a camera
-	Engine::_camera = new Camera({0, 2.8, 0}); // TODO: move this somewhere else?
+	Engine::_camera = new Camera();
 	Engine::_camera->setCameraProjection();
 
 	// Set up scene world geometry (walls, floor, roof)
@@ -148,6 +167,9 @@ void Engine::initScene() {
 	// Dog
 	_dog = new Entities::Dog();
 	_entities.push_back(_dog);
+
+	// Set mode to walking
+	setCurrentState(Walking);
 }
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
@@ -173,8 +195,44 @@ void Engine::render (void) {
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
+void Engine::updateCameraPosition() {
+	_camera->setPosition(_dog->getPosition());
+	_camera->setCameraProjection();
+}
 
+// Action handlers
+decltype(MouseController::_onMove) Engine::_moveCamera = [] (int dX, int dY) {
+	auto camera = Engine::getCamera();
+	if(camera != NULL && (dX != 0 || dY != 0)){
+		camera->getRotationY() -= dX;
+		camera->getRotationX() -= dY;
+
+		// Clamp x rotation so the camera will never go upside down
+		if(camera->getRotationX() < -90)
+			camera->getRotationX() = -90;
+		if(camera->getRotationX() > 90)
+			camera->getRotationX() = 90;
+		camera->setCameraProjection();
+
+		// Update dog rotation
+		_dog->setRotation({0, camera->getRotationY() ,0});
+	}
+};
+decltype(MouseController::_onClick) Engine::_switchToMenu = [] (double x, double y) {
+	if(_currentState == Menu)
+		setCurrentState(Walking);
+	else
+		setCurrentState(Menu);
+};
 void Engine::handlelKeyboard (unsigned char key, int x, int y) {
+	if(_currentState != Menu) {
+		switch(key) {
+			case ' ': {
+				setCurrentState(_currentState != Tail ? Tail : Walking);
+			}
+			break;
+		}
+	}
 }
 void Engine::handleSpecialKeyboard (int key, int x, int y) {
 	auto *camera = Engine::getCamera();
@@ -191,9 +249,9 @@ void Engine::handleSpecialKeyboard (int key, int x, int y) {
 
 		moveBy = moveBy.rotateY(-camera->getRotationY());
 
-		camera->getPosition() += moveBy;
+		//camera->getPosition() += moveBy;
 		_dog->setPosition(_dog->getPosition() + moveBy);
-		camera->setCameraProjection();
+		updateCameraPosition();
 	}
 }
 void Engine::handleScreenReshape(int width, int height) {

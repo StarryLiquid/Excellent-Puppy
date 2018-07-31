@@ -21,11 +21,14 @@ namespace ExcellentPuppy {
 				GErotation _rotationY;
 				// The width to height ratio of the screen
 				static GLdouble _ratio;
+				// A translation vector to be applied after rotation
+				GEvector _postPosition;
 
 			public:
 				Camera(const GEvector& position = { },
 					   const GLfloat& rotationX = 0,
-					   const GLfloat& rotationY = 0);
+					   const GLfloat& rotationY = 0,
+					   const GEvector& postPosition = { });
 				virtual ~Camera();
 
 				GEvector& getPosition();
@@ -34,6 +37,8 @@ namespace ExcellentPuppy {
 				GLfloat& getRotationY();
 				static const GLdouble& getRatio();
 				static void setRatio(const GLdouble& ratio);
+				GEvector& getPostPosition();
+				void setPostPosition(const GEvector& postPosition);
 
 				// Set the frustum screen projection
 				static void setScreenProjection();

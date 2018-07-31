@@ -7,10 +7,12 @@ GLdouble Camera::_ratio = 1;
 Camera::Camera(
 		const GEvector& position,
 		const GLfloat& rotationX,
-		const GLfloat& rotationY) :
+		const GLfloat& rotationY,
+		const GEvector& postPosition) :
 			_position(position),
 			_rotationX({rotationX, 1, 0, 0}),
-			_rotationY({rotationY, 0, 1, 0}) { }
+			_rotationY({rotationY, 0, 1, 0}),
+			_postPosition(postPosition) { }
 Camera::~Camera() { }
 
 GEvector& Camera::getPosition() {
@@ -31,6 +33,12 @@ const GLdouble& Camera::getRatio() {
 void Camera::setRatio(const GLdouble& ratio) {
 	_ratio = ratio;
 	setScreenProjection();
+}
+GEvector& Camera::getPostPosition() {
+	return _postPosition;
+}
+void Camera::setPostPosition(const GEvector& postPosition) {
+	_postPosition = postPosition;
 }
 
 void Camera::setScreenProjection() {
@@ -72,6 +80,7 @@ void Camera::setCameraProjection() const {
 	}
 	// Rotate and move the scene based on the camera position
 	geRotate(-_rotationX);
+	geTranslate(-_postPosition);
 	geRotate(-_rotationY);
 	geTranslate(-_position);
 	// Reset the matrix mode

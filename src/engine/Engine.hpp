@@ -7,6 +7,8 @@
 //#include "TextureManager.hpp"
 //#include "Animator.hpp"
 
+struct GEvector;
+
 namespace ExcellentPuppy {
 	namespace Entities {
 		class Entity;
@@ -16,6 +18,15 @@ namespace ExcellentPuppy {
 		class Camera;
 		class Light;
 
+		/**
+		 * The distinct states of the game
+		 */
+		enum GameState {
+			Walking,
+			Tail,
+			WalkingFPS,
+			Menu
+		};
 		/**
 		 * The game engine, initiates and managed the game
 		 */
@@ -36,6 +47,8 @@ namespace ExcellentPuppy {
 				static std::list<Entities::Entity*> _entities;
 				// The dog entity
 				static Entities::Dog *_dog;
+				// The current game state
+				static GameState _currentState;
 
 				// An action to move the camera when the mosue moves
 				static decltype(MouseController::_onMove) _moveCamera;
@@ -51,6 +64,8 @@ namespace ExcellentPuppy {
 				static std::list<Entities::Entity*>& getEntities();
 				static Camera*& getCamera();
 				static void setCamera(Camera* camera);
+				static const GameState& getCurrentState();
+				static void setCurrentState(const GameState& state);
 
 				// Initiate the game engine
 				static void init(int argc, char** argv);
@@ -69,6 +84,8 @@ namespace ExcellentPuppy {
 				//TODO: void animate();
 				// Callback to render the scene
 				static void render();
+				// Update the camera position based on the displacement
+				static void updateCameraPosition();
 
 				// Handles keyboard input
 				static void handlelKeyboard (unsigned char, int, int);
