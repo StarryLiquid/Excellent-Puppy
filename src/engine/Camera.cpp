@@ -46,14 +46,16 @@ void Camera::setScreenProjection() {
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	// A fixing ratio to prevent near plane clipping with floor during FPS mode
+	GLdouble perspectiveRatio = 0.7;
 	if(_ratio < 1)
-		glFrustum(-_ratio, _ratio,
-				-1.0, 1.0,
-				1.0, 100.0);
+		glFrustum(-_ratio*perspectiveRatio, _ratio*perspectiveRatio,
+				-perspectiveRatio, perspectiveRatio,
+				perspectiveRatio, 50.0);
 	else
-		glFrustum(-1.0, 1.0,
-				-1/_ratio, 1/_ratio,
-				1.0, 100.0);
+		glFrustum(-perspectiveRatio, perspectiveRatio,
+				-perspectiveRatio/_ratio, perspectiveRatio/_ratio,
+				perspectiveRatio, 50.0);
 	// Reset the matrix mode
 	glMatrixMode(matrixMode);
 }

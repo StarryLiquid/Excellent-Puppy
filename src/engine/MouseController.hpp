@@ -15,10 +15,13 @@ namespace ExcellentPuppy {
 				static bool _mouseLocked;
 				// Last position of the mouse to use as reference for camera movement
 				static int _refX, _refY;
-				// An action to do on mouse click
-				// Receives location of mouse when clicked
 			public:
-				static void(*_onClick)(double, double);
+				// An action to do on left mouse click
+				// Receives location of mouse when clicked
+				static void(*_onLeftClick)(double, double);
+				// An action to do on right mouse click
+				// Receives location of mouse when clicked
+				static void(*_onRightClick)(double, double);
 				// An action to do on mouse moves
 				// Receives difference in mouse position
 				static void(*_onMove)(int, int);

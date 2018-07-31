@@ -7,7 +7,8 @@ using namespace ExcellentPuppy::Engine;
 
 bool MouseController::_mouseLocked = false;
 int MouseController::_refX = -1, MouseController::_refY = -1;
-void (*MouseController::_onClick)(double, double) = NULL;
+void (*MouseController::_onLeftClick)(double, double) = NULL;
+void (*MouseController::_onRightClick)(double, double) = NULL;
 void (*MouseController::_onMove)(int, int) = NULL;
 bool MouseController::isMouseLocked() {
 	return _mouseLocked;
@@ -48,8 +49,10 @@ void MouseController::handleMouseMotion (int x, int y) {
 	}
 }
 void MouseController::handleMousePresses(int button, int state, int x, int y) {
-	auto onClick = _onClick;
-	if(onClick != NULL)
-		if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-			_onClick((double)(x)/Engine::getScreenWidth(), (double)(y)/Engine::getScreenHeight());
+	auto onLeftClick = _onLeftClick;
+	if(onLeftClick != NULL && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		onLeftClick((double)(x)/Engine::getScreenWidth(), (double)(y)/Engine::getScreenHeight());
+	auto onRightClick = _onRightClick;
+	if(onRightClick != NULL && button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+		onRightClick((double)(x)/Engine::getScreenWidth(), (double)(y)/Engine::getScreenHeight());
 }

@@ -26,7 +26,7 @@ const GLint ROOM_DEPTH  = 30;
 
 // Camera displacements
 const GEvector ABOVE_DOG_DISP = {0, 2.8, 0.5};
-const GEvector DOG_EYES_DISP = {1, 1, 0};
+const GEvector DOG_EYES_DISP = {0, 1, -1};
 const GEvector TAIL_DISP = {0, 1, 3};
 
 // Creates the lamp entity
@@ -62,7 +62,8 @@ void Engine::setCurrentState(const GameState& state) {
 		case Walking: {
 			// Lock the mouse and let the user move, move the camera behind the dog
 			MouseController::setMouseLocked(true);
-			MouseController::_onClick = _switchToMenu;
+			MouseController::_onLeftClick = _switchToMenu;
+			MouseController::_onRightClick = _switchPerspectives;
 			MouseController::_onMove = _moveCamera;
 
 			getCamera()->setPostPosition(ABOVE_DOG_DISP);
@@ -72,17 +73,20 @@ void Engine::setCurrentState(const GameState& state) {
 		case Tail: {
 			// Lock the mouse and let the user move the tail, move the camera in front of tail
 			MouseController::setMouseLocked(true);
-			MouseController::_onClick = _switchToMenu;
+			MouseController::_onLeftClick = _switchToMenu;
+			MouseController::_onRightClick = NULL;
 			MouseController::_onMove = NULL; // TODO implement tail moving
 
 			getCamera()->setPostPosition(TAIL_DISP);
+			getCamera()->getRotationX() = 0;
 			updateCameraPosition();
 		}
 		break;
 		case WalkingFPS: {
 			// Lock the mouse and let the user move, move the camera inside the dog's head
 			MouseController::setMouseLocked(true);
-			MouseController::_onClick = _switchToMenu;
+			MouseController::_onLeftClick = _switchToMenu;
+			MouseController::_onRightClick = _switchPerspectives;
 			MouseController::_onMove = _moveCamera;
 
 			getCamera()->setPostPosition(DOG_EYES_DISP);
@@ -90,8 +94,10 @@ void Engine::setCurrentState(const GameState& state) {
 		}
 		break;
 		case Menu: {
+			// Free the mouse and let the user click on menu items
 			MouseController::setMouseLocked(false);
-			MouseController::_onClick = _switchToMenu;
+			MouseController::_onLeftClick = _switchToMenu;
+			MouseController::_onRightClick = NULL;
 			MouseController::_onMove = NULL;
 		}
 		break;
@@ -218,11 +224,17 @@ decltype(MouseController::_onMove) Engine::_moveCamera = [] (int dX, int dY) {
 		_dog->setRotation({0, camera->getRotationY() ,0});
 	}
 };
-decltype(MouseController::_onClick) Engine::_switchToMenu = [] (double x, double y) {
+decltype(MouseController::_onLeftClick) Engine::_switchToMenu = [] (double x, double y) {
 	if(_currentState == Menu)
 		setCurrentState(Walking);
 	else
 		setCurrentState(Menu);
+};
+decltype(MouseController::_onRightClick) Engine::_switchPerspectives = [] (double x, double y) {
+	if(_currentState == WalkingFPS)
+		setCurrentState(Walking);
+	else
+		setCurrentState(WalkingFPS);
 };
 void Engine::handlelKeyboard (unsigned char key, int x, int y) {
 	if(_currentState != Menu) {
@@ -249,7 +261,6 @@ void Engine::handleSpecialKeyboard (int key, int x, int y) {
 
 		moveBy = moveBy.rotateY(-camera->getRotationY());
 
-		//camera->getPosition() += moveBy;
 		_dog->setPosition(_dog->getPosition() + moveBy);
 		updateCameraPosition();
 	}
