@@ -58,6 +58,8 @@ const GameState& Engine::getCurrentState() {
 }
 void Engine::setCurrentState(const GameState& state) {
 	_currentState = state;
+	_dog->setTailAngleX(0);
+	_dog->setTailAngleY(0);
 	switch(state) {
 		case Walking: {
 			// Lock the mouse and let the user move, move the camera behind the dog
@@ -75,7 +77,7 @@ void Engine::setCurrentState(const GameState& state) {
 			MouseController::setMouseLocked(true);
 			MouseController::_onLeftClick = _switchToMenu;
 			MouseController::_onRightClick = NULL;
-			MouseController::_onMove = NULL; // TODO implement tail moving
+			MouseController::_onMove = _moveTail;
 
 			getCamera()->setPostPosition(TAIL_DISP);
 			getCamera()->getRotationX() = 0;
@@ -222,6 +224,12 @@ decltype(MouseController::_onMove) Engine::_moveCamera = [] (int dX, int dY) {
 
 		// Update dog rotation
 		_dog->setRotation({0, camera->getRotationY() ,0});
+	}
+};
+decltype(MouseController::_onMove) Engine::_moveTail = [] (int dX, int dY) {
+	if(dX != 0 || dY != 0){
+		_dog->setTailAngleX(_dog->getTailAngleX() + dY);
+		_dog->setTailAngleY(_dog->getTailAngleY() + dX);
 	}
 };
 decltype(MouseController::_onLeftClick) Engine::_switchToMenu = [] (double x, double y) {

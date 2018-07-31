@@ -10,10 +10,43 @@
 
 using namespace ExcellentPuppy::Entities;
 
+const GLfloat& Dog::getTailAngleX() const {
+	return _tailAngleX;
+}
+void Dog::setTailAngleX(GLfloat angle) {
+	if(angle > 45)
+		angle = 45;
+	else if(angle < -45)
+		angle = -45;
+
+	for(auto entity : _tail->getEntities()) {
+		entity->getRotation().x += angle - _tailAngleX;
+	}
+
+	_tailAngleX = angle;
+}
+const GLfloat& Dog::getTailAngleY() const {
+	return _tailAngleY;
+}
+void Dog::setTailAngleY(GLfloat angle) {
+	if(angle > 45)
+		angle = 45;
+	else if(angle < -45)
+		angle = -45;
+
+	for(auto entity : _tail->getEntities()) {
+		entity->getRotation().y += angle - _tailAngleY;
+	}
+
+	_tailAngleY = angle;
+}
+
 Dog::Dog(const GEvector& position,
 		const GEvector& rotation,
 		const GEvector& scaling) :
-			CompositeEntity({}, position, rotation, scaling) {
+			CompositeEntity({}, position, rotation, scaling),
+			_tailAngleX(0),
+			_tailAngleY(0) {
 	// Initialize the materials
 	// 228, 180, 134
 	// Material to use for most of the dog body

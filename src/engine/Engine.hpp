@@ -52,6 +52,8 @@ namespace ExcellentPuppy {
 
 				// An action to move the camera when the mosue moves
 				static decltype(MouseController::_onMove) _moveCamera;
+				// An action to move the camera when the mosue moves
+				static decltype(MouseController::_onMove) _moveTail;
 				// An action to switch between mouse look and menu mode
 				static decltype(MouseController::_onLeftClick) _switchToMenu;
 				// An action to switch between third person and first person

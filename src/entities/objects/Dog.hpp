@@ -22,6 +22,7 @@ namespace ExcellentPuppy {
 				static constexpr GLfloat BODY_HEIGHT = 0.8 + BODY_RADIUS;
 
 			private:
+				// Sub entities and dog parts
 				Tail *_tail;
 				Leg *_frontLeftLeg;
 				Leg *_frontRightLeg;
@@ -29,7 +30,16 @@ namespace ExcellentPuppy {
 				Leg *_backRightLeg;
 				Head *_head;
 
+				// Animation properties
+				GLfloat _tailAngleX; // -45 to 45
+				GLfloat _tailAngleY; // -45 to 45
+
 			public:
+				const GLfloat& getTailAngleX() const;
+				void setTailAngleX(GLfloat angle);
+				const GLfloat& getTailAngleY() const;
+				void setTailAngleY(GLfloat angle);
+
 				Dog(const GEvector& position = {},
 						const GEvector& rotation = {},
 						const GEvector& scaling = {1, 1, 1});
