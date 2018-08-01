@@ -7,6 +7,7 @@
 #include "../entities/SimpleEntity.hpp"
 #include "../entities/CompositeEntity.hpp"
 #include "../entities/LightEntity.hpp"
+#include "../entities/objects/PizzaBox.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../models/materials/LightMaterial.hpp"
 #include "../models/shapes/CubeModel.hpp"
@@ -16,6 +17,7 @@
 #include "Camera.hpp"
 #include "Light.hpp"
 #include "MouseController.hpp"
+#include "TextureLoader.hpp"
 
 using namespace ExcellentPuppy::Engine;
 
@@ -175,6 +177,12 @@ void Engine::initScene() {
 	// Dog
 	_dog = new Entities::Dog();
 	_entities.push_back(_dog);
+
+	// Pizza box
+	auto pizzaBoxTexture = ExcellentPuppy::Engine::TextureLoader::createTexture("rsc/pizza lid texture.png");
+	auto box = Entities::createPizzaBox(pizzaBoxTexture);
+	box->setPosition({1, 0, -3.5});
+	_entities.push_back(box);
 
 	// Set mode to walking
 	setCurrentState(Walking);
