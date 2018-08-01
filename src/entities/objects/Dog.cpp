@@ -16,12 +16,15 @@ const GLfloat& Dog::getTailAngleX() const {
 void Dog::setTailAngleX(GLfloat angle) {
 	if(angle > 45)
 		angle = 45;
-	else if(angle < -45)
-		angle = -45;
+	else if(angle < 0)
+		angle = 0;
 
-	for(auto entity : _tail->getEntities()) {
-		entity->getRotation().x += angle - _tailAngleX;
-	}
+	GLfloat dAngle = angle - _tailAngleX;
+
+	_tail->getBaseJoint()->getRotation().x += dAngle;
+	_tail->getFirstJoint()->getRotation().x += dAngle;
+	_tail->getSecondJoint()->getRotation().x += dAngle;
+	_tail->getTailEndJoint()->getRotation().x += dAngle;
 
 	_tailAngleX = angle;
 }
@@ -34,9 +37,12 @@ void Dog::setTailAngleY(GLfloat angle) {
 	else if(angle < -45)
 		angle = -45;
 
-	for(auto entity : _tail->getEntities()) {
-		entity->getRotation().y += angle - _tailAngleY;
-	}
+	GLfloat dAngle = angle - _tailAngleY;
+
+	_tail->getBaseJoint()->getRotation().y += dAngle;
+	_tail->getFirstJoint()->getRotation().y += dAngle;
+	_tail->getSecondJoint()->getRotation().y += dAngle;
+	_tail->getTailEndJoint()->getRotation().y += dAngle;
 
 	_tailAngleY = angle;
 }

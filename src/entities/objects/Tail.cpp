@@ -8,30 +8,17 @@
 using namespace ExcellentPuppy::Entities;
 
 
-GLfloat const & Tail::getBaseJointAngle() const {
-	return _baseJoint->getRotation().x;
+CompositeEntity* const & Tail::getBaseJoint() const {
+	return _baseJoint;
 }
-GLfloat const & Tail::getFirstJointAngle() const {
-	return _firstJoint->getRotation().x;
+CompositeEntity* const & Tail::getFirstJoint() const {
+	return _firstJoint;
 }
-GLfloat const & Tail::getSecondJointAngle() const {
-	return _secondJoint->getRotation().x;
+CompositeEntity* const & Tail::getSecondJoint() const {
+	return _secondJoint;
 }
-GLfloat const & Tail::getTailEndJointAngle() const {
-	return _tailEndJoint->getRotation().x;
-}
-
-void Tail::setBaseJointAngle(GLfloat const & basetJointAngle) {
-	_baseJoint->getRotation().x = basetJointAngle;
-}
-void Tail::setFirstJointAngle(GLfloat const & firstJointAngle) {
-	_firstJoint->getRotation().x = firstJointAngle;
-}
-void Tail::setSecondJointAngle(GLfloat const & secondJointAngle) {
-	_secondJoint->getRotation().x = secondJointAngle;
-}
-void Tail::setTailEndJointAngle(GLfloat const & tailEndJointAngle) {
-	_tailEndJoint->getRotation().x = tailEndJointAngle;
+CompositeEntity* const & Tail::getTailEndJoint() const {
+	return _tailEndJoint;
 }
 
 Tail::Tail(ExcellentPuppy::Modeling::Material *material,

@@ -24,19 +24,14 @@ namespace ExcellentPuppy {
 				CompositeEntity* _tailEndJoint;
 
 			public:
-				// The angle for the base joint
-				GLfloat const & getBaseJointAngle() const;
-				// The angle for the first tail joint
-				GLfloat const & getFirstJointAngle() const;
-				// The angle for the second tail joint
-				GLfloat const & getSecondJointAngle() const;
-				// The angle for the tail end joint
-				GLfloat const & getTailEndJointAngle() const;
-
-				void setBaseJointAngle(GLfloat const & baseJointAngle);
-				void setFirstJointAngle(GLfloat const & firstJointAngle);
-				void setSecondJointAngle(GLfloat const & secondJointAngle);
-				void setTailEndJointAngle(GLfloat const & tailEndJointAngle);
+				// The base joint
+				CompositeEntity* const & getBaseJoint() const;
+				// The first tail joint
+				CompositeEntity* const & getFirstJoint() const;
+				// The second tail joint
+				CompositeEntity* const & getSecondJoint() const;
+				// The tail end joint
+				CompositeEntity* const & getTailEndJoint() const;
 
 				Tail(ExcellentPuppy::Modeling::Material *material,
 						const GEvector& position = {},

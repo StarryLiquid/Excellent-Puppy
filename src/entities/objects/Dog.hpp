@@ -31,7 +31,7 @@ namespace ExcellentPuppy {
 				Head *_head;
 
 				// Animation properties
-				GLfloat _tailAngleX; // -45 to 45
+				GLfloat _tailAngleX; // 0 to 0
 				GLfloat _tailAngleY; // -45 to 45
 
 			public:
