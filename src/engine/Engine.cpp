@@ -54,6 +54,10 @@ std::list<ExcellentPuppy::Entities::Entity*> Engine::_entities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getEntities() {
 	return _entities;
 }
+std::list<ExcellentPuppy::Entities::Entity*> Engine::_collisionEntities;
+std::list<ExcellentPuppy::Entities::Entity*>& Engine::getCollisionEntities() {
+	return _collisionEntities;
+}
 GameState Engine::_currentState = Walking;
 const GameState& Engine::getCurrentState() {
 	return _currentState;
@@ -147,14 +151,14 @@ void Engine::initScene() {
 	Engine::_camera->setCameraProjection();
 
 	// Set up scene world geometry (walls, floor, roof)
-	Entities::Flooring *flooring = new Entities::Flooring(
+	auto *flooring = new Entities::Flooring(
 			ROOM_WIDTH/Entities::Flooring::tileDimension,
 			ROOM_DEPTH/Entities::Flooring::tileDimension);
 	flooring->getPosition() -= flooring->extent()/2;
 	_entities.push_back(flooring);
 	auto wallMaterial = new Modeling::LightMaterial({{0.8, 0.3, 0.3}, {0.8, 0.3, 0.3}, {0.8, 0.3, 0.3}, {}, 4, {1, 1, 1, 0, 1}});
 	auto roofMaterial = new Modeling::LightMaterial({{1, 1, 1}, {1, 1, 1}, {0.7, 0.7, 0.7}, {}, 4, {1, 1, 1, 0, 1}});
-	Modeling::Model *wallModel = new Modeling::CubeModel(
+	auto *wallModel = new Modeling::CubeModel(
 			{ROOM_WIDTH, ROOM_HEIGHT - Entities::Flooring::bottom, ROOM_DEPTH},
 			{NULL, roofMaterial, wallMaterial, wallMaterial, wallMaterial, wallMaterial},
 			true);
@@ -172,7 +176,9 @@ void Engine::initScene() {
 	// Lamp
 	Entities::Entity* lamp = createLamp(lampLight);
 	lamp->setPosition({5, 0, -10});
+	lamp->setCollisionRadius(1);
 	_entities.push_back(lamp);
+	_collisionEntities.push_back(lamp);
 
 	// Dog
 	_dog = new Entities::Dog();
@@ -183,6 +189,7 @@ void Engine::initScene() {
 	auto box = Entities::createPizzaBox(pizzaBoxTexture);
 	box->setPosition({1, 0, -3.5});
 	_entities.push_back(box);
+	_collisionEntities.push_back(box);
 
 	// Set mode to walking
 	setCurrentState(Walking);
@@ -215,16 +222,29 @@ void Engine::updateCameraPosition() {
 	_camera->setPosition(_dog->getPosition());
 	_camera->setCameraProjection();
 }
-void Engine::doCollision(Entities::Entity* entity) {
+void Engine::doCollision(Entities::Entity* entity, GLfloat wallCollisionDelta) {
 	// Check collision with walls
-	if(entity->getPosition().x  > ROOM_WIDTH/2 - entity->getCollisionRadius())
-		entity->getPosition().x = ROOM_WIDTH/2 - entity->getCollisionRadius();
-	if(entity->getPosition().x  < -(ROOM_WIDTH/2 - entity->getCollisionRadius()))
-		entity->getPosition().x = -(ROOM_WIDTH/2 - entity->getCollisionRadius());
-	if(entity->getPosition().z  > ROOM_DEPTH/2 - entity->getCollisionRadius())
-		entity->getPosition().z = ROOM_DEPTH/2 - entity->getCollisionRadius();
-	if(entity->getPosition().z  < -(ROOM_DEPTH/2 - entity->getCollisionRadius()))
-		entity->getPosition().z = -(ROOM_DEPTH/2 - entity->getCollisionRadius());
+	GLfloat wallCollisionRadius = entity->getCollisionRadius() + wallCollisionDelta;
+	if(entity->getPosition().x  > ROOM_WIDTH/2 - wallCollisionRadius)
+		entity->getPosition().x = ROOM_WIDTH/2 - wallCollisionRadius;
+	if(entity->getPosition().x  < -(ROOM_WIDTH/2 - wallCollisionRadius))
+		entity->getPosition().x = -(ROOM_WIDTH/2 - wallCollisionRadius);
+	if(entity->getPosition().z  > ROOM_DEPTH/2 - wallCollisionRadius)
+		entity->getPosition().z = ROOM_DEPTH/2 - wallCollisionRadius;
+	if(entity->getPosition().z  < -(ROOM_DEPTH/2 - wallCollisionRadius))
+		entity->getPosition().z = -(ROOM_DEPTH/2 - wallCollisionRadius);
+
+	// Check collision with other collision enabled entities
+	for(auto collisionEntity : _collisionEntities) {
+		if(collisionEntity != entity) {
+			GLfloat minDistance = collisionEntity->getCollisionRadius() + entity->getCollisionRadius();
+			GEvector direction = entity->getPosition() - collisionEntity->getPosition();
+			GLfloat directionDistance = direction.length();
+			if(directionDistance < minDistance) {
+				entity->getPosition() = collisionEntity->getPosition() + direction*(minDistance/directionDistance);
+			}
+		}
+	}
 }
 
 // Action handlers
@@ -289,7 +309,7 @@ void Engine::handleSpecialKeyboard (int key, int x, int y) {
 		moveBy = moveBy.rotateY(-camera->getRotationY());
 
 		_dog->setPosition(_dog->getPosition() + moveBy);
-		doCollision(_dog);
+		doCollision(_dog, 1);
 		updateCameraPosition();
 	}
 }
@@ -301,18 +321,19 @@ void Engine::handleScreenReshape(int width, int height) {
 }
 
 ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light) {
-	ExcellentPuppy::Modeling::Material *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.5, 0.5, 0.5}, {0.1, 0.1, 0.1}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
-	ExcellentPuppy::Modeling::Material *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
-	ExcellentPuppy::Modeling::Model *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
+	auto *lampMaterial = new ExcellentPuppy::Modeling::LightMaterial({{0.5, 0.5, 0.5}, {0.1, 0.1, 0.1}, {1, 1, 1}, {0, 0, 0}, 32, {1, 1, 1, 1, 1}});
+	auto *lampBulbMaterial = new ExcellentPuppy::Modeling::LightMaterial({{1, 1, 1}, {1, 1, 0.4}, {0, 0, 0},  {0.9, 0.9, 0.9}, 1, {1, 1, 1, 1, 1}});
+	auto *lampBaseModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 30, 15);
 	lampBaseModel->setMaterial(lampMaterial);
-	ExcellentPuppy::Entities::Entity *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
-	ExcellentPuppy::Modeling::Model *lampPoleModel = new ExcellentPuppy::Modeling::CylinderModel(0.1, 5+0.2, 30, 1);
+	auto *lampBase = new ExcellentPuppy::Entities::SimpleEntity(lampBaseModel, {0, 0, 0}, {180, 0, 0});
+	auto *lampPoleModel = new ExcellentPuppy::Modeling::CylinderModel(0.1, 5+0.2, 30, 1);
 	lampPoleModel->setMaterial(lampMaterial);
-	ExcellentPuppy::Entities::Entity *lampPole = new ExcellentPuppy::Entities::SimpleEntity(lampPoleModel, {0,  1 - 0.1, 0}, {-90, 0, 0});
-	ExcellentPuppy::Modeling::Model *lampBulbModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 30, 15);
+	auto *lampPole = new ExcellentPuppy::Entities::SimpleEntity(lampPoleModel, {0,  1 - 0.1, 0}, {-90, 0, 0});
+	auto *lampBulbModel = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 30, 15);
 	lampBulbModel->setMaterial(lampBulbMaterial);
-	ExcellentPuppy::Entities::Entity *lampBulbModelEntity = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 0, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
-	ExcellentPuppy::Entities::Entity *lampBulbLight = new ExcellentPuppy::Entities::LightEntity(light);
-	ExcellentPuppy::Entities::Entity *lampBulb = new ExcellentPuppy::Entities::CompositeEntity({lampBulbModelEntity, lampBulbLight}, {0, 1 + 5 + 1/2, 0});
-	return new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb});
+	auto *lampBulbModelEntity = new ExcellentPuppy::Entities::SimpleEntity(lampBulbModel, {0, 0, 0}, {0, 0, 0}, {0.25, 0.5, 0.25});
+	auto *lampBulbLight = new ExcellentPuppy::Entities::LightEntity(light);
+	auto *lampBulb = new ExcellentPuppy::Entities::CompositeEntity({lampBulbModelEntity, lampBulbLight}, {0, 1 + 5 + 1/2, 0});
+	auto *lamp = new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb});
+	return lamp;
 }

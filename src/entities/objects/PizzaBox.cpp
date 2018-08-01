@@ -165,6 +165,6 @@ const GEquad BOX_FACES[] = {
 Entity* ExcellentPuppy::Entities::createPizzaBox(Modeling::Texture *texture) {
 	auto model = new ExcellentPuppy::Modeling::ModelTNV(texture, BOX_SPECS, {new ExcellentPuppy::Modeling::QuadGeometry(BOX_FACES, sizeof(BOX_FACES)/sizeof(GEquad))});
 	auto entity = new ExcellentPuppy::Entities::SimpleEntity(model);
-	entity->setCollisionRadius(std::sqrt(BOX_DIMENSION*BOX_DIMENSION*2));
+	entity->setCollisionRadius(std::sqrt(BOX_DIMENSION*BOX_DIMENSION/2));
 	return entity;
 }

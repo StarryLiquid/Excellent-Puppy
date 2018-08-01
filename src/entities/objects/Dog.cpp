@@ -90,7 +90,7 @@ Dog::Dog(const GEvector& position,
 	getEntities().push_back(_head);
 
 	// Set the collision radius based on head + body length
-	setCollisionRadius(BODY_HALF_WIDTH + 1.2);
+	setCollisionRadius(BODY_HALF_WIDTH + 0.2);
 }
 Dog::~Dog() {
 	delete(_tail);

@@ -2,6 +2,7 @@
 #define ENGINE_ENGINE_HPP_
 
 #include <list>
+#include <GL/freeglut.h>
 #include "MouseController.hpp"
 
 //#include "TextureManager.hpp"
@@ -45,6 +46,8 @@ namespace ExcellentPuppy {
 				static Camera* _camera;
 				// The entities to render in the scene
 				static std::list<Entities::Entity*> _entities;
+				// The entities collide with
+				static std::list<Entities::Entity*> _collisionEntities;
 				// The dog entity
 				static Entities::Dog *_dog;
 				// The current game state
@@ -66,6 +69,7 @@ namespace ExcellentPuppy {
 				static const int& getScreenWidth();
 				static const int& getScreenHeight();
 				static std::list<Entities::Entity*>& getEntities();
+				static std::list<Entities::Entity*>& getCollisionEntities();
 				static Camera*& getCamera();
 				static void setCamera(Camera* camera);
 				static const GameState& getCurrentState();
@@ -91,7 +95,8 @@ namespace ExcellentPuppy {
 				// Update the camera position based on the displacement
 				static void updateCameraPosition();
 				// Change the entity's position based on collision with objects in scene
-				static void doCollision(Entities::Entity* entity);
+				// Added wall collision parameter to account for entities with wide upper parts
+				static void doCollision(Entities::Entity* entity, GLfloat wallCollisionDelta);
 
 				// Handles keyboard input
 				static void handlelKeyboard (unsigned char, int, int);
