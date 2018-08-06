@@ -28,7 +28,7 @@ void TextureLoader::loadTexture(Modeling::Texture* texture) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			texture->selectTexture();
-			//stbi_image_free(data);
+			stbi_image_free(data);
 
 			texture->_isLoaded = true;
 		}
