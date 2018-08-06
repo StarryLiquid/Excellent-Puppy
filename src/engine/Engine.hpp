@@ -15,6 +15,9 @@ namespace ExcellentPuppy {
 		class Entity;
 		class Dog;
 	}
+	namespace Menuing {
+		class Menu;
+	}
 	namespace Engine {
 		class Camera;
 		class Light;
@@ -52,6 +55,10 @@ namespace ExcellentPuppy {
 				static Entities::Dog *_dog;
 				// The current game state
 				static GameState _currentState;
+				// The main menu
+				static Menuing::Menu *_menu;
+				// The last state going to menu
+				static GameState _lastState;
 
 				// An action to move the camera when the mosue moves
 				static decltype(MouseController::_onMove) _moveCamera;
@@ -85,6 +92,8 @@ namespace ExcellentPuppy {
 				static void initSubsystems();
 				// Build the scene
 				static void initScene();
+				// Build the menu
+				static void initMenu();
 				// Bind the callback functions
 				static void registerCallbacks();
 				// Load all the entities

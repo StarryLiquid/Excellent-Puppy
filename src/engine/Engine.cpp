@@ -13,6 +13,7 @@
 #include "../models/shapes/CubeModel.hpp"
 #include "../models/shapes/SphereModel.hpp"
 #include "../models/shapes/CylinderModel.hpp"
+#include "../menuing/MainMenu.hpp"
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -116,6 +117,7 @@ void Engine::init(int argc, char** argv) {
 	initWindow(argc, argv);
 	initSubsystems();
 	initScene();
+	initMenu();
 	loadEntities();
 	registerCallbacks();
 	glutMainLoop();
@@ -194,6 +196,13 @@ void Engine::initScene() {
 	// Set mode to walking
 	setCurrentState(Walking);
 }
+ExcellentPuppy::Menuing::Menu *Engine::_menu = NULL;
+GameState Engine::_lastState = GameState::Walking;
+void Engine::initMenu() {
+	_menu = new Menuing::MainMenu([]() {
+		setCurrentState(_lastState);
+	});
+}
 void Engine::registerCallbacks() {
 	glutDisplayFunc(Engine::render);
 	glutKeyboardFunc(handlelKeyboard);
@@ -210,9 +219,14 @@ void Engine::render (void) {
 	// TODO: animate()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Render all the entities
-	for(Entities::Entity *current : _entities)
-		current->render();
+	if(getCurrentState() != Menu) {
+		// Render all the entities
+		for(Entities::Entity *current : _entities)
+			current->render();
+	}
+	else {
+		_menu->render();
+	}
 
 	// Swap buffers and signal to render next frame
 	glutSwapBuffers();
@@ -271,13 +285,18 @@ decltype(MouseController::_onMove) Engine::_moveTail = [] (int dX, int dY) {
 		_dog->setTailAngleY(_dog->getTailAngleY() + dX);
 	}
 };
-decltype(MouseController::_onLeftClick) Engine::_switchToMenu = [] (double x, double y) {
-	if(_currentState == Menu)
-		setCurrentState(Walking);
-	else
+decltype(MouseController::_onLeftClick) Engine::_switchToMenu = [] (const GE2Dvector& position) {
+	// Switch to the menu if not on menu mode
+	if(_currentState != Menu){
+		_lastState = _currentState;
 		setCurrentState(Menu);
+	}
+	// Pass click to the menu
+	else {
+		_menu->handleClick(position);
+	}
 };
-decltype(MouseController::_onRightClick) Engine::_switchPerspectives = [] (double x, double y) {
+decltype(MouseController::_onRightClick) Engine::_switchPerspectives = [] (const GE2Dvector& position) {
 	if(_currentState == WalkingFPS)
 		setCurrentState(Walking);
 	else

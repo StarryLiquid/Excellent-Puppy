@@ -4,7 +4,10 @@
 #include <GL\freeglut.h>
 #include <math.h>
 
-const GLfloat PI = 3.141592653589793238462643383279502884197169399;
+#ifndef GE_PI
+#define GE_PI
+static const GLfloat PI = 3.141592653589793238462643383279502884197169399;
+#endif
 
 // A structure of 2d texture coordinates
 struct GEtexCoords {
@@ -24,7 +27,7 @@ struct GEcolor {
 struct GEvector {
 	GLfloat x;
 	GLfloat y;
-	GLfloat z;
+	GLfloat z=0;
 
 	// Addition, subtraction, negation, multiplication and division of vectors
 	// ?= operators do in-place changes

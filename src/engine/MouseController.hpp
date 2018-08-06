@@ -1,6 +1,8 @@
 #ifndef ENGINE_MOUSECONTROLLER_HPP_
 #define ENGINE_MOUSECONTROLLER_HPP_
 
+#include "../types2d.hpp"
+
 namespace ExcellentPuppy {
 	namespace Engine {
 
@@ -17,11 +19,11 @@ namespace ExcellentPuppy {
 				static int _refX, _refY;
 			public:
 				// An action to do on left mouse click
-				// Receives location of mouse when clicked
-				static void(*_onLeftClick)(double, double);
+				// Receives location of mouse when clicked, on a 0.0 to 1.0 range
+				static void(*_onLeftClick)(const GE2Dvector&);
 				// An action to do on right mouse click
-				// Receives location of mouse when clicked
-				static void(*_onRightClick)(double, double);
+				// Receives location of mouse when clicked, on a 0.0 to 1.0 range
+				static void(*_onRightClick)(const GE2Dvector&);
 				// An action to do on mouse moves
 				// Receives difference in mouse position
 				static void(*_onMove)(int, int);
