@@ -152,9 +152,9 @@ const GEnv footVertex[] = {
 		{0, FootFrame::FEET_CURVE_HEIGHT+FootFrame::FEET_WALL_HEIGHT, -1.2}
 	},
 };
-const GEfan footPawIndices = {
-		new GLuint[11] {12,13,14,15,16,17,18,19,20,21,22},
-		11
+const GLuint footPawIndices[] = {
+		12,
+		13,14,15,16,17,18,19,20,21,22
 };
 const GEquad footWallIndices[] = {
 		{1,   0,  0+23,  1+23},
@@ -185,19 +185,14 @@ const GEtriangle footBezelTriangles[] = {
 		{1, 2, 13},
 };
 		
-FootFrame::FootFrame(const GEnv* specs,
-		std::list<Geometry*> geometries,
-		std::list<Geometry*> geometriesToDelete) :
-				ModelNV(specs, geometries),
-				_geometriesToDelete(geometriesToDelete) { }
-FootFrame::~FootFrame() {
-	for(const Geometry *geometry : _geometriesToDelete)
-		delete(geometry);
-}
+FootFrame::FootFrame(GEnv const * const specs,
+		std::list<Geometry const *> geometries) :
+			ModelNV(specs, geometries) { }
+FootFrame::~FootFrame() { }
 
 FootFrame* FootFrame::create() {
 	// The base paw geometries
-	Geometry *pawFlatGeometry = new FanGeometry(&footPawIndices);
+	Geometry *pawFlatGeometry = new FanGeometry(footPawIndices, sizeof(footPawIndices)/sizeof(GLuint));
 	// The quads of the bezel
 	Geometry *pawBezelQuads = new QuadGeometry(footBezelQuads, sizeof(footBezelQuads)/sizeof(GEquad));
 	// The triangles of the bezel
@@ -213,7 +208,17 @@ FootFrame* FootFrame::create() {
 	Geometry *footHalfGeometry = new CompositeGeometry({pawGeometry, footWall, pawTranslateGeometry});
 	// The other half of the paw geometry
 	Geometry *footReverseGeometry = new ScaleGeometry(footHalfGeometry, {-1, 1, 1}, true);
-	return new FootFrame(footVertex,
-			{footHalfGeometry, footReverseGeometry},
-			{pawFlatGeometry, pawBezelQuads, pawBezelTriangles, pawGeometry, footWall, pawTranslateGeometry, pawReverseGeometry, footHalfGeometry, footReverseGeometry});
+
+	auto footFrame = new FootFrame(footVertex, {footHalfGeometry, footReverseGeometry});
+	auto dependents = footFrame->getDependents();
+	dependents->insert(pawFlatGeometry);
+	dependents->insert(pawBezelQuads);
+	dependents->insert(pawBezelTriangles);
+	dependents->insert(pawGeometry);
+	dependents->insert(footWall);
+	dependents->insert(pawTranslateGeometry);
+	dependents->insert(pawReverseGeometry);
+	dependents->insert(footHalfGeometry);
+	dependents->insert(footReverseGeometry);
+	return footFrame;
 }

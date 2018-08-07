@@ -1,6 +1,8 @@
 #ifndef ENTITIES_ENTITY_HPP_
 #define ENTITIES_ENTITY_HPP_
 
+#include "../Base.hpp"
+
 #include "../types.hpp"
 
 namespace ExcellentPuppy {
@@ -9,7 +11,7 @@ namespace ExcellentPuppy {
 		 * An entity in a scene, with a position and basic rotation.
 		 * Represents an object in the scene, usually displayed by a model.
 		 */
-		class Entity {
+		class Entity : public Base {
 			private:
 				// The position of the entity
 				GEvector _position;

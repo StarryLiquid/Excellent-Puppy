@@ -14,14 +14,14 @@ namespace ExcellentPuppy {
 		class ScaleGeometry: public Geometry {
 			private:
 				// The geometry to scale
-				const Geometry* _geometryToScale;
+				Geometry const * const _geometryToScale;
 				// The vector to scale by
-				GEvector _scaleVector;
+				GEvector const _scaleVector;
 				// Whether the faces should be reversed from the original geometry
-				bool _reversedFrontFaces;
+				bool const _reversedFrontFaces;
 
 			public:
-				ScaleGeometry(const Geometry* const & geometryToScale,
+				ScaleGeometry(Geometry const * const geometryToScale,
 						GEvector const & scaleVector,
 						bool const & reversedFrontFaces = false);
 				virtual ~ScaleGeometry();

@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-ColorMaterial::ColorMaterial(GEcolor color) :
+ColorMaterial::ColorMaterial(GEcolor const &color) :
 	_color(color) {}
 ColorMaterial::~ColorMaterial() { }
 

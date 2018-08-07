@@ -9,10 +9,10 @@ namespace ExcellentPuppy {
 	namespace Modeling {
 		class CompositeGeometry: public Geometry {
 			private:
-				const std::list<const Geometry*> _geometries;
+				std::list<Geometry const *> const _geometries;
 
 			public:
-				CompositeGeometry(std::list<const Geometry*> const & geometries);
+				CompositeGeometry(std::list<Geometry const *> const geometries);
 				virtual ~CompositeGeometry();
 
 				virtual void render() const;

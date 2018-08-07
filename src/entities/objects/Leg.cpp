@@ -34,10 +34,12 @@ Leg::Leg(Modeling::Material *dogMaterial,
 		const GEvector& rotation,
 		const GEvector& scaling) :
 					CompositeEntity({}, position, rotation, scaling) {
-	Modeling::Model* legLinkSphere = Modeling::SphereModel::generate(360, 180, 10, 10);
+	auto legLinkSphere = Modeling::SphereModel::generate(360, 180, 10, 10);
 	legLinkSphere->setMaterial(dogMaterial);
-	Modeling::Model* legLinkCylinder = new Modeling::CylinderModel(LEG_RADIUS, LEG_LINK_LENGTH, 10, 10);
+	auto legLinkCylinder = new Modeling::CylinderModel(LEG_RADIUS, LEG_LINK_LENGTH, 10, 10);
 	legLinkCylinder->setMaterial(dogMaterial);
+	getDependents()->insert(legLinkSphere);
+	getDependents()->insert(legLinkCylinder);
 
 	Entity *sphereEntity, *cylinderEntity;
 
@@ -47,6 +49,9 @@ Leg::Leg(Modeling::Material *dogMaterial,
 	cylinderEntity = new SimpleEntity(legLinkCylinder);
 	_socketJoint->getEntities().push_back(sphereEntity);
 	_socketJoint->getEntities().push_back(cylinderEntity);
+	getDependents()->insert(_socketJoint);
+	getDependents()->insert(sphereEntity);
+	getDependents()->insert(cylinderEntity);
 
 	_kneeJoint = new CompositeEntity({}, {0, 0, LEG_LINK_LENGTH});
 	_socketJoint->getEntities().push_back(_kneeJoint);
@@ -54,10 +59,15 @@ Leg::Leg(Modeling::Material *dogMaterial,
 	cylinderEntity = new SimpleEntity(legLinkCylinder);
 	_kneeJoint->getEntities().push_back(sphereEntity);
 	_kneeJoint->getEntities().push_back(cylinderEntity);
+	getDependents()->insert(_kneeJoint);
+	getDependents()->insert(sphereEntity);
+	getDependents()->insert(cylinderEntity);
 
 	_footJoint = new CompositeEntity({}, {0, 0, LEG_LINK_LENGTH}, {-90}, {FOOT_SCALE, FOOT_SCALE, FOOT_SCALE});
 	_kneeJoint->getEntities().push_back(_footJoint);
-	Entity* foot = new Foot(dogMaterial, pawMaterial, {0, -Modeling::FootFrame::FEET_HEIGHT, 0.4});
+	auto foot = new Foot(dogMaterial, pawMaterial, {0, -Modeling::FootFrame::FEET_HEIGHT, 0.4});
 	_footJoint->getEntities().push_back(foot);
+	getDependents()->insert(_footJoint);
+	getDependents()->insert(foot);
 }
 Leg::~Leg() { }

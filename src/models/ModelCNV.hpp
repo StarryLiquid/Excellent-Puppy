@@ -25,15 +25,19 @@ namespace ExcellentPuppy {
 		class ModelCNV : public Model {
 			private:
 				// The cnv interleaved array
-				const GEcnv *_specs;
+				GEcnv const * const _specs;
 				// The geometry to render this model in
-				const std::list<Geometry*> _geometries;
+				std::list<Geometry const *> const _geometries;
 
 			public:
-				ModelCNV(const GEcnv *specs, const std::list<Geometry*> geometries);
+				GEcnv const * getSpecs() const;
+				std::list<Geometry const *> const & getGeometries() const;
+
+				ModelCNV(const GEcnv *specs, std::list<Geometry const *> geometries);
 				virtual ~ModelCNV();
 
 				virtual void load() const;
+			protected:
 				virtual void draw() const;
 		};
 	} /* namespace Modeling */

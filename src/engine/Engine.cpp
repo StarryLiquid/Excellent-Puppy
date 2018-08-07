@@ -354,5 +354,15 @@ ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* ligh
 	auto *lampBulbLight = new ExcellentPuppy::Entities::LightEntity(light);
 	auto *lampBulb = new ExcellentPuppy::Entities::CompositeEntity({lampBulbModelEntity, lampBulbLight}, {0, 1 + 5 + 1/2, 0});
 	auto *lamp = new ExcellentPuppy::Entities::CompositeEntity({lampBase, lampPole, lampBulb});
+	auto dependents = lamp->getDependents();
+	dependents->insert(lampMaterial);
+	dependents->insert(lampBulbMaterial);
+	dependents->insert(lampBaseModel);
+	dependents->insert(lampBase);
+	dependents->insert(lampPoleModel);
+	dependents->insert(lampPole);
+	dependents->insert(lampBulbModel);
+	dependents->insert(lampBulbLight);
+	dependents->insert(lampBulb);
 	return lamp;
 }

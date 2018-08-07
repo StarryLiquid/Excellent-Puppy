@@ -1,6 +1,8 @@
 #ifndef MENUING_MENUCONTROL_HPP_
 #define MENUING_MENUCONTROL_HPP_
 
+#include "../Base.hpp"
+
 #include "../types2d.hpp"
 
 namespace ExcellentPuppy {
@@ -8,7 +10,7 @@ namespace ExcellentPuppy {
 		/**
 		 * An abstract control in a menu.
 		 */
-		class MenuControl {
+		class MenuControl : public Base {
 			private:
 				// The position of the control
 				GE2Dvector _position;

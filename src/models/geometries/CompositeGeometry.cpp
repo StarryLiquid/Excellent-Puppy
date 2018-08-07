@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 		
-CompositeGeometry::CompositeGeometry(std::list<const Geometry*> const & geometries) :
+CompositeGeometry::CompositeGeometry(std::list<Geometry const *> const geometries) :
 	Geometry(),
 	_geometries(geometries) { }
 CompositeGeometry::~CompositeGeometry() { }

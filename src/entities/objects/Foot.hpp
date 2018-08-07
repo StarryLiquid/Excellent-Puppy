@@ -20,9 +20,6 @@ namespace ExcellentPuppy {
 			public:
 				static constexpr GLfloat FOOT_HEIGHT = Modeling::FootFrame::FEET_HEIGHT + Modeling::PawPad::PAD_HEIGHT;
 
-			private:
-				std::list<Modeling::Model*> _toDelete;
-
 			public:
 				Foot(ExcellentPuppy::Modeling::Material *dogMaterial,
 						ExcellentPuppy::Modeling::Material *pawMaterial,

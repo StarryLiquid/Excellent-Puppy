@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-LightMaterial::LightMaterial(GEMaterial material) :
+LightMaterial::LightMaterial(GEMaterial const & material) :
 	_material(material) {}
 LightMaterial::~LightMaterial() { }
 

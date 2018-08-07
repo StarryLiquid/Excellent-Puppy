@@ -40,6 +40,7 @@ namespace ExcellentPuppy {
 				virtual ~CubeModel();
 
 				virtual void load() const;
+			protected:
 				virtual void draw() const;
 		};
 	} /* namespace Modeling */

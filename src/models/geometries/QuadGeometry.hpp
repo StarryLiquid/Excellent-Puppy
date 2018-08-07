@@ -25,12 +25,12 @@ namespace ExcellentPuppy {
 		class QuadGeometry: public Geometry {
 			private:
 				// The faces of the geometry
-				GEquad const *_faces;
+				GEquad const * const _faces;
 				// The number of vertex indices in the geometry
-				const GLsizei _nVertices;
+				GLsizei const _nVertices;
 
 			public:
-				QuadGeometry(const GEquad *faces, const GLsizei nFaces);
+				QuadGeometry(GEquad const * const faces, GLsizei const nFaces);
 				virtual ~QuadGeometry();
 
 				virtual void render() const;

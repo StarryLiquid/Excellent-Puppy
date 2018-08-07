@@ -26,12 +26,15 @@ Tail::Tail(ExcellentPuppy::Modeling::Material *material,
 		const GEvector& rotation,
 		const GEvector& scaling) :
 			CompositeEntity({}, position, rotation, scaling){
-	ExcellentPuppy::Modeling::Model* tailLinkSphere = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 10, 10);
+	auto tailLinkSphere = ExcellentPuppy::Modeling::SphereModel::generate(360, 180, 10, 10);
 	tailLinkSphere->setMaterial(material);
-	ExcellentPuppy::Modeling::Model* tailLinkCylinder = new ExcellentPuppy::Modeling::CylinderModel(TAIL_RADIUS, TAIL_LINK_LENGTH, 10, 10);
+	auto tailLinkCylinder = new ExcellentPuppy::Modeling::CylinderModel(TAIL_RADIUS, TAIL_LINK_LENGTH, 10, 10);
 	tailLinkCylinder->setMaterial(material);
 	//ExcellentPuppy::Modeling::Model* tailCone = new ExcellentPuppy::Modeling::ConeModel(TAIL_RADIUS, TAIL_LINK_LENGTH, 10, 10);
 	//tailCone->setMaterial(material);
+	//getDependents()->insert(tailCone);
+	getDependents()->insert(tailLinkSphere);
+	getDependents()->insert(tailLinkCylinder);
 
 	Entity *sphereEntity, *cylinderEntity;
 
@@ -39,6 +42,9 @@ Tail::Tail(ExcellentPuppy::Modeling::Material *material,
 	getEntities().push_back(_baseJoint);
 	sphereEntity = new SimpleEntity(tailLinkSphere, {}, {90}, {TAIL_RADIUS, TAIL_RADIUS ,TAIL_RADIUS});
 	cylinderEntity = new SimpleEntity(tailLinkCylinder);
+	getDependents()->insert(sphereEntity);
+	getDependents()->insert(cylinderEntity);
+	getDependents()->insert(_baseJoint);
 	_baseJoint->getEntities().push_back(sphereEntity);
 	_baseJoint->getEntities().push_back(cylinderEntity);
 
@@ -48,6 +54,9 @@ Tail::Tail(ExcellentPuppy::Modeling::Material *material,
 	cylinderEntity = new SimpleEntity(tailLinkCylinder);
 	_firstJoint->getEntities().push_back(sphereEntity);
 	_firstJoint->getEntities().push_back(cylinderEntity);
+	getDependents()->insert(_firstJoint);
+	getDependents()->insert(sphereEntity);
+	getDependents()->insert(cylinderEntity);
 
 	_secondJoint = new CompositeEntity({}, {0, 0, TAIL_LINK_LENGTH}, {-10});
 	_firstJoint->getEntities().push_back(_secondJoint);
@@ -55,12 +64,17 @@ Tail::Tail(ExcellentPuppy::Modeling::Material *material,
 	cylinderEntity = new SimpleEntity(tailLinkCylinder);
 	_secondJoint->getEntities().push_back(sphereEntity);
 	_secondJoint->getEntities().push_back(cylinderEntity);
+	getDependents()->insert(_secondJoint);
+	getDependents()->insert(sphereEntity);
+	getDependents()->insert(cylinderEntity);
 
 	_tailEndJoint = new CompositeEntity({}, {0, 0, TAIL_LINK_LENGTH});
 	_secondJoint->getEntities().push_back(_tailEndJoint);
 	sphereEntity = new SimpleEntity(tailLinkSphere, {}, {90}, {TAIL_RADIUS, TAIL_RADIUS ,TAIL_RADIUS});
 	//_tailEndJoint = new SimpleEntity(tailCone);
 	_tailEndJoint->getEntities().push_back(sphereEntity);
+	getDependents()->insert(_tailEndJoint);
+	getDependents()->insert(sphereEntity);
 }
 Tail::~Tail() { }
 

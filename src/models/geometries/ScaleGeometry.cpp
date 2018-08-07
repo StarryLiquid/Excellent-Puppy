@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 		
-ScaleGeometry::ScaleGeometry(const Geometry* const & geometryToScale,
+ScaleGeometry::ScaleGeometry(Geometry const * const geometryToScale,
 		GEvector const & scaleVector,
 		bool const & reversedFrontFaces) :
 	_geometryToScale(geometryToScale),

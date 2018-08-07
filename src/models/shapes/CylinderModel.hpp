@@ -34,6 +34,7 @@ namespace ExcellentPuppy {
 				virtual ~CylinderModel();
 
 				virtual void load() const;
+			protected:
 				virtual void draw() const;
 		};
 	} /* namespace Modeling */

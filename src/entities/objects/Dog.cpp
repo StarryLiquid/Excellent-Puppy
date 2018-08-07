@@ -56,20 +56,29 @@ Dog::Dog(const GEvector& position,
 	// Initialize the materials
 	// 228, 180, 134
 	// Material to use for most of the dog body
-	ExcellentPuppy::Modeling::ColorMaterial* dogMaterial = new ExcellentPuppy::Modeling::ColorMaterial({228.0/256, 180.0/256, 134.0/256});
+	auto dogMaterial = new ExcellentPuppy::Modeling::ColorMaterial({228.0/256, 180.0/256, 134.0/256});
 	// Material to use for the paw pads
-	ExcellentPuppy::Modeling::ColorMaterial* pawMaterial = new ExcellentPuppy::Modeling::ColorMaterial({0.1, 0.1, 0.1});
+	auto pawMaterial = new ExcellentPuppy::Modeling::ColorMaterial({0.1, 0.1, 0.1});
+	getDependents()->insert(dogMaterial);
+	getDependents()->insert(pawMaterial);
 
 	// Build the body of the dog
 	// A cylinder, the center of the dog's body
-	ExcellentPuppy::Modeling::Model* bodyCenter = new ExcellentPuppy::Modeling::CylinderModel(BODY_RADIUS, BODY_HALF_WIDTH*2, 10, 10);
-	bodyCenter->setMaterial(dogMaterial);
-	getEntities().push_back(new SimpleEntity(bodyCenter, {0, BODY_HEIGHT, -BODY_HALF_WIDTH}));
+	auto bodyCenterModel = new ExcellentPuppy::Modeling::CylinderModel(BODY_RADIUS, BODY_HALF_WIDTH*2, 10, 10);
+	bodyCenterModel->setMaterial(dogMaterial);
+	auto bodyCenter = new SimpleEntity(bodyCenterModel, {0, BODY_HEIGHT, -BODY_HALF_WIDTH});
+	getEntities().push_back(bodyCenter);
+	getDependents()->insert(bodyCenterModel);
+	getDependents()->insert(bodyCenter);
 	// Half spheres to cap off the two ends of the cylinder
 	ExcellentPuppy::Modeling::Model* bodySphere = ExcellentPuppy::Modeling::SphereModel::generate(360, 90, 10, 10);
 	bodySphere->setMaterial(dogMaterial);
-	getEntities().push_back(new SimpleEntity(bodySphere, {0, BODY_HEIGHT, BODY_HALF_WIDTH}, {-90}, {BODY_RADIUS, BODY_RADIUS, BODY_RADIUS}));
-	getEntities().push_back(new SimpleEntity(bodySphere, {0, BODY_HEIGHT, -BODY_HALF_WIDTH}, {90}, {BODY_RADIUS, BODY_RADIUS, BODY_RADIUS}));
+	auto bodySphereModel1 = new SimpleEntity(bodySphere, {0, BODY_HEIGHT, BODY_HALF_WIDTH}, {-90}, {BODY_RADIUS, BODY_RADIUS, BODY_RADIUS});
+	getEntities().push_back(bodySphereModel1);
+	auto bodySphereModel2 = new SimpleEntity(bodySphere, {0, BODY_HEIGHT, -BODY_HALF_WIDTH}, {90}, {BODY_RADIUS, BODY_RADIUS, BODY_RADIUS});
+	getEntities().push_back(bodySphereModel2);
+	getDependents()->insert(bodySphereModel1);
+	getDependents()->insert(bodySphereModel2);
 
 	// Add tail
 	_tail = new Tail(dogMaterial, {0, BODY_HEIGHT, BODY_HALF_WIDTH+BODY_RADIUS});
@@ -98,6 +107,5 @@ Dog::~Dog() {
 	delete(_frontRightLeg);
 	delete(_backLeftLeg);
 	delete(_backRightLeg);
-
-	// Delete body center
+	delete(_head);
 }

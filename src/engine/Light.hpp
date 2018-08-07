@@ -1,6 +1,8 @@
 #ifndef ENGINE_LIGHT_HPP_
 #define ENGINE_LIGHT_HPP_
 
+#include "../Base.hpp"
+
 #include "../types.hpp"
 
 namespace ExcellentPuppy {
@@ -8,7 +10,7 @@ namespace ExcellentPuppy {
 		/**
 		 * A light source in the scene
 		 */
-		class Light {
+		class Light : public Base {
 			private:
 				// The name of the light in opengl
 				const GLenum _name;

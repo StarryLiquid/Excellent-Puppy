@@ -12,40 +12,35 @@ Foot::Foot(Modeling::Material *dogMaterial,
 		const GEvector& position,
 		const GEvector& rotation,
 		const GEvector& scaling) :
-			CompositeEntity({}, position, rotation, scaling) ,
-			_toDelete({}) {
-	Modeling::FootFrame *frameModel = Modeling::FootFrame::create();
-	_toDelete.push_front(frameModel);
+			CompositeEntity({}, position, rotation, scaling) {
+	auto frameModel = Modeling::FootFrame::create();
 	frameModel->setMaterial(dogMaterial);
-	Entity* frameEntity = new SimpleEntity(frameModel);
-	//TODO: _toDelete.push_front(frameEntity);
+	auto frameEntity = new SimpleEntity(frameModel);
 	getEntities().push_front(frameEntity);
+	getDependents()->insert(frameModel);
+	getDependents()->insert(frameEntity);
 
-	Modeling::PawPad *bigPadModel = Modeling::PawPad::create();
-	_toDelete.push_front(bigPadModel);
+	auto bigPadModel = Modeling::PawPad::create();
 	bigPadModel->setMaterial(pawMaterial);
-	Entity* bigPadEntity = new Entities::SimpleEntity(bigPadModel);
-	//TODO: _toDelete.push_front(bigPadEntity);
+	auto bigPadEntity = new Entities::SimpleEntity(bigPadModel);
 	getEntities().push_front(bigPadEntity);
+	getDependents()->insert(bigPadModel);
+	getDependents()->insert(bigPadEntity);
 
-	Modeling::SphereModel *smallPadModel = Modeling::SphereModel::generate(360, 90, 10, 10);
-	_toDelete.push_front(smallPadModel);
+	auto smallPadModel = Modeling::SphereModel::generate(360, 90, 10, 10);
+	getDependents()->insert(smallPadModel);
 	smallPadModel->setMaterial(pawMaterial);
-	Entity* smallPadEntity = new Entities::SimpleEntity(smallPadModel, {-0.4,0,-0.65}, {}, {0.2/2, 0.1, 0.35/2});
-	//TODO: _toDelete.push_front(smallPadEntity);
+	auto smallPadEntity = new Entities::SimpleEntity(smallPadModel, {-0.4,0,-0.65}, {}, {0.2/2, 0.1, 0.35/2});
+	getDependents()->insert(smallPadEntity);
 	getEntities().push_front(smallPadEntity);
 	smallPadEntity = new Entities::SimpleEntity(smallPadModel, {0.4,0,-0.65}, {}, {0.2/2, 0.1, 0.35/2});
-	//TODO: _toDelete.push_front(smallPadEntity);
+	getDependents()->insert(smallPadEntity);
 	getEntities().push_front(smallPadEntity);
 	smallPadEntity = new Entities::SimpleEntity(smallPadModel, {-0.15,0,-1.0}, {}, {0.2/2, 0.1, 0.35/2});
-	//TODO: _toDelete.push_front(smallPadEntity);
+	getDependents()->insert(smallPadEntity);
 	getEntities().push_front(smallPadEntity);
 	smallPadEntity = new Entities::SimpleEntity(smallPadModel, {0.15,0,-1.0}, {}, {0.2/2, 0.1, 0.35/2});
-	//TODO: _toDelete.push_front(smallPadEntity);
+	getDependents()->insert(smallPadEntity);
 	getEntities().push_front(smallPadEntity);
 }
-Foot::~Foot() {
-	for(Modeling::Model *model : _toDelete) {
-		delete(model);
-	}
-}
+Foot::~Foot() { }

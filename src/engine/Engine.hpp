@@ -1,6 +1,8 @@
 #ifndef ENGINE_ENGINE_HPP_
 #define ENGINE_ENGINE_HPP_
 
+#include "../Base.hpp"
+
 #include <list>
 #include <GL/freeglut.h>
 #include "MouseController.hpp"

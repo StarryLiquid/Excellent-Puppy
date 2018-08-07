@@ -19,25 +19,68 @@ const unsigned int& SphereModel::getXStacks() const {
 	return _xStacks;
 }
 
-SphereModel::SphereModel(GEnv* const & specs,
-		std::list<Geometry*> const & geometries,
-		const GLfloat& majorYArc,
-		const GLfloat& minorXArc,
-		const unsigned int& ySlices,
-		const unsigned int& xStacks) :
-		ModelNV(specs, geometries),
+SphereModel::SphereModel(
+		GEnv const * const specs,
+		GLfloat const & majorYArc,
+		GLfloat const & minorXArc,
+		unsigned int const& ySlices,
+		unsigned int const& xStacks,
+		GEquad const * const quadIndices,
+		QuadGeometry const * const quads,
+		GLuint const * const fanIndices1,
+		FanGeometry const * const fan1,
+		GLuint const * const fanIndices2,
+		FanGeometry const * const fan2) :
+		ModelNV(specs, {quads, fan1, fan2}),
 		_majorYArc(majorYArc),
 		_minorXArc(minorXArc),
 		_ySlices(ySlices),
-		_xStacks(xStacks) { }
+		_xStacks(xStacks),
+		_specs(specs),
+		_quadIndices(quadIndices),
+		_quads(quads),
+		_fanIndices1(fanIndices1),
+		_fan1(fan1),
+		_fanIndices2(fanIndices2),
+		_fan2(fan2) { }
+SphereModel::SphereModel(
+		GEnv const * const specs,
+		GLfloat const & majorYArc,
+		GLfloat const & minorXArc,
+		unsigned int const& ySlices,
+		unsigned int const& xStacks,
+		GEquad const * const quadIndices,
+		QuadGeometry const * const quads,
+		GLuint const * const fanIndices1,
+		FanGeometry const * const fan1) :
+		ModelNV(specs, {quads, fan1}),
+		_majorYArc(majorYArc),
+		_minorXArc(minorXArc),
+		_ySlices(ySlices),
+		_xStacks(xStacks),
+		_specs(specs),
+		_quadIndices(quadIndices),
+		_quads(quads),
+		_fanIndices1(fanIndices1),
+		_fan1(fan1),
+		_fanIndices2(NULL),
+		_fan2(NULL) { }
 SphereModel::~SphereModel() {
-	// TODO: delete specs, geo and geo list
+	delete[](_specs);
+	delete[](_quadIndices);
+	delete(_quads);
+	delete[](_fanIndices1);
+	delete(_fan1);
+	if(_fan2 != NULL) {
+		delete[](_fanIndices2);
+		delete(_fan2);
+	}
 }
 
 SphereModel* SphereModel::generate(const GLfloat& majorYArc,
-		const GLfloat& minorXArc,
-		const unsigned int& ySlices,
-		const unsigned int& xStacks) {
+		GLfloat const & minorXArc,
+		unsigned int const & ySlices,
+		unsigned int const & xStacks) {
 	// Radians of every slice
 	GLfloat ySliceRadians = (majorYArc / ySlices / 360)*(2*3.14);
 	// Radians of every stack
@@ -91,7 +134,7 @@ SphereModel* SphereModel::generate(const GLfloat& majorYArc,
 
 	// Generate the quadrilaterals on the face of the sphere
 	const size_t indices = ySlices*(xLines - 1);
-	GEquad *quadIndices = new GEquad[indices];
+	auto quadIndices = new GEquad[indices];
 	unsigned int col1 = 1;
 	unsigned int col2 = col1 + 1;
 	// For each slice
@@ -105,36 +148,38 @@ SphereModel* SphereModel::generate(const GLfloat& majorYArc,
 		if(col1 == ySlices) // Select the first column as next if circular
 			col2 = 1;
 	}
-	QuadGeometry *quads = new QuadGeometry(quadIndices, indices);
+	auto quads = new QuadGeometry(quadIndices, indices);
 
 	// Generate the fan at the bottom of the sphere
-	GEfan *fanIndices1 = new GEfan(new GLuint[ySlices+2], ySlices+2); // ySlices triangles, a vertex for each triangle + 2
-	fanIndices1->indices[0] = 0;;
+	auto *fanIndices1 = new GLuint[ySlices+2];
+	fanIndices1[0] = 0;
 	if(majorYArc != 360)
-		fanIndices1->indices[1] = ySlices + 1; // ySlice + 1 vertices, starting from 1
+		fanIndices1[1] = ySlices + 1; // ySlice + 1 vertices, starting from 1
 	else
-		fanIndices1->indices[1] = 1; // Roll back to first vertex
+		fanIndices1[1] = 1; // Roll back to first vertex
 	for(unsigned int i=0; i<ySlices; i++)
-		fanIndices1->indices[i+2] = ySlices-i;
-	FanGeometry *fan1 = new FanGeometry(fanIndices1);
+		fanIndices1[i+2] = ySlices-i;
+	FanGeometry *fanBottom = new FanGeometry(fanIndices1, sizeof(fanIndices1)/sizeof(GLuint));
+
 
 	// Generate the fan at the top of the sphere, if needed
-	FanGeometry *fan2 = NULL;
+	GLuint *fanIndices2 = NULL;
+	FanGeometry *fanTop = NULL;
 	if(minorXArc == 180) {
 		GLuint lastRowBaseIndex = vertexCount - 1 - yLines;
-		GEfan *fanIndices2 = new GEfan(new GLuint[ySlices+2], ySlices+2); // ySlices triangles, ySlice +1 vertex indices
-		fanIndices2->indices[0] = vertexCount - 1;
+		fanIndices2 = new GLuint[ySlices+2]; // ySlices triangles, ySlice +1 vertex indices
+		fanIndices2[0] = vertexCount - 1;
 		for(unsigned int i=0; i<ySlices; i++)
-			fanIndices2->indices[i+1] = lastRowBaseIndex + i;
+			fanIndices2[i+1] = lastRowBaseIndex + i;
 		if(majorYArc != 360)
-			fanIndices2->indices[ySlices+1] = vertexCount - 2; // Last vertex in fan is the vertex before the last vertex in the model
+			fanIndices2[ySlices+1] = vertexCount - 2; // Last vertex in fan is the vertex before the last vertex in the model
 		else
-			fanIndices2->indices[ySlices+1] = lastRowBaseIndex; // Last vertex is the first vertex in the fan line
-		fan2 = new FanGeometry(fanIndices2);
+			fanIndices2[ySlices+1] = lastRowBaseIndex; // Last vertex is the first vertex in the fan line
+		fanTop = new FanGeometry(fanIndices2, sizeof(fanIndices2)/sizeof(GLuint));
 	}
 
-	if(fan2 != NULL)
-		return new SphereModel(specs, {quads, fan1, fan2}, majorYArc, minorXArc, ySlices, xStacks);
+	if(fanTop != NULL)
+		return new SphereModel(specs, majorYArc, minorXArc, ySlices, xStacks, quadIndices, quads, fanIndices1, fanBottom, fanIndices2, fanTop);
 	else
-		return new SphereModel(specs, {quads, fan1}, majorYArc, minorXArc, ySlices, xStacks);
+		return new SphereModel(specs, majorYArc, minorXArc, ySlices, xStacks, quadIndices, quads, fanIndices1, fanBottom);
 }

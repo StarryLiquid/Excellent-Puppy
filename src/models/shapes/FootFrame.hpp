@@ -16,12 +16,8 @@ namespace ExcellentPuppy {
 				static constexpr GLfloat FEET_WALL_HEIGHT = FEET_HEIGHT - FEET_CURVE_HEIGHT*2;
 
 			private:
-				// Geometries to delete with this model
-				std::list<Geometry*> _geometriesToDelete;
-
-				FootFrame(const GEnv* specs,
-						std::list<Geometry*> geometries,
-						std::list<Geometry*> geometriesToDelete);
+				FootFrame(GEnv const * const specs,
+						std::list<Geometry const *> geometries);
 			public:
 				virtual ~FootFrame();
 

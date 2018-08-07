@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 
-QuadGeometry::QuadGeometry(const GEquad *faces, const GLsizei nFaces) :
+QuadGeometry::QuadGeometry(GEquad const * const faces, GLsizei const nFaces) :
 	_faces(faces),
 	_nVertices(nFaces * GE_QUAD_COUNT) { }
 QuadGeometry::~QuadGeometry() { }

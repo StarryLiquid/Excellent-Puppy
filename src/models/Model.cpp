@@ -14,6 +14,9 @@ Material* const & Model::getMaterial() const {
 void Model::setMaterial(Material* material) {
 	_material = material;
 }
+void Model::deleteMaterial() {
+	delete(_material);
+}
 
 void Model::render() const {
 	if(_material != NULL)

@@ -84,9 +84,9 @@ const GEnv padVertex[] = {
 		{-0, -PawPad::PAD_HEIGHT, -0.68}
 	},
 };
-const GEfan padInnerIndices = {
-		new GLuint[7] {11, 12, 13, 14, 15, 16, 17},
-		7
+const GLuint padInnerIndices[] = {
+		11,
+		12, 13, 14, 15, 16, 17
 };
 const GEquad padBezelQuads[] = {
 		{0, 1, 12, 11},
@@ -103,19 +103,14 @@ const GEtriangle padBezelTriangles[] = {
 		{9, 10, 17},
 };
 		
-PawPad::PawPad(const GEnv* specs,
-		std::list<Geometry*> geometries,
-		std::list<Geometry*> geometriesToDelete) :
-						ModelNV(specs, geometries),
-						_geometriesToDelete(geometriesToDelete) { }
-PawPad::~PawPad() {
-	for(const Geometry *geometry : _geometriesToDelete)
-		delete(geometry);
-}
+PawPad::PawPad(GEnv const * const specs,
+		std::list<Geometry const *> geometries) :
+						ModelNV(specs, geometries) { }
+PawPad::~PawPad() { }
 
 PawPad* PawPad::create() {
 	// The inner paw fan geometry
-	Geometry *padInnerGeometry = new FanGeometry(&padInnerIndices);
+	Geometry *padInnerGeometry = new FanGeometry(padInnerIndices, sizeof(padInnerIndices)/sizeof(GLuint));
 	// The quads of the bezel
 	Geometry *padBezelQuadsGeometry = new QuadGeometry(padBezelQuads, sizeof(padBezelQuads)/sizeof(GEquad));
 	// The triangles of the bezel
@@ -124,7 +119,13 @@ PawPad* PawPad::create() {
 	Geometry *pawGeometry = new CompositeGeometry({padInnerGeometry, padBezelQuadsGeometry, padBezelTrianglesGeometry});
 	// The other half of the paw pad geometry
 	Geometry *padReverseGeometry = new ScaleGeometry(pawGeometry, {-1, 1, 1}, true);
-	return new PawPad(padVertex,
-			{padReverseGeometry, pawGeometry},
-			{padReverseGeometry, pawGeometry, padBezelQuadsGeometry, padBezelTrianglesGeometry, padInnerGeometry});
+
+	auto entity = new PawPad(padVertex, {padReverseGeometry, pawGeometry});
+	auto dependents = entity->getDependents();
+	dependents->insert(padReverseGeometry);
+	dependents->insert(pawGeometry);
+	dependents->insert(padBezelQuadsGeometry);
+	dependents->insert(padBezelTrianglesGeometry);
+	dependents->insert(padInnerGeometry);
+	return entity;
 }

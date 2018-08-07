@@ -13,12 +13,12 @@ namespace ExcellentPuppy {
 		class TranslateGeometry : public Geometry {
 			private:
 				// The geometry to translate
-				const Geometry* _geometryToTranslate;
+				Geometry const * const _geometryToTranslate;
 				// The vector to translate by
-				GEvector _translateVector;
+				GEvector const _translateVector;
 
 			public:
-				TranslateGeometry(const Geometry* const & geometryToTranslate,
+				TranslateGeometry(Geometry const * const geometryToTranslate,
 						GEvector const & translateVector);
 				virtual ~TranslateGeometry();
 

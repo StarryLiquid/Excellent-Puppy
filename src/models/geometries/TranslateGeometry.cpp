@@ -2,7 +2,7 @@
 
 using namespace ExcellentPuppy::Modeling;
 		
-TranslateGeometry::TranslateGeometry(const Geometry* const & geometryToTranslate,
+TranslateGeometry::TranslateGeometry(Geometry const * const geometryToTranslate,
 		GEvector const & translateVector) :
 			_geometryToTranslate(geometryToTranslate),
 			_translateVector(translateVector) { }

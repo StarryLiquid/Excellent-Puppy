@@ -33,6 +33,7 @@ namespace ExcellentPuppy {
 				virtual ~ConeModel();
 
 				virtual void load() const;
+			protected:
 				virtual void draw() const;
 		};
 	} /* namespace Entities */

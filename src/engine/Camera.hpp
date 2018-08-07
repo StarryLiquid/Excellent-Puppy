@@ -1,6 +1,8 @@
 #ifndef ENGINE_CAMERA_HPP_
 #define ENGINE_CAMERA_HPP_
 
+#include "../Base.hpp"
+
 #include "../types.hpp"
 
 namespace ExcellentPuppy {
@@ -9,7 +11,7 @@ namespace ExcellentPuppy {
 		 * A "camera" object that handles projection in a scene.
 		 * Can be moved and rotate around the x,y axis.
 		 */
-		class Camera {
+		class Camera : public Base {
 			private:
 				// The position of the camera
 				GEvector _position;

@@ -1,6 +1,8 @@
 #ifndef ENGINE_MOUSECONTROLLER_HPP_
 #define ENGINE_MOUSECONTROLLER_HPP_
 
+#include "../Base.hpp"
+
 #include "../types2d.hpp"
 
 namespace ExcellentPuppy {
@@ -11,7 +13,7 @@ namespace ExcellentPuppy {
 		 * Can lock the mouse, recording movement.
 		 * Will also hide the cursor when mouse is locked.
 		 */
-		class MouseController {
+		class MouseController : public Base {
 			private:
 				// Whether the mouse is locked
 				static bool _mouseLocked;

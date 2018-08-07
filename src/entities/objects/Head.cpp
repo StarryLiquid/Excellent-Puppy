@@ -768,34 +768,50 @@ Head::Head(Modeling::Material* dogMaterial,
 		const GEvector& rotation,
 		const GEvector& scaling) :
 			CompositeEntity({}, position, rotation, scaling) {
-	Modeling::Geometry *halfHeadGeometry = new Modeling::TriangleGeometry(headTriangles, sizeof(headTriangles)/sizeof(GEtriangle));
-	Modeling::Geometry *reverseHeadGeometry = new Modeling::ScaleGeometry(halfHeadGeometry, {-1, 1 ,1}, true);
-	Modeling::Model *headModel = new Modeling::ModelNV(headVertices, {halfHeadGeometry, reverseHeadGeometry});
+	auto halfHeadGeometry = new Modeling::TriangleGeometry(headTriangles, sizeof(headTriangles)/sizeof(GEtriangle));
+	auto reverseHeadGeometry = new Modeling::ScaleGeometry(halfHeadGeometry, {-1, 1 ,1}, true);
+	auto headModel = new Modeling::ModelNV(headVertices, {halfHeadGeometry, reverseHeadGeometry});
 	headModel->setMaterial(dogMaterial);
-	Entity *headEntity = new SimpleEntity(headModel, {}, {}, {HEAD_SCALE, HEAD_SCALE, HEAD_SCALE});
+	auto headEntity = new SimpleEntity(headModel, {}, {}, {HEAD_SCALE, HEAD_SCALE, HEAD_SCALE});
 	getEntities().push_back(headEntity);
+	getDependents()->insert(halfHeadGeometry);
+	getDependents()->insert(reverseHeadGeometry);
+	getDependents()->insert(headModel);
+	getDependents()->insert(headEntity);
 
-	Modeling::Geometry *halfNoseGeometry = new Modeling::TriangleGeometry(noseTriangles, sizeof(noseTriangles)/sizeof(GEtriangle));
-	Modeling::Geometry *reverseNoseGeometry = new Modeling::ScaleGeometry(halfNoseGeometry, {-1, 1 ,1}, true);
-	Modeling::Model *noseModel = new Modeling::ModelNV(noseVertices, {halfNoseGeometry, reverseNoseGeometry});
+	auto halfNoseGeometry = new Modeling::TriangleGeometry(noseTriangles, sizeof(noseTriangles)/sizeof(GEtriangle));
+	auto reverseNoseGeometry = new Modeling::ScaleGeometry(halfNoseGeometry, {-1, 1 ,1}, true);
+	auto noseModel = new Modeling::ModelNV(noseVertices, {halfNoseGeometry, reverseNoseGeometry});
 	noseModel->setMaterial(noseMaterial);
-	Entity *noseEntity = new SimpleEntity(noseModel, {}, {}, {NOSE_SCALE, NOSE_SCALE, NOSE_SCALE});
+	auto noseEntity = new SimpleEntity(noseModel, {}, {}, {NOSE_SCALE, NOSE_SCALE, NOSE_SCALE});
 	noseEntity->setPosition((GEvector){0.0, -0.4230262041091919, -2.3275914192199707} * HEAD_SCALE);
 	getEntities().push_back(noseEntity);
+	getEntities().push_back(headEntity);
+	getDependents()->insert(halfNoseGeometry);
+	getDependents()->insert(reverseNoseGeometry);
+	getDependents()->insert(noseModel);
+	getDependents()->insert(noseEntity);
 
-	Modeling::Geometry *halfEarGeometry = new Modeling::TriangleGeometry(earTriangles, sizeof(earTriangles)/sizeof(GEtriangle));
-	Modeling::Geometry *reverseEarGeometry = new Modeling::ScaleGeometry(halfEarGeometry, {-1, 1 ,1}, true);
-	Modeling::Model *earModel = new Modeling::ModelNV(earVertices, {halfEarGeometry, reverseEarGeometry});
+	auto halfEarGeometry = new Modeling::TriangleGeometry(earTriangles, sizeof(earTriangles)/sizeof(GEtriangle));
+	auto reverseEarGeometry = new Modeling::ScaleGeometry(halfEarGeometry, {-1, 1 ,1}, true);
+	auto earModel = new Modeling::ModelNV(earVertices, {halfEarGeometry, reverseEarGeometry});
 	earModel->setMaterial(dogMaterial);
-	Entity *earEntity = new SimpleEntity(earModel, {}, {}, {HEAD_SCALE, HEAD_SCALE, HEAD_SCALE});
+	auto earEntity = new SimpleEntity(earModel, {}, {}, {HEAD_SCALE, HEAD_SCALE, HEAD_SCALE});
 	getEntities().push_back(earEntity);
+	getDependents()->insert(halfEarGeometry);
+	getDependents()->insert(reverseEarGeometry);
+	getDependents()->insert(earModel);
+	getDependents()->insert(earEntity);
 
-	Modeling::Model *eyeModel = Modeling::SphereModel::generate(360, 180, 10, 20);
+	auto eyeModel = Modeling::SphereModel::generate(360, 180, 10, 20);
 	eyeModel->setMaterial(eyeMaterial);
-	Entity *leftEye = new SimpleEntity(eyeModel, (GEvector){-0.4, 0.3, -0.4}*HEAD_SCALE, {}, (GEvector){0.4, 0.4, 0.2}*HEAD_SCALE);
+	auto leftEye = new SimpleEntity(eyeModel, (GEvector){-0.4, 0.3, -0.4}*HEAD_SCALE, {}, (GEvector){0.4, 0.4, 0.2}*HEAD_SCALE);
 	getEntities().push_back(leftEye);
-	Entity *rightEye = new SimpleEntity(eyeModel, (GEvector){0.4, 0.3, -0.4}*HEAD_SCALE, {}, (GEvector){0.4, 0.4, 0.2}*HEAD_SCALE);
+	auto rightEye = new SimpleEntity(eyeModel, (GEvector){0.4, 0.3, -0.4}*HEAD_SCALE, {}, (GEvector){0.4, 0.4, 0.2}*HEAD_SCALE);
 	getEntities().push_back(rightEye);
+	getDependents()->insert(eyeModel);
+	getDependents()->insert(leftEye);
+	getDependents()->insert(rightEye);
 }
 Head::~Head() {
 	// TODO delete stuff

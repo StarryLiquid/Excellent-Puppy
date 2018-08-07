@@ -12,13 +12,9 @@ namespace ExcellentPuppy {
 				static constexpr GLfloat PAD_HEIGHT = 0.1;
 
 			private:
-				// Geometries to delete with this model
-				std::list<Geometry*> _geometriesToDelete;
-
+				PawPad(GEnv const * const specs,
+						std::list<Geometry const *> geometries);
 			public:
-				PawPad(const GEnv* specs,
-						std::list<Geometry*> geometries,
-						std::list<Geometry*> geometriesToDelete);
 				virtual ~PawPad();
 
 				// Create a dog paw pad model

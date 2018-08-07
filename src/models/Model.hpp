@@ -1,6 +1,8 @@
 #ifndef MODELS_MODEL_HPP_
 #define MODELS_MODEL_HPP_
 
+#include "../Base.hpp"
+
 namespace ExcellentPuppy {
 	namespace Modeling {
 		class Material;
@@ -8,7 +10,7 @@ namespace ExcellentPuppy {
 		/**
 		 * A model that can be rendered
 		 */
-		class Model {
+		class Model : public Base {
 			private:
 				 Material *_material;
 
@@ -18,6 +20,7 @@ namespace ExcellentPuppy {
 
 				Material* const & getMaterial() const;
 				void setMaterial(Material* material);
+				void deleteMaterial();
 
 				// A method for any one time loading requirements for the model
 				virtual void load() const=0;

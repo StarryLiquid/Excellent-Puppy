@@ -1,6 +1,8 @@
 #ifndef MENUING_MENU_HPP_
 #define MENUING_MENU_HPP_
 
+#include "../Base.hpp"
+
 #include <list>
 #include "../types2d.hpp"
 
@@ -11,7 +13,7 @@ namespace ExcellentPuppy {
 		/**
 		 * A menu with controls that react to mouse clicks
 		 */
-		class Menu {
+		class Menu : public Base {
 			private:
 				// The buttons on the menu
 				std::list<MenuControl*> _controls;

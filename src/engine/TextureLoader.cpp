@@ -16,7 +16,7 @@ ExcellentPuppy::Modeling::Texture* TextureLoader::createTexture(std::string file
 	glGenTextures(1, &id);
 	return new Modeling::Texture(fileName, id);
 }
-void TextureLoader::loadTexture(Modeling::Texture* texture) {
+void TextureLoader::loadTexture(Modeling::Texture const * texture) {
 	if(!texture->_isLoaded) {
 		texture->selectTexture();
 		int width, height, n;

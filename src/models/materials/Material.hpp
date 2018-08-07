@@ -1,6 +1,8 @@
 #ifndef MODELS_MATERIAL_HPP_
 #define MODELS_MATERIAL_HPP_
 
+#include "../../Base.hpp"
+
 #include "../../types.hpp"
 
 namespace ExcellentPuppy {
@@ -8,7 +10,7 @@ namespace ExcellentPuppy {
 		/**
 		 * Material options that can be attached to a model.
 		 */
-		class Material {
+		class Material : public Base {
 			public:
 				Material();
 				virtual ~Material();

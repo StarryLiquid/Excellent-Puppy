@@ -24,15 +24,19 @@ namespace ExcellentPuppy {
 		class ModelNV : public Model {
 			private:
 				// The nv interleaved array
-				const GEnv *_specs;
+				GEnv const * const _specs;
 				// The geometry to render this model in
-				const std::list<Geometry*> _geometries;
+				std::list<Geometry const *> const _geometries;
 
 			public:
-				ModelNV(const GEnv *specs, std::list<Geometry*> const & geometries);
+				GEnv const * getSpecs() const;
+				std::list<Geometry const *> const & getGeometries() const;
+
+				ModelNV(const GEnv *specs, std::list<Geometry const *> geometries);
 				virtual ~ModelNV();
 
 				virtual void load() const;
+			protected:
 				virtual void draw() const;
 		};
 	} /* namespace Modeling */

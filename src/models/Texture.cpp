@@ -10,7 +10,7 @@ Texture::Texture(std::string filename, GLuint id) :
 	_id(id) { }
 Texture::~Texture() { }
 
-void Texture::loadTexture() {
+void Texture::loadTexture() const {
 	Engine::TextureLoader::loadTexture(this);
 }
 void Texture::selectTexture() const {

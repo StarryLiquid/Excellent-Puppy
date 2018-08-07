@@ -10,10 +10,10 @@ namespace ExcellentPuppy {
 		 */
 		class ColorMaterial : public Material {
 			private:
-				GEcolor _color;
+				GEcolor const _color;
 
 			public:
-				ColorMaterial(GEcolor color);
+				ColorMaterial(GEcolor const &color);
 				virtual ~ColorMaterial();
 
 				// Apply the material

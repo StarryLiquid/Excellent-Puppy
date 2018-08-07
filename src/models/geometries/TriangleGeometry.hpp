@@ -24,12 +24,13 @@ namespace ExcellentPuppy {
 		class TriangleGeometry : public Geometry {
 			private:
 				// The faces of the geometry
-				const GEtriangle *_faces;
+				GEtriangle const * const _faces;
 				// The number of vertex indices in the geometry
-				const GLsizei _nVertices;
+				GLsizei const _nVertices;
 
 			public:
-				TriangleGeometry(const GEtriangle *faces, const GLsizei nFaces);
+				TriangleGeometry(GEtriangle const * const faces,
+						GLsizei const & nFaces);
 				virtual ~TriangleGeometry();
 
 				virtual void render() const;

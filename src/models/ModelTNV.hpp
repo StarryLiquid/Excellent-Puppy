@@ -26,17 +26,22 @@ namespace ExcellentPuppy {
 		class ModelTNV: public Model {
 			private:
 				// The models texture
-				Texture *_tex;
+				Texture const * const _texture;
 				// The tnv interleaved array
-				const GEtnv* _specs;
+				GEtnv const * const _specs;
 				// The geometry to render this model in
-				const std::list<Geometry*> _geometries;
+				std::list<Geometry const *> const _geometries;
 
 			public:
-				ModelTNV(Texture* tex, const GEtnv* specs, const std::list<Geometry*> geometries);
+				Texture const * getTexture() const;
+				GEtnv const * getSpecs() const;
+				std::list<Geometry const *> const & getGeometries() const;
+
+				ModelTNV(Texture const * tex, GEtnv const * specs, std::list<Geometry const *> geometries);
 				virtual ~ModelTNV();
 
 				virtual void load() const;
+			protected:
 				virtual void draw() const;
 		};
 	} /* namespace Modeling */

@@ -10,6 +10,7 @@ namespace ExcellentPuppy {
 		 * A test entity.
 		 * A colorful cube on a colorful plane.
 		 * Origin of the model is at the bottom of the cube slightly over the center of the plane.
+		 * TODO remove when not needed anymore
 		 */
 		class TestEntity {
 			public:
