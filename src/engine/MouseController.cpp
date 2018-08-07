@@ -51,8 +51,8 @@ void MouseController::handleMouseMotion (int x, int y) {
 void MouseController::handleMousePresses(int button, int state, int x, int y) {
 	auto onLeftClick = _onLeftClick;
 	if(onLeftClick != NULL && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		onLeftClick({(double)(x)/Engine::getScreenWidth(), 1 - (double)(y)/Engine::getScreenHeight()});
+		onLeftClick({(double)(x)/Engine::getScreenWidth() * 2 - 1, (1 - (double)(y)/Engine::getScreenHeight()) * 2 - 1});
 	auto onRightClick = _onRightClick;
 	if(onRightClick != NULL && button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-		onRightClick({(double)(x)/Engine::getScreenWidth(), 1 - (double)(y)/Engine::getScreenHeight()});
+		onRightClick({(double)(x)/Engine::getScreenWidth() * 2 - 1, (1 - (double)(y)/Engine::getScreenHeight()) * 2 - 1});
 }

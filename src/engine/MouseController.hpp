@@ -19,10 +19,10 @@ namespace ExcellentPuppy {
 				static int _refX, _refY;
 			public:
 				// An action to do on left mouse click
-				// Receives location of mouse when clicked, on a 0.0 to 1.0 range
+				// Receives location of mouse when clicked, on a -1.0 to 1.0 range
 				static void(*_onLeftClick)(const GE2Dvector&);
 				// An action to do on right mouse click
-				// Receives location of mouse when clicked, on a 0.0 to 1.0 range
+				// Receives location of mouse when clicked, on a -1.0 to 1.0 range
 				static void(*_onRightClick)(const GE2Dvector&);
 				// An action to do on mouse moves
 				// Receives difference in mouse position

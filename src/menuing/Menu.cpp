@@ -26,8 +26,14 @@ void Menu::render() {
 	glPushMatrix();
 	glLoadIdentity();
 
+	// Disable lighting for menu rendering
+	glDisable(GL_LIGHTING);
+
 	for(auto button : _controls)
 		button->render();
+
+	// Reenable lighting
+	glEnable(GL_LIGHTING);
 
 	// Restore modelview and projection metrices
 	glPopMatrix();
