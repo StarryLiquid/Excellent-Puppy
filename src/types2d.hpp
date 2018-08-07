@@ -10,10 +10,10 @@ static const GLfloat PI = 3.141592653589793238462643383279502884197169399;
 #endif
 
 // A structure of a single 2 coordinates vector
-// Represents screen coordinates from 0.0 to 1.0
+// Represents screen coordinates from -1.0 to 1.0
 struct GE2Dvector {
-	GLfloat x;
-	GLfloat y;
+	GLdouble x;
+	GLdouble y;
 
 	// Addition, subtraction, negation, multiplication and division of vectors
 	// ?= operators do in-place changes
@@ -39,21 +39,21 @@ struct GE2Dvector {
 	inline GE2Dvector operator-() const {
 		return {-x, -y};
 	}
-	inline GE2Dvector& operator*=(const GLfloat& scalar) {
+	inline GE2Dvector& operator*=(const GLdouble& scalar) {
 		x *= scalar;
 		y *= scalar;
 		return *this;
 	}
-	friend GE2Dvector operator*(GE2Dvector lVec, const GLfloat& scalar) {
+	friend GE2Dvector operator*(GE2Dvector lVec, const GLdouble& scalar) {
 		lVec *= scalar;
 		return lVec;
 	}
-	inline GE2Dvector& operator/=(const GLfloat& scalar) {
+	inline GE2Dvector& operator/=(const GLdouble& scalar) {
 		x /= scalar;
 		y /= scalar;
 		return *this;
 	}
-	friend GE2Dvector operator/(GE2Dvector lVec, const GLfloat& scalar) {
+	friend GE2Dvector operator/(GE2Dvector lVec, const GLdouble& scalar) {
 		lVec /= scalar;
 		return lVec;
 	}
@@ -72,19 +72,19 @@ struct GE2Dvector {
 
 // Calls glVertex for a given GE2DVector value
 inline void geVertex(const GE2Dvector& vertex) {
-	glVertex2fv((const GLfloat*) &vertex);
+	glVertex2dv((const GLdouble*) &vertex);
 }
 // Calls glTranslate for a given GE2DVector value
 inline void geTranslate(const GE2Dvector& vec) {
-	glTranslatef(vec.x, vec.y, 0);
+	glTranslated(vec.x, vec.y, 0);
 }
 // Calls glRotate for a given angle
-inline void geRotate(const GLfloat& angle) {
-	glRotatef(angle, 0, 0, 1);
+inline void geRotate(const GLdouble& angle) {
+	glRotated(angle, 0, 0, 1);
 }
 // Calls glScale for a given scaling vector
 inline void geScale(const GE2Dvector& scale) {
-	glScalef(scale.x, scale.y, 1);
+	glScaled(scale.x, scale.y, 1);
 }
 
 #endif /* TYPES_HPP_ */
