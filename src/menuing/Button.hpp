@@ -28,7 +28,7 @@ namespace ExcellentPuppy {
 				virtual ~Button();
 
 				virtual bool testCollision(const GE2Dvector& point) const;
-				virtual void click(const GE2Dvector& point);
+				virtual bool handleClick(const GE2Dvector& position);
 			protected:
 				virtual void draw() const;
 		};

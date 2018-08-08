@@ -1,19 +1,17 @@
 #ifndef MENUING_MENU_HPP_
 #define MENUING_MENU_HPP_
 
-#include "../Base.hpp"
+#include "MenuControl.hpp"
 
 #include <list>
 #include "../types2d.hpp"
 
 namespace ExcellentPuppy {
 	namespace Menuing {
-		class MenuControl;
-
 		/**
 		 * A menu with controls that react to mouse clicks
 		 */
-		class Menu : public Base {
+		class Menu : public MenuControl {
 			private:
 				// The buttons on the menu
 				std::list<MenuControl*> _controls;
@@ -24,10 +22,13 @@ namespace ExcellentPuppy {
 				Menu();
 				virtual ~Menu();
 
-				// Render the menu on screen
-				void render();
+				// Returns true, as the menu should encompass the entire screen
+				virtual bool testCollision(const GE2Dvector& point) const;
 				// Handle a mouse click on the menu
-				void handleClick(const GE2Dvector& position);
+				virtual bool handleClick(const GE2Dvector& position);
+			protected:
+				// Draw the menu on screen
+				virtual void draw() const;
 		};
 	} /* namespace Entities */
 } /* namespace ExcellentPuppy */

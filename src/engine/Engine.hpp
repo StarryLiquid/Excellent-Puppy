@@ -18,7 +18,7 @@ namespace ExcellentPuppy {
 		class Dog;
 	}
 	namespace Menuing {
-		class Menu;
+		class MainMenu;
 	}
 	namespace Engine {
 		class Camera;
@@ -58,7 +58,7 @@ namespace ExcellentPuppy {
 				// The current game state
 				static GameState _currentState;
 				// The main menu
-				static Menuing::Menu *_menu;
+				static Menuing::MainMenu *_menu;
 				// The last state going to menu
 				static GameState _lastState;
 

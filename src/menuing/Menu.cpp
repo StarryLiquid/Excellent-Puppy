@@ -9,10 +9,22 @@ std::list<MenuControl*>& Menu::getControls() {
 	return _controls;
 }
 
-Menu::Menu() { }
+Menu::Menu() :
+	MenuControl({}) { }
 Menu::~Menu() { }
 
-void Menu::render() {
+bool Menu::testCollision(const GE2Dvector& point) const {
+	return true;
+}
+bool Menu::handleClick(const GE2Dvector& position) {
+	auto correctedPosition = position - getPosition();
+	for(auto control : _controls)
+		if(control->testCollision(correctedPosition))
+			if(control->handleClick(correctedPosition))
+				return true;
+	return false;
+}
+void Menu::draw() const {
 	GLint matrixMode;
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
 
@@ -42,11 +54,4 @@ void Menu::render() {
 
 	// Reset the matrix mode
 	glMatrixMode(matrixMode);
-}
-void Menu::handleClick(const GE2Dvector& position) {
-	for(auto control : _controls)
-		if(control->testCollision(position)) {
-			control->click(position);
-			break;
-		}
 }

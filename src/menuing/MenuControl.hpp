@@ -26,8 +26,8 @@ namespace ExcellentPuppy {
 				virtual void render() const;
 				// Check if the given point is in the control
 				virtual bool testCollision(const GE2Dvector& point) const=0;
-				// Do the click action
-				virtual void click(const GE2Dvector& point)=0;
+				// Do the click action, and return true to consume the click
+				virtual bool handleClick(const GE2Dvector& position)=0;
 			private:
 				// Draw the model of the control
 				virtual void draw() const=0;

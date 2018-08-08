@@ -197,7 +197,7 @@ void Engine::initScene() {
 	// Set mode to walking
 	setCurrentState(Walking);
 }
-ExcellentPuppy::Menuing::Menu *Engine::_menu = NULL;
+ExcellentPuppy::Menuing::MainMenu *Engine::_menu = NULL;
 GameState Engine::_lastState = GameState::Walking;
 void Engine::initMenu() {
 	_menu = new Menuing::MainMenu([]() {

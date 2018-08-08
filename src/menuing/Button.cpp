@@ -30,8 +30,9 @@ bool Button::testCollision(const GE2Dvector& point) const {
 			correctedPoint.x < _model->getDimensions().x &&
 			correctedPoint.y < _model->getDimensions().y;
 }
-void Button::click(const GE2Dvector& point) {
+bool Button::handleClick(const GE2Dvector& position) {
 	_action();
+	return true;
 }
 void Button::draw() const {
 	_model->render();
