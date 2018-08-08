@@ -200,7 +200,7 @@ void Engine::initScene() {
 ExcellentPuppy::Menuing::MainMenu *Engine::_menu = NULL;
 GameState Engine::_lastState = GameState::Walking;
 void Engine::initMenu() {
-	_menu = new Menuing::MainMenu([]() {
+	_menu = new Menuing::MainMenu([](void* context) {
 		setCurrentState(_lastState);
 	});
 }

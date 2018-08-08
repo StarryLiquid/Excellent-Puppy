@@ -25,7 +25,7 @@ namespace ExcellentPuppy {
 		 */
 		class ModelTNV: public Model {
 			private:
-				// The models texture
+				// The model's texture
 				Texture const * const _texture;
 				// The tnv interleaved array
 				GEtnv const * const _specs;

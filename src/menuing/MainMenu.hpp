@@ -5,6 +5,7 @@
 
 namespace ExcellentPuppy {
 	namespace Menuing {
+		class MenuControl;
 		class Menu;
 
 		/**
@@ -13,18 +14,18 @@ namespace ExcellentPuppy {
 		class MainMenu : public MenuControl {
 			private:
 				// The action to call when the menu is dismissed
-				void (*_onDismiss)();
+				void (*_onDismiss)(void* context);
 				// The active menu to render
-				Menu* _activeMenu;
+				MenuControl* _activeMenu;
 				// The main menu to show at the start
 				Menu* _buttonMenu;
 				// The settings menu
 				Menu* _settingsMenu;
 				// The help screen
-				Menu* _helpsMenu;
+				MenuControl* _helpsScreen;
 
 			public:
-				MainMenu(void (*onDismiss)());
+				MainMenu(void (*onDismiss)(void* context));
 				virtual ~MainMenu();
 
 				virtual bool testCollision(const GE2Dvector& point) const;
@@ -32,7 +33,14 @@ namespace ExcellentPuppy {
 			private:
 				virtual void draw() const;
 			private:
-				void setActiveMenu(Menu* menu);
+				// Sets the given control as the main control to render
+				void setActiveMenu(MenuControl* menu);
+				//  Changes to the button menu
+				void goToButtonMenu();
+				//  Changes to the settings menu
+				void goToSettingsMenu();
+				//  Changes to the help screen
+				void goToHelpScreen();
 
 		};
 	} /* namespace Menuing */

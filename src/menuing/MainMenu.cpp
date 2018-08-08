@@ -4,10 +4,12 @@
 #include "LabeledButton.hpp"
 #include "../models/shapes2d/SquareModel.hpp"
 #include "../models/materials/ColorMaterial.hpp"
+#include "../engine/TextureLoader.hpp"
+#include "../models/shapes2d/ImageModel.hpp"
 
 using namespace ExcellentPuppy::Menuing;
 		
-MainMenu::MainMenu(void (*onDismiss)()) :
+MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 	MenuControl({}) {
 	_onDismiss = onDismiss;
 
@@ -18,19 +20,19 @@ MainMenu::MainMenu(void (*onDismiss)()) :
 	_buttonMenu->getDependents()->insert(buttonMaterial);
 	_buttonMenu->getDependents()->insert(buttonModel);
 
-	auto settingsButton = new LabeledButton("Settings", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, .45}, buttonModel, []() {
-		// TODO switch to settings menu
-	});
+	auto settingsButton = new LabeledButton("Settings", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, .45}, buttonModel, [](void* context) {
+		//((MainMenu*)context)->goToSettingsMenu(); TODO
+	}, this);
 	_buttonMenu->getControls().push_back(settingsButton);
-	auto helpButton = new LabeledButton("Help", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, .15}, buttonModel, []() {
-		// TODO switch to help screen
-	});
+	auto helpButton = new LabeledButton("Help", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, .15}, buttonModel, [](void* context) {
+		((MainMenu*)context)->goToHelpScreen();
+	}, this);
 	_buttonMenu->getControls().push_back(helpButton);
-	auto exitButton = new LabeledButton("Exit", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.15}, buttonModel, []() {
+	auto exitButton = new LabeledButton("Exit", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.15}, buttonModel, [](void* context) {
 		glutLeaveMainLoop();
 	});
 	_buttonMenu->getControls().push_back(exitButton);
-	auto dismissButton = new LabeledButton("Back", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.45}, buttonModel, _onDismiss);
+	auto dismissButton = new LabeledButton("Back", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.45}, buttonModel, _onDismiss, NULL);
 	_buttonMenu->getControls().push_back(dismissButton);
 
 	_buttonMenu->getDependents()->insert(settingsButton);
@@ -39,12 +41,20 @@ MainMenu::MainMenu(void (*onDismiss)()) :
 	_buttonMenu->getDependents()->insert(dismissButton);
 
 	_settingsMenu = NULL;
-	_helpsMenu = NULL;
+
+	auto helpTexutre = Engine::TextureLoader::createTexture("rsc/help.png");
+	auto helpModel = new Modeling::ImageModel(helpTexutre, {2, 2});
+	_helpsScreen = new Button({-1, -1}, helpModel, [](void* context) {
+		((MainMenu*)context)->goToButtonMenu();
+	}, this);
+	_helpsScreen->getDependents()->insert(helpModel);
 
 	_activeMenu = _buttonMenu;
 }
 MainMenu::~MainMenu() {
 	delete(_buttonMenu);
+	delete(_settingsMenu);
+	delete(_helpsScreen);
 }
 
 bool MainMenu::testCollision(const GE2Dvector& point) const {
@@ -56,6 +66,15 @@ bool MainMenu::handleClick(const GE2Dvector& position) {
 void MainMenu::draw() const {
 	_activeMenu->render();
 }
-void MainMenu::setActiveMenu(Menu* menu) {
+void MainMenu::setActiveMenu(MenuControl* menu) {
 	_activeMenu = menu;
+}
+void MainMenu::goToButtonMenu() {
+	setActiveMenu(_buttonMenu);
+}
+void MainMenu::goToSettingsMenu() {
+	setActiveMenu(_settingsMenu);
+}
+void MainMenu::goToHelpScreen() {
+	setActiveMenu(_helpsScreen);
 }

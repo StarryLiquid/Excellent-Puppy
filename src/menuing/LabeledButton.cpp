@@ -16,8 +16,9 @@ void LabeledButton::setLabel(std::string label) {
 LabeledButton::LabeledButton(std::string label,
 		GE2Dvector position,
 		Modeling::Model2D *model,
-		void (*action)()) :
-			Button(position, model, action),
+		void (*action)(void* context),
+		void* context) :
+			Button(position, model, action, context),
 			_labelModel(new Modeling::TextModel(label)),
 			_labelColor(new Modeling::ColorMaterial({0, 0, 0})) {
 	_labelModel->setMaterial(_labelColor);
