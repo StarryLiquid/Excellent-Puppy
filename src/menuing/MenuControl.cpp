@@ -17,4 +17,5 @@ void MenuControl::render() const {
 	// Move to the control's position
 	geTranslate(_position);
 	draw();
+	geTranslate(-_position);
 }

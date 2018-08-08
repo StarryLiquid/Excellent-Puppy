@@ -1,7 +1,7 @@
 #ifndef MODELS_SHAPES2D_SQUAREMODEL_HPP_
 #define MODELS_SHAPES2D_SQUAREMODEL_HPP_
 
-#include "../Model.hpp"
+#include "../Model2D.hpp"
 
 #include "../../types2d.hpp"
 
@@ -10,13 +10,14 @@ namespace ExcellentPuppy {
 		/**
 		 * A simple 2d square model
 		 */
-		class SquareModel: public Model {
+		class SquareModel: public Model2D {
 			private:
 				// The dimensions of the square
 				GE2Dvector _dimensions;
 
 			public:
-				GE2Dvector& getDimensions();
+				virtual GE2Dvector const & getDimensions() const;
+				virtual void setDimensions(GE2Dvector const & dimensions);
 
 				SquareModel(GE2Dvector dimensions);
 				virtual ~SquareModel();

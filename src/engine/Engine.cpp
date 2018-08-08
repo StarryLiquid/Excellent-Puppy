@@ -142,11 +142,12 @@ void Engine::initScene() {
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
 
-	// Set lighting
+	// Set lighting/shading
 	glEnable(GL_LIGHTING);
 	glEnable(GL_NORMALIZE);
 	glShadeModel(GL_SMOOTH);
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
+	setAmbientLight(0.25);
 
 	// Set a camera
 	Engine::_camera = new Camera();
@@ -231,6 +232,10 @@ void Engine::render (void) {
 	// Swap buffers and signal to render next frame
 	glutSwapBuffers();
 	glutPostRedisplay();
+}
+void Engine::setAmbientLight(GLfloat power) {
+	GEcolor ambientColor = {power, power, power};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat*)&ambientColor);
 }
 void Engine::updateCameraPosition() {
 	_camera->setPosition(_dog->getPosition());

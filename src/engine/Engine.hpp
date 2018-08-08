@@ -103,6 +103,8 @@ namespace ExcellentPuppy {
 				//TODO: void animate();
 				// Callback to render the scene
 				static void render();
+				// Set the ambient light, values from 0.0 to 1.0
+				static void setAmbientLight(GLfloat power);
 				// Update the camera position based on the displacement
 				static void updateCameraPosition();
 				// Change the entity's position based on collision with objects in scene
