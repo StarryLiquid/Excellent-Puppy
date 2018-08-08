@@ -4,10 +4,10 @@
 
 using namespace ExcellentPuppy::Menuing;
 
-ExcellentPuppy::Modeling::SquareModel * const Button::getModel() const {
+ExcellentPuppy::Modeling::Model2D * const Button::getModel() const {
 	return _model;
 }
-void Button::setModel(Modeling::SquareModel * const model) {
+void Button::setModel(Modeling::Model2D * const model) {
 	_model = model;
 }
 void (*Button::getAction())() const {
@@ -17,7 +17,7 @@ void Button::setAction(void (*action)()) {
 	_action = action;
 }
 
-Button::Button(GE2Dvector position, Modeling::SquareModel *model, void (*action)()) :
+Button::Button(GE2Dvector position, Modeling::Model2D *model, void (*action)()) :
 	MenuControl(position),
 	_model(model),
 	_action(action) { }

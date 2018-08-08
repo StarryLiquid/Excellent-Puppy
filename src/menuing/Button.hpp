@@ -5,7 +5,7 @@
 
 namespace ExcellentPuppy {
 	namespace Modeling {
-		class SquareModel;
+		class Model2D;
 	}
 	namespace Menuing {
 		/**
@@ -14,17 +14,17 @@ namespace ExcellentPuppy {
 		class Button : public MenuControl {
 			private:
 				// The background model of the button
-				Modeling::SquareModel* _model;
+				Modeling::Model2D* _model;
 				// The action to execute on click
 				void (*_action)();
 
 			public:
-				virtual Modeling::SquareModel * const getModel() const;
-				virtual void setModel(Modeling::SquareModel * const model);
+				virtual Modeling::Model2D * const getModel() const;
+				virtual void setModel(Modeling::Model2D * const model);
 				virtual void (*getAction())() const;
 				virtual void setAction(void (*action)());
 
-				Button(GE2Dvector position, Modeling::SquareModel * model, void (*action)());
+				Button(GE2Dvector position, Modeling::Model2D * model, void (*action)());
 				virtual ~Button();
 
 				virtual bool testCollision(const GE2Dvector& point) const;

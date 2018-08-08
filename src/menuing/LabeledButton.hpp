@@ -25,7 +25,7 @@ namespace ExcellentPuppy {
 
 				LabeledButton(std::string label,
 						GE2Dvector position,
-						Modeling::SquareModel *model,
+						Modeling::Model2D *model,
 						void (*action)());
 				virtual ~LabeledButton();
 

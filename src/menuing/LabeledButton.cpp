@@ -15,7 +15,7 @@ void LabeledButton::setLabel(std::string label) {
 		
 LabeledButton::LabeledButton(std::string label,
 		GE2Dvector position,
-		Modeling::SquareModel *model,
+		Modeling::Model2D *model,
 		void (*action)()) :
 			Button(position, model, action),
 			_labelModel(new Modeling::TextModel(label)),
