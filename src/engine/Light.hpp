@@ -20,29 +20,29 @@ namespace ExcellentPuppy {
 			public:
 				const GLenum& getName();
 				GEvector& getPosition();
-				void setPosition(const GEvector& position);
+				virtual void setPosition(const GEvector& position);
 				// The ambient constant color of the light
-				void setAmbient(const GEcolor& ambient);
+				virtual void setAmbient(const GEcolor& ambient);
 				// The diffuse color of the light
-				void setDiffuse(const GEcolor& diffuse);
+				virtual void setDiffuse(const GEcolor& diffuse);
 				// The specular  color of the light
-				void setSpecular(const GEcolor& specular);
+				virtual void setSpecular(const GEcolor& specular);
 				// The constant radial intesity attenuation
-				void setConstantAttenuation(const GLfloat& constantAttenuation);
+				virtual void setConstantAttenuation(const GLfloat& constantAttenuation);
 				// The linear radial intesity attenuation
-				void setLinearAttenuation(const GLfloat& linearAttenuation);
+				virtual void setLinearAttenuation(const GLfloat& linearAttenuation);
 				// The quadratic radial intesity attenuation
-				void setQuadraticAttenuation(const GLfloat& quadraticAttenuation);
+				virtual void setQuadraticAttenuation(const GLfloat& quadraticAttenuation);
 
 				Light(
-						const GLenum& _name,
+						const GLenum& name,
 						const GEvector& position = {});
 				virtual ~Light();
 
 				// Enables the light
 				void load() const;
 				// Set light in the scene
-				void setLight() const;
+				virtual void setLight() const;
 
 				// Helper methods for setting properties for this light
 				void setProperty(const GLenum& property, const GLfloat& value) const;
