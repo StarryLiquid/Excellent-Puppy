@@ -27,9 +27,9 @@ Button::~Button() { }
 #include <iostream>
 bool Button::testCollision(const GE2Dvector& point) const {
 	auto correctedPoint = point - getPosition();
-	return correctedPoint.x > 0 && correctedPoint.y > 0 &&
-			correctedPoint.x < _model->getDimensions().x &&
-			correctedPoint.y < _model->getDimensions().y;
+	return correctedPoint.x >= 0 && correctedPoint.y >= 0 &&
+			correctedPoint.x <= _model->getDimensions().x &&
+			correctedPoint.y <= _model->getDimensions().y;
 }
 bool Button::handleClick(const GE2Dvector& position) {
 	_action(_context);

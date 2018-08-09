@@ -2,9 +2,11 @@
 
 #include "Menu.hpp"
 #include "LabeledButton.hpp"
+#include "Slider.hpp"
 #include "../models/shapes2d/SquareModel.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../engine/TextureLoader.hpp"
+#include "../engine/Engine.hpp"
 #include "../models/shapes2d/ImageModel.hpp"
 
 using namespace ExcellentPuppy::Menuing;
@@ -21,7 +23,7 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 	_buttonMenu->getDependents()->insert(buttonModel);
 
 	auto settingsButton = new LabeledButton("Settings", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, .45}, buttonModel, [](void* context) {
-		//((MainMenu*)context)->goToSettingsMenu(); TODO
+		((MainMenu*)context)->goToSettingsMenu();
 	}, this);
 	_buttonMenu->getControls().push_back(settingsButton);
 	auto helpButton = new LabeledButton("Help", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, .15}, buttonModel, [](void* context) {
@@ -40,7 +42,21 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 	_buttonMenu->getDependents()->insert(exitButton);
 	_buttonMenu->getDependents()->insert(dismissButton);
 
-	_settingsMenu = NULL;
+	_settingsMenu = new Menu();
+	auto ambientSlider = new Slider(
+			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .1},
+			0.25,
+			[] (void* context, GLfloat value) {
+				Engine::Engine::setAmbientLight(value);
+			});
+	_settingsMenu->getControls().push_back(ambientSlider);
+	auto settingBackButton = new Button((GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.1}, buttonModel, [](void* context) {
+		((MainMenu*)context)->goToButtonMenu();
+	}, this);
+	_settingsMenu->getControls().push_back(settingBackButton);
+
+	_settingsMenu->getDependents()->insert(ambientSlider);
+	_settingsMenu->getDependents()->insert(settingBackButton);
 
 	_helpMenu = new Menu();
 	auto helpTexutre = Engine::TextureLoader::createTexture("rsc/help.png");
