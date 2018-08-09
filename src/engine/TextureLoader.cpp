@@ -9,12 +9,26 @@
 
 using namespace ExcellentPuppy::Engine;
 		
-std::list<ExcellentPuppy::Modeling::Texture*> TextureLoader::_textures;
+std::unordered_set<ExcellentPuppy::Modeling::Texture*> TextureLoader::_textures;
 
 ExcellentPuppy::Modeling::Texture* TextureLoader::createTexture(std::string fileName) {
 	GLuint id;
 	glGenTextures(1, &id);
-	return new Modeling::Texture(fileName, id);
+	auto texture = new Modeling::Texture(fileName, id);
+	_textures.insert(texture);
+	return texture;
+}
+void TextureLoader::deleteTexture(Modeling::Texture* texture, bool deleteRef) {
+	// If texture is not in the texture set, nothing to delete
+	// Also removes the texture from the set
+	if(_textures.erase(texture) == 1) {
+		// Free the texture
+		glDeleteTextures(1, &texture->_id);
+
+		// Delete the texture
+		if(deleteRef)
+			delete texture;
+	}
 }
 void TextureLoader::loadTexture(Modeling::Texture const * texture) {
 	if(!texture->_isLoaded) {

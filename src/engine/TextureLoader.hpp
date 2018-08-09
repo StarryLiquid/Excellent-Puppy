@@ -4,7 +4,7 @@
 #include "../Base.hpp"
 
 #include <string>
-#include <list>
+#include <unordered_set>
 
 namespace ExcellentPuppy {
 	namespace Modeling {
@@ -13,10 +13,11 @@ namespace ExcellentPuppy {
 	namespace Engine {
 		class TextureLoader : public Base {
 			private:
-				static std::list<Modeling::Texture*> _textures;
+				static std::unordered_set<Modeling::Texture*> _textures;
 
 			public:
 				static Modeling::Texture* createTexture(std::string fileName);
+				static void deleteTexture(Modeling::Texture* texture, bool deleteRef=true);
 				static void loadTexture(Modeling::Texture const * texture);
 				static void loadTextures();
 		};

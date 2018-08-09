@@ -22,7 +22,7 @@ namespace ExcellentPuppy {
 				// The settings menu
 				Menu* _settingsMenu;
 				// The help screen
-				MenuControl* _helpsScreen;
+				Menu* _helpMenu;
 
 			public:
 				MainMenu(void (*onDismiss)(void* context));

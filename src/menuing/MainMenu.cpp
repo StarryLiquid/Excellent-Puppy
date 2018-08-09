@@ -42,19 +42,23 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 
 	_settingsMenu = NULL;
 
+	_helpMenu = new Menu();
 	auto helpTexutre = Engine::TextureLoader::createTexture("rsc/help.png");
 	auto helpModel = new Modeling::ImageModel(helpTexutre, {2, 2});
-	_helpsScreen = new Button({-1, -1}, helpModel, [](void* context) {
+	auto helpScreen = new Button({-1, -1}, helpModel, [](void* context) {
 		((MainMenu*)context)->goToButtonMenu();
 	}, this);
-	_helpsScreen->getDependents()->insert(helpModel);
+	_helpMenu->getControls().push_back(helpScreen);
+
+	_helpMenu->getDependents()->insert(helpModel);
+	_helpMenu->getDependents()->insert(helpScreen);
 
 	_activeMenu = _buttonMenu;
 }
 MainMenu::~MainMenu() {
 	delete(_buttonMenu);
 	delete(_settingsMenu);
-	delete(_helpsScreen);
+	delete(_helpMenu);
 }
 
 bool MainMenu::testCollision(const GE2Dvector& point) const {
@@ -76,5 +80,5 @@ void MainMenu::goToSettingsMenu() {
 	setActiveMenu(_settingsMenu);
 }
 void MainMenu::goToHelpScreen() {
-	setActiveMenu(_helpsScreen);
+	setActiveMenu(_helpMenu);
 }

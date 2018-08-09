@@ -115,9 +115,9 @@ void Engine::setCurrentState(const GameState& state) {
 
 void Engine::init(int argc, char** argv) {
 	initWindow(argc, argv);
-	initSubsystems();
 	initScene();
 	initMenu();
+	initSubsystems();
 	loadEntities();
 	registerCallbacks();
 	glutMainLoop();
@@ -130,7 +130,7 @@ void Engine::initWindow(int argc, char** argv) {
 	glutCreateWindow("Excellent Puppy");
 }
 void Engine::initSubsystems() {
-	// TODO: init texture manager
+	TextureLoader::loadTextures();
 }
 ExcellentPuppy::Entities::Dog *Engine::_dog = NULL;
 void Engine::initScene() {

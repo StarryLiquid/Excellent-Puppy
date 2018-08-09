@@ -8,7 +8,9 @@ using namespace ExcellentPuppy::Modeling;
 Texture::Texture(std::string filename, GLuint id) :
 	_filename(filename),
 	_id(id) { }
-Texture::~Texture() { }
+Texture::~Texture() {
+	Engine::TextureLoader::deleteTexture(this, false);
+}
 
 void Texture::loadTexture() const {
 	Engine::TextureLoader::loadTexture(this);

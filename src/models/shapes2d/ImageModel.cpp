@@ -19,14 +19,15 @@ void ImageModel::load() const {
 void ImageModel::draw() const {
 	_texture->selectTexture();
 	glEnable(GL_TEXTURE_2D);
+	glColor3f(1, 1, 1);
 	glBegin(GL_QUADS);
-		glTexCoord2f(0                , 0);
-		glVertex2f  (0                , 0);
-		glTexCoord2f(1                , 0);
-		glVertex2f  (getDimensions().x, 0);
-		glTexCoord2f(1                , 1);
-		glVertex2f  (getDimensions().x, getDimensions().y);
 		glTexCoord2f(0                , 1);
+		glVertex2f  (0                , 0);
+		glTexCoord2f(1                , 1);
+		glVertex2f  (getDimensions().x, 0);
+		glTexCoord2f(1                , 0);
+		glVertex2f  (getDimensions().x, getDimensions().y);
+		glTexCoord2f(0                , 0);
 		glVertex2f  (0                , getDimensions().y);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
