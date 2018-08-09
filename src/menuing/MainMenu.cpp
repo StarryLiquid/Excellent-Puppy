@@ -45,21 +45,65 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 
 	_settingsMenu = new Menu();
 	auto ambientSlider = new Slider(
-			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .1},
-			0.25,
+			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .7},
+			Engine::Engine::getAmbientLight(),
 			[] (void* context, GLfloat value) {
 				Engine::Engine::setAmbientLight(value);
 			});
 	_settingsMenu->getControls().push_back(ambientSlider);
-	auto ambientSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .3}, "Ambient light");
+	auto ambientSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .85}, "Ambient light");
 	_settingsMenu->getControls().push_back(ambientSliderLabel);
-	auto settingBackButton = new LabeledButton("Back", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.1}, buttonModel, [](void* context) {
+	auto directionalPowerSlider = new Slider(
+			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .4},
+			0.25, // TODO
+			[] (void* context, GLfloat value) {
+				//Engine::Engine::setAmbientLight(value); TODO
+			});
+	_settingsMenu->getControls().push_back(directionalPowerSlider);
+	auto directionalPowerSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .55}, "Directional light");
+	_settingsMenu->getControls().push_back(directionalPowerSliderLabel);
+	auto directionalRotationSlider = new Slider(
+			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .1},
+			0.25,
+			[] (void* context, GLfloat value) {
+				//Engine::Engine::setAmbientLight(value); TODO
+			});
+	_settingsMenu->getControls().push_back(directionalRotationSlider);
+	auto directionalRotationSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .25}, "Directional angle");
+	_settingsMenu->getControls().push_back(directionalRotationSliderLabel);
+	auto directionalXSlider = new Slider(
+			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.2},
+			0.25, // TODO
+			[] (void* context, GLfloat value) {
+				//Engine::Engine::setAmbientLight(value); TODO
+			});
+	_settingsMenu->getControls().push_back(directionalXSlider);
+	auto directionalXSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.05}, "Directional x position");
+	_settingsMenu->getControls().push_back(directionalXSliderLabel);
+	auto directionalYSlider = new Slider(
+			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.5},
+			0.25, // TODO
+			[] (void* context, GLfloat value) {
+				//Engine::Engine::setAmbientLight(value); TODO
+			});
+	_settingsMenu->getControls().push_back(directionalYSlider);
+	auto directionalYSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.35}, "Directional y position");
+	_settingsMenu->getControls().push_back(directionalYSliderLabel);
+	auto settingBackButton = new LabeledButton("Back", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.7}, buttonModel, [](void* context) {
 		((MainMenu*)context)->goToButtonMenu();
 	}, this);
 	_settingsMenu->getControls().push_back(settingBackButton);
 
 	_settingsMenu->getDependents()->insert(ambientSlider);
 	_settingsMenu->getDependents()->insert(ambientSliderLabel);
+	_settingsMenu->getDependents()->insert(directionalPowerSlider);
+	_settingsMenu->getDependents()->insert(directionalPowerSliderLabel);
+	_settingsMenu->getDependents()->insert(directionalRotationSlider);
+	_settingsMenu->getDependents()->insert(directionalRotationSliderLabel);
+	_settingsMenu->getDependents()->insert(directionalXSlider);
+	_settingsMenu->getDependents()->insert(directionalXSliderLabel);
+	_settingsMenu->getDependents()->insert(directionalYSlider);
+	_settingsMenu->getDependents()->insert(directionalYSliderLabel);
 	_settingsMenu->getDependents()->insert(settingBackButton);
 
 	_helpMenu = new Menu();
