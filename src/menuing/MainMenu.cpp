@@ -3,6 +3,7 @@
 #include "Menu.hpp"
 #include "LabeledButton.hpp"
 #include "Slider.hpp"
+#include "Label.hpp"
 #include "../models/shapes2d/SquareModel.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../engine/TextureLoader.hpp"
@@ -50,12 +51,15 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 				Engine::Engine::setAmbientLight(value);
 			});
 	_settingsMenu->getControls().push_back(ambientSlider);
-	auto settingBackButton = new Button((GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.1}, buttonModel, [](void* context) {
+	auto ambientSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .3}, "Ambient light");
+	_settingsMenu->getControls().push_back(ambientSliderLabel);
+	auto settingBackButton = new LabeledButton("Back", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.1}, buttonModel, [](void* context) {
 		((MainMenu*)context)->goToButtonMenu();
 	}, this);
 	_settingsMenu->getControls().push_back(settingBackButton);
 
 	_settingsMenu->getDependents()->insert(ambientSlider);
+	_settingsMenu->getDependents()->insert(ambientSliderLabel);
 	_settingsMenu->getDependents()->insert(settingBackButton);
 
 	_helpMenu = new Menu();
