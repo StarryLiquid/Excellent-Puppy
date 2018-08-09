@@ -55,40 +55,40 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 	_settingsMenu->getControls().push_back(ambientSliderLabel);
 	auto directionalPowerSlider = new Slider(
 			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .4},
-			0.25, // TODO
+			Engine::Engine::getDirectionalLightPower(),
 			[] (void* context, GLfloat value) {
-				//Engine::Engine::setAmbientLight(value); TODO
+				Engine::Engine::setDirectionalLightPower(value);
 			});
 	_settingsMenu->getControls().push_back(directionalPowerSlider);
 	auto directionalPowerSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .55}, "Directional light");
 	_settingsMenu->getControls().push_back(directionalPowerSliderLabel);
 	auto directionalRotationSlider = new Slider(
 			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .1},
-			0.25,
+			Engine::Engine::getDirectionalLightAngle()/360,
 			[] (void* context, GLfloat value) {
-				//Engine::Engine::setAmbientLight(value); TODO
+				Engine::Engine::setDirectionalLightAngle(value*360);
 			});
 	_settingsMenu->getControls().push_back(directionalRotationSlider);
 	auto directionalRotationSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, .25}, "Directional angle");
 	_settingsMenu->getControls().push_back(directionalRotationSliderLabel);
 	auto directionalXSlider = new Slider(
 			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.2},
-			0.25, // TODO
+			Engine::Engine::getDirectionalLightXCoords(),
 			[] (void* context, GLfloat value) {
-				//Engine::Engine::setAmbientLight(value); TODO
+				Engine::Engine::setDirectionalLightXCoords(value);
 			});
 	_settingsMenu->getControls().push_back(directionalXSlider);
 	auto directionalXSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.05}, "Directional x position");
 	_settingsMenu->getControls().push_back(directionalXSliderLabel);
-	auto directionalYSlider = new Slider(
+	auto directionalZSlider = new Slider(
 			(GE2Dvector){-Slider::SLIDER_DIMENSIONS.x/2, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.5},
-			0.25, // TODO
+			Engine::Engine::getDirectionalLightZCoords(),
 			[] (void* context, GLfloat value) {
-				//Engine::Engine::setAmbientLight(value); TODO
+				Engine::Engine::setDirectionalLightZCoords(value);
 			});
-	_settingsMenu->getControls().push_back(directionalYSlider);
-	auto directionalYSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.35}, "Directional y position");
-	_settingsMenu->getControls().push_back(directionalYSliderLabel);
+	_settingsMenu->getControls().push_back(directionalZSlider);
+	auto directionalZSliderLabel = new Label((GE2Dvector){0, -Slider::SLIDER_DIMENSIONS.y/2} + (GE2Dvector){0, -.35}, "Directional z position");
+	_settingsMenu->getControls().push_back(directionalZSliderLabel);
 	auto settingBackButton = new LabeledButton("Back", (GE2Dvector){-.2, -.1} + (GE2Dvector){0, -.7}, buttonModel, [](void* context) {
 		((MainMenu*)context)->goToButtonMenu();
 	}, this);
@@ -102,8 +102,8 @@ MainMenu::MainMenu(void (*onDismiss)(void* context)) :
 	_settingsMenu->getDependents()->insert(directionalRotationSliderLabel);
 	_settingsMenu->getDependents()->insert(directionalXSlider);
 	_settingsMenu->getDependents()->insert(directionalXSliderLabel);
-	_settingsMenu->getDependents()->insert(directionalYSlider);
-	_settingsMenu->getDependents()->insert(directionalYSliderLabel);
+	_settingsMenu->getDependents()->insert(directionalZSlider);
+	_settingsMenu->getDependents()->insert(directionalZSliderLabel);
 	_settingsMenu->getDependents()->insert(settingBackButton);
 
 	_helpMenu = new Menu();

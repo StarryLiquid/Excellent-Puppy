@@ -17,6 +17,7 @@
 #include "../types.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
+#include "DirectionalLight.hpp"
 #include "MouseController.hpp"
 #include "TextureLoader.hpp"
 
@@ -59,14 +60,45 @@ std::list<ExcellentPuppy::Entities::Entity*> Engine::_collisionEntities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getCollisionEntities() {
 	return _collisionEntities;
 }
-GLfloat Engine::_ambeintLight = 0.25;
+GLfloat Engine::_ambientLight = 0.25;
 GLfloat Engine::getAmbientLight() {
-	return _ambeintLight;
+	return _ambientLight;
 }
 void Engine::setAmbientLight(GLfloat power) {
-	_ambeintLight = power;
-	GEcolor ambientColor = {_ambeintLight, _ambeintLight, _ambeintLight};
+	_ambientLight = power;
+	GEcolor ambientColor = {_ambientLight, _ambientLight, _ambientLight};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat*)&ambientColor);
+}
+DirectionalLight* Engine::_directionalLight = NULL;
+GLfloat Engine::_directionalLightPower = 1;
+GLfloat Engine::getDirectionalLightPower() {
+	return _directionalLightPower;
+}
+void Engine::setDirectionalLightPower(GLfloat power) {
+	_directionalLight->setDiffuse({power, power, power});
+	_directionalLight->setSpecular({power, power, power});
+}
+GLfloat Engine::_directionalLightAngle = 90;
+GLfloat Engine::getDirectionalLightAngle() {
+	return _directionalLightAngle;
+}
+void Engine::setDirectionalLightAngle(GLfloat angle){
+	_directionalLight->setDirection((GEvector){0, -1, 1}.rotateY(angle));
+}
+GEvector Engine::_directionalLightPosition = {-5, 10, 10};
+GLfloat Engine::getDirectionalLightXCoords() {
+	return (_directionalLightPosition.x + ((GLfloat)ROOM_WIDTH)/2)/ROOM_WIDTH;
+}
+void Engine::setDirectionalLightXCoords(GLfloat x) {
+	_directionalLightPosition.x = (x * ROOM_WIDTH) - ((GLfloat)ROOM_WIDTH)/2;
+	_directionalLight->setPosition(_directionalLightPosition);
+}
+GLfloat Engine::getDirectionalLightZCoords() {
+	return (_directionalLightPosition.z + ((GLfloat)ROOM_DEPTH)/2)/ROOM_DEPTH;
+}
+void Engine::setDirectionalLightZCoords(GLfloat z) {
+	_directionalLightPosition.z = (z * ROOM_DEPTH) - ((GLfloat)ROOM_DEPTH)/2;
+	_directionalLight->setPosition(_directionalLightPosition);
 }
 GameState Engine::_currentState = Walking;
 const GameState& Engine::getCurrentState() {
@@ -156,7 +188,7 @@ void Engine::initScene() {
 	glEnable(GL_NORMALIZE);
 	glShadeModel(GL_SMOOTH);
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
-	setAmbientLight(_ambeintLight);
+	setAmbientLight(_ambientLight);
 
 	// Set a camera
 	Engine::_camera = new Camera();
@@ -177,7 +209,7 @@ void Engine::initScene() {
 	_entities.push_back(new Entities::SimpleEntity(wallModel, {-ROOM_WIDTH/2, Entities::Flooring::bottom, ROOM_DEPTH/2}));
 
 	// Create a light
-	Light * lampLight = new Light(GL_LIGHT0);
+	auto lampLight = new Light(GL_LIGHT0);
 	lampLight->setAmbient({0, 0, 0}); // Using global ambient light
 	lampLight->setDiffuse({1, 1, 1});
 	lampLight->setSpecular({1, 1, 1});
@@ -186,11 +218,22 @@ void Engine::initScene() {
 	lampLight->setQuadraticAttenuation(0);
 
 	// Lamp
-	Entities::Entity* lamp = createLamp(lampLight);
+	auto lamp = createLamp(lampLight);
 	lamp->setPosition({5, 0, -10});
 	lamp->setCollisionRadius(1);
 	_entities.push_back(lamp);
 	_collisionEntities.push_back(lamp);
+
+	// Create a directional light
+	_directionalLight = new DirectionalLight(GL_LIGHT1, {});
+	_directionalLight->setAmbient({0, 0, 0}); // Using global ambient light
+	_directionalLight->setConstantAttenuation(0.2);
+	_directionalLight->setLinearAttenuation(0.1);
+	_directionalLight->setQuadraticAttenuation(0);
+	_directionalLight->setSpotlightCutoff(30);
+	setDirectionalLightPower(getDirectionalLightPower());
+	setDirectionalLightAngle(getDirectionalLightAngle());
+	setDirectionalLightXCoords(getDirectionalLightXCoords());
 
 	// Dog
 	_dog = new Entities::Dog();
@@ -223,6 +266,8 @@ void Engine::registerCallbacks() {
 void Engine::loadEntities() {
 	for(Entities::Entity *current : _entities)
 		current->load();
+
+	_directionalLight->load();
 }
 
 void Engine::render (void) {
@@ -230,6 +275,9 @@ void Engine::render (void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if(getCurrentState() != Menu) {
+		// Set the location of the spotlight according to the projection
+		_directionalLight->setLight();
+
 		// Render all the entities
 		for(Entities::Entity *current : _entities)
 			current->render();

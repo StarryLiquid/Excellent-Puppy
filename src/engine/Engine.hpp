@@ -23,6 +23,7 @@ namespace ExcellentPuppy {
 	namespace Engine {
 		class Camera;
 		class Light;
+		class DirectionalLight;
 
 		/**
 		 * The distinct states of the game
@@ -60,8 +61,16 @@ namespace ExcellentPuppy {
 				static Menuing::MainMenu *_menu;
 				// The last state going to menu
 				static GameState _lastState;
+				// A directional light in the scene
+				static DirectionalLight* _directionalLight;
 				// The ambient light intensity, from 0 to 1
-				static GLfloat _ambeintLight;
+				static GLfloat _ambientLight;
+				// The directional light intensity, from 0 to 1
+				static GLfloat _directionalLightPower;
+				// The directional light angle, from 0 to 360
+				static GLfloat _directionalLightAngle;
+				// The directional light position
+				static GEvector _directionalLightPosition;
 
 				// An action to move the camera when the mosue moves
 				static decltype(MouseController::_onMove) _moveCamera;
@@ -84,6 +93,14 @@ namespace ExcellentPuppy {
 				static void setCamera(Camera* camera);
 				static GLfloat getAmbientLight();
 				static void setAmbientLight(GLfloat power);
+				static GLfloat getDirectionalLightPower();
+				static void setDirectionalLightPower(GLfloat power);
+				static GLfloat getDirectionalLightAngle();
+				static void setDirectionalLightAngle(GLfloat angle);
+				static GLfloat getDirectionalLightXCoords();
+				static void setDirectionalLightXCoords(GLfloat x);
+				static GLfloat getDirectionalLightZCoords();
+				static void setDirectionalLightZCoords(GLfloat z);
 				static const GameState& getCurrentState();
 				static void setCurrentState(const GameState& state);
 
