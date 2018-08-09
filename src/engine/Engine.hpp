@@ -70,6 +70,8 @@ namespace ExcellentPuppy {
 				static decltype(MouseController::_onLeftClick) _switchToMenu;
 				// An action to switch between third person and first person
 				static decltype(MouseController::_onRightClick) _switchPerspectives;
+				// An action to pass mouse clicks to the menu
+				static decltype(MouseController::_onRightClick) _clickMenu;
 
 			public:
 				// TODO

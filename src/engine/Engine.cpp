@@ -106,7 +106,7 @@ void Engine::setCurrentState(const GameState& state) {
 			// Free the mouse and let the user click on menu items
 			MouseController::setMouseLocked(false);
 			MouseController::_onLeftClick = _switchToMenu;
-			MouseController::_onRightClick = NULL;
+			MouseController::_onRightClick = _clickMenu;
 			MouseController::_onMove = NULL;
 		}
 		break;
@@ -306,6 +306,9 @@ decltype(MouseController::_onRightClick) Engine::_switchPerspectives = [] (const
 		setCurrentState(Walking);
 	else
 		setCurrentState(WalkingFPS);
+};
+decltype(MouseController::_onRightClick) Engine::_clickMenu = [] (const GE2Dvector& position) {
+	_menu->handleClick(position);
 };
 void Engine::handlelKeyboard (unsigned char key, int x, int y) {
 	if(_currentState != Menu) {
