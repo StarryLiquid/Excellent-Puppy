@@ -46,13 +46,45 @@ void Dog::setTailAngleY(GLfloat angle) {
 
 	_tailAngleY = angle;
 }
+const GLfloat& Dog::getHeadAngleX() const {
+	return _headAngleX;
+}
+void Dog::setHeadAngleX(GLfloat angle) {
+	if(angle > 0)
+		angle = 0;
+	else if(angle < -90)
+		angle = -90;
+
+	GLfloat dAngle = angle - _headAngleX;
+
+	_head->getRotation().x += dAngle;
+
+	_headAngleX = angle;
+}
+const GLfloat& Dog::getHeadAngleY() const {
+	return _headAngleY;
+}
+void Dog::setHeadAngleY(GLfloat angle) {
+	if(angle > 90)
+		angle = 90;
+	else if(angle < -90)
+		angle = -90;
+
+	GLfloat dAngle = angle - _headAngleY;
+
+	_head->getRotation().y += dAngle;
+
+	_headAngleY = angle;
+}
 
 Dog::Dog(const GEvector& position,
 		const GEvector& rotation,
 		const GEvector& scaling) :
 			CompositeEntity({}, position, rotation, scaling),
 			_tailAngleX(0),
-			_tailAngleY(0) {
+			_tailAngleY(0),
+			_headAngleX(0),
+			_headAngleY(0) {
 	// Initialize the materials
 	// 228, 180, 134
 	// Material to use for most of the dog body

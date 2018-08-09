@@ -28,10 +28,11 @@ const GLint ROOM_WIDTH  = 20;
 const GLint ROOM_HEIGHT = 20;
 const GLint ROOM_DEPTH  = 30;
 
-// Camera displacements
+// Camera displacements for different camera modes
 const GEvector ABOVE_DOG_DISP = {0, 2.8, 0.5};
 const GEvector DOG_EYES_DISP = {0, 1, -1};
 const GEvector TAIL_DISP = {0, 1, 3};
+const GEvector DOG_FACE_DISP = {0, 1, 3};
 
 // Creates the lamp entity
 ExcellentPuppy::Entities::Entity* createLamp(ExcellentPuppy::Engine::Light* light);
@@ -105,9 +106,18 @@ const GameState& Engine::getCurrentState() {
 	return _currentState;
 }
 void Engine::setCurrentState(const GameState& state) {
-	_currentState = state;
+	// Correct camera rotation if needed
+	if(_currentState == Head)
+		getCamera()->getRotationY() -= 180;
+
+	// Return tail and head to original angles
 	_dog->setTailAngleX(0);
 	_dog->setTailAngleY(0);
+	_dog->setHeadAngleX(0);
+	_dog->setHeadAngleY(0);
+
+	// Change callbacks and other paramters to fit new state
+	_currentState = state;
 	switch(state) {
 		case Walking: {
 			// Lock the mouse and let the user move, move the camera behind the dog
@@ -129,6 +139,19 @@ void Engine::setCurrentState(const GameState& state) {
 
 			getCamera()->setPostPosition(TAIL_DISP);
 			getCamera()->getRotationX() = 0;
+			updateCameraPosition();
+		}
+		break;
+		case Head: {
+			// Lock the mouse and let the user move the head, move the camera in front of dog's face
+			MouseController::setMouseLocked(true);
+			MouseController::_onLeftClick = _switchToMenu;
+			MouseController::_onRightClick = NULL;
+			MouseController::_onMove = _moveHead;
+
+			getCamera()->setPostPosition(DOG_FACE_DISP);
+			getCamera()->getRotationX() = 0;
+			getCamera()->getRotationY() += 180;
 			updateCameraPosition();
 		}
 		break;
@@ -343,6 +366,12 @@ decltype(MouseController::_onMove) Engine::_moveTail = [] (int dX, int dY) {
 		_dog->setTailAngleY(_dog->getTailAngleY() + dX);
 	}
 };
+decltype(MouseController::_onMove) Engine::_moveHead = [] (int dX, int dY) {
+	if(dX != 0 || dY != 0){
+		_dog->setHeadAngleX(_dog->getHeadAngleX() - dY);
+		_dog->setHeadAngleY(_dog->getHeadAngleY() + dX);
+	}
+};
 decltype(MouseController::_onLeftClick) Engine::_switchToMenu = [] (const GE2Dvector& position) {
 	// Switch to the menu if not on menu mode
 	if(_currentState != Menu){
@@ -368,6 +397,11 @@ void Engine::handlelKeyboard (unsigned char key, int x, int y) {
 		switch(key) {
 			case ' ': {
 				setCurrentState(_currentState != Tail ? Tail : Walking);
+			}
+			break;
+			case 'H':
+			case 'h': {
+				setCurrentState(_currentState != Head ? Head : Walking);
 			}
 			break;
 		}

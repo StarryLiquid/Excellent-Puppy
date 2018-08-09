@@ -29,10 +29,11 @@ namespace ExcellentPuppy {
 		 * The distinct states of the game
 		 */
 		enum GameState {
-			Walking,
-			Tail,
-			WalkingFPS,
-			Menu
+			Walking, // Walk around
+			Tail, // Move the tail using the mous
+			Head, // The head using the mouse
+			WalkingFPS, // Walk around, see through the dog's eyes
+			Menu // Menu is open
 		};
 		/**
 		 * The game engine, initiates and managed the game
@@ -74,8 +75,10 @@ namespace ExcellentPuppy {
 
 				// An action to move the camera when the mosue moves
 				static decltype(MouseController::_onMove) _moveCamera;
-				// An action to move the camera when the mosue moves
+				// An action to move the tail when the mosue moves
 				static decltype(MouseController::_onMove) _moveTail;
+				// An action to move the head when the mosue moves
+				static decltype(MouseController::_onMove) _moveHead;
 				// An action to switch between mouse look and menu mode
 				static decltype(MouseController::_onLeftClick) _switchToMenu;
 				// An action to switch between third person and first person

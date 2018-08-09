@@ -31,14 +31,20 @@ namespace ExcellentPuppy {
 				Head *_head;
 
 				// Animation properties
-				GLfloat _tailAngleX; // 0 to 0
+				GLfloat _tailAngleX; // 0 to 45
 				GLfloat _tailAngleY; // -45 to 45
+				GLfloat _headAngleX; // -90 to 0
+				GLfloat _headAngleY; // -90 to 90
 
 			public:
 				const GLfloat& getTailAngleX() const;
 				void setTailAngleX(GLfloat angle);
 				const GLfloat& getTailAngleY() const;
 				void setTailAngleY(GLfloat angle);
+				const GLfloat& getHeadAngleX() const;
+				void setHeadAngleX(GLfloat angle);
+				const GLfloat& getHeadAngleY() const;
+				void setHeadAngleY(GLfloat angle);
 
 				Dog(const GEvector& position = {},
 						const GEvector& rotation = {},
