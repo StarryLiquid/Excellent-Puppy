@@ -59,6 +59,15 @@ std::list<ExcellentPuppy::Entities::Entity*> Engine::_collisionEntities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getCollisionEntities() {
 	return _collisionEntities;
 }
+GLfloat Engine::_ambeintLight = 0.25;
+GLfloat Engine::getAmbientLight() {
+	return _ambeintLight;
+}
+void Engine::setAmbientLight(GLfloat power) {
+	_ambeintLight = power;
+	GEcolor ambientColor = {_ambeintLight, _ambeintLight, _ambeintLight};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat*)&ambientColor);
+}
 GameState Engine::_currentState = Walking;
 const GameState& Engine::getCurrentState() {
 	return _currentState;
@@ -147,7 +156,7 @@ void Engine::initScene() {
 	glEnable(GL_NORMALIZE);
 	glShadeModel(GL_SMOOTH);
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE); // Use actual viewing angle
-	setAmbientLight(0.25);
+	setAmbientLight(_ambeintLight);
 
 	// Set a camera
 	Engine::_camera = new Camera();
@@ -169,7 +178,7 @@ void Engine::initScene() {
 
 	// Create a light
 	Light * lampLight = new Light(GL_LIGHT0);
-	lampLight->setAmbient({0.1, 0.1, 0.1});
+	lampLight->setAmbient({0, 0, 0}); // Using global ambient light
 	lampLight->setDiffuse({1, 1, 1});
 	lampLight->setSpecular({1, 1, 1});
 	lampLight->setConstantAttenuation(0.2);
@@ -232,10 +241,6 @@ void Engine::render (void) {
 	// Swap buffers and signal to render next frame
 	glutSwapBuffers();
 	glutPostRedisplay();
-}
-void Engine::setAmbientLight(GLfloat power) {
-	GEcolor ambientColor = {power, power, power};
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat*)&ambientColor);
 }
 void Engine::updateCameraPosition() {
 	_camera->setPosition(_dog->getPosition());

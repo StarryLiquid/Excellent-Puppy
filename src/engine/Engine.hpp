@@ -39,7 +39,6 @@ namespace ExcellentPuppy {
 		class Engine {
 			private:
 				// TODO
-				// TextureManager
 				// Animators
 				// Settings
 
@@ -61,6 +60,8 @@ namespace ExcellentPuppy {
 				static Menuing::MainMenu *_menu;
 				// The last state going to menu
 				static GameState _lastState;
+				// The ambient light intensity, from 0 to 1
+				static GLfloat _ambeintLight;
 
 				// An action to move the camera when the mosue moves
 				static decltype(MouseController::_onMove) _moveCamera;
@@ -74,15 +75,15 @@ namespace ExcellentPuppy {
 				static decltype(MouseController::_onRightClick) _clickMenu;
 
 			public:
-				// TODO
-				// tm getter
-				// animation adder/remover
+				// TODO animation adder/remover
 				static const int& getScreenWidth();
 				static const int& getScreenHeight();
 				static std::list<Entities::Entity*>& getEntities();
 				static std::list<Entities::Entity*>& getCollisionEntities();
 				static Camera*& getCamera();
 				static void setCamera(Camera* camera);
+				static GLfloat getAmbientLight();
+				static void setAmbientLight(GLfloat power);
 				static const GameState& getCurrentState();
 				static void setCurrentState(const GameState& state);
 
@@ -105,8 +106,6 @@ namespace ExcellentPuppy {
 				//TODO: void animate();
 				// Callback to render the scene
 				static void render();
-				// Set the ambient light, values from 0.0 to 1.0
-				static void setAmbientLight(GLfloat power);
 				// Update the camera position based on the displacement
 				static void updateCameraPosition();
 				// Change the entity's position based on collision with objects in scene

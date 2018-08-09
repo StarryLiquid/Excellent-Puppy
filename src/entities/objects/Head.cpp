@@ -813,6 +813,4 @@ Head::Head(Modeling::Material* dogMaterial,
 	getDependents()->insert(leftEye);
 	getDependents()->insert(rightEye);
 }
-Head::~Head() {
-	// TODO delete stuff
-}
+Head::~Head() { }

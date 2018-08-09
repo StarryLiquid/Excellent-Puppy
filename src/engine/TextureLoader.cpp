@@ -1,11 +1,11 @@
 #include "TextureLoader.hpp"
 
 #include <GL/freeglut.h>
+#include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include "../stb_image.h"
 #include "../models/Texture.hpp"
 
-#include <iostream> //TODO remove
 
 using namespace ExcellentPuppy::Engine;
 		
