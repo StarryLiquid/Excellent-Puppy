@@ -4,6 +4,7 @@
 #include "../Base.hpp"
 
 #include <list>
+#include <utility>
 #include <GL/freeglut.h>
 #include "MouseController.hpp"
 
@@ -52,8 +53,8 @@ namespace ExcellentPuppy {
 				static Camera* _camera;
 				// The entities to render in the scene
 				static std::list<Entities::Entity*> _entities;
-				// The entities collide with
-				static std::list<Entities::Entity*> _collisionEntities;
+				// The entities collide with, with offset for position
+				static std::list<std::pair<Entities::Entity*, GEvector>> _collisionEntities;
 				// The dog entity
 				static Entities::Dog *_dog;
 				// The current game state
@@ -91,7 +92,7 @@ namespace ExcellentPuppy {
 				static const int& getScreenWidth();
 				static const int& getScreenHeight();
 				static std::list<Entities::Entity*>& getEntities();
-				static std::list<Entities::Entity*>& getCollisionEntities();
+				static std::list<std::pair<Entities::Entity*, GEvector>>& getCollisionEntities();
 				static Camera*& getCamera();
 				static void setCamera(Camera* camera);
 				static GLfloat getAmbientLight();

@@ -9,6 +9,7 @@
 #include "../entities/LightEntity.hpp"
 #include "../entities/objects/PizzaBox.hpp"
 #include "../entities/objects/Chair.hpp"
+#include "../entities/objects/Table.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../models/materials/LightMaterial.hpp"
 #include "../models/shapes/CubeModel.hpp"
@@ -58,8 +59,8 @@ std::list<ExcellentPuppy::Entities::Entity*> Engine::_entities;
 std::list<ExcellentPuppy::Entities::Entity*>& Engine::getEntities() {
 	return _entities;
 }
-std::list<ExcellentPuppy::Entities::Entity*> Engine::_collisionEntities;
-std::list<ExcellentPuppy::Entities::Entity*>& Engine::getCollisionEntities() {
+std::list<std::pair<ExcellentPuppy::Entities::Entity*, GEvector>> Engine::_collisionEntities;
+std::list<std::pair<ExcellentPuppy::Entities::Entity*, GEvector>>& Engine::getCollisionEntities() {
 	return _collisionEntities;
 }
 GLfloat Engine::_ambientLight = 0.25;
@@ -87,7 +88,7 @@ GLfloat Engine::getDirectionalLightAngle() {
 void Engine::setDirectionalLightAngle(GLfloat angle){
 	_directionalLight->setDirection((GEvector){0, -1, 1}.rotateY(angle));
 }
-GEvector Engine::_directionalLightPosition = {-5, 10, 10};
+GEvector Engine::_directionalLightPosition = {-3, 10, 6};
 GLfloat Engine::getDirectionalLightXCoords() {
 	return (_directionalLightPosition.x + ((GLfloat)ROOM_WIDTH)/2)/ROOM_WIDTH;
 }
@@ -246,7 +247,7 @@ void Engine::initScene() {
 	lamp->setPosition({5, 0, -10});
 	lamp->setCollisionRadius(1);
 	_entities.push_back(lamp);
-	_collisionEntities.push_back(lamp);
+	_collisionEntities.push_back({lamp, {}});
 
 	// Create a directional light
 	_directionalLight = new DirectionalLight(GL_LIGHT1, {});
@@ -268,7 +269,7 @@ void Engine::initScene() {
 	auto box = Entities::createPizzaBox(pizzaBoxTexture);
 	box->setPosition({1, 0, -3.5});
 	_entities.push_back(box);
-	_collisionEntities.push_back(box);
+	_collisionEntities.push_back({box, {}});
 
 	// Chair
 	auto chairMaterial = new Modeling::ColorMaterial({0.8, 0.45, 0.2});
@@ -276,8 +277,16 @@ void Engine::initScene() {
 	chair->setPosition({4, 0, -3.5});
 	chair->setRotation({0, 90, 0});
 	_entities.push_back(chair);
-	_collisionEntities.push_back(chair);
+	_collisionEntities.push_back({chair, {}});
 	chair->getDependents()->insert(chairMaterial);
+
+	// Table
+	auto table = new Entities::Table(chairMaterial, {4 + 2, 0, -3.5});
+	_entities.push_back(table);
+	// Only do collision with the table legs
+	for(auto tableLeg : table->getTableLegs()) {
+		_collisionEntities.push_back({tableLeg, table->getPosition()});
+	}
 
 	// Set mode to walking
 	setCurrentState(Walking);
@@ -340,13 +349,15 @@ void Engine::doCollision(Entities::Entity* entity, GLfloat wallCollisionDelta) {
 		entity->getPosition().z = -(ROOM_DEPTH/2 - wallCollisionRadius);
 
 	// Check collision with other collision enabled entities
-	for(auto collisionEntity : _collisionEntities) {
+	for(auto collisionEntityPair : _collisionEntities) {
+		auto collisionEntity = collisionEntityPair.first;
 		if(collisionEntity != entity) {
+			GEvector correctedPosition = collisionEntity->getPosition() + collisionEntityPair.second;
 			GLfloat minDistance = collisionEntity->getCollisionRadius() + entity->getCollisionRadius();
-			GEvector direction = entity->getPosition() - collisionEntity->getPosition();
+			GEvector direction = entity->getPosition() - correctedPosition;
 			GLfloat directionDistance = direction.length();
 			if(directionDistance < minDistance) {
-				entity->getPosition() = collisionEntity->getPosition() + direction*(minDistance/directionDistance);
+				entity->getPosition() = correctedPosition + direction*(minDistance/directionDistance);
 			}
 		}
 	}
