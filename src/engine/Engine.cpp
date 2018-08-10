@@ -8,6 +8,7 @@
 #include "../entities/CompositeEntity.hpp"
 #include "../entities/LightEntity.hpp"
 #include "../entities/objects/PizzaBox.hpp"
+#include "../entities/objects/Chair.hpp"
 #include "../models/materials/ColorMaterial.hpp"
 #include "../models/materials/LightMaterial.hpp"
 #include "../models/shapes/CubeModel.hpp"
@@ -268,6 +269,15 @@ void Engine::initScene() {
 	box->setPosition({1, 0, -3.5});
 	_entities.push_back(box);
 	_collisionEntities.push_back(box);
+
+	// Chair
+	auto chairMaterial = new Modeling::ColorMaterial({0.8, 0.45, 0.2});
+	auto chair = Entities::Chair::createChair(chairMaterial);
+	chair->setPosition({4, 0, -3.5});
+	chair->setRotation({0, 90, 0});
+	_entities.push_back(chair);
+	_collisionEntities.push_back(chair);
+	chair->getDependents()->insert(chairMaterial);
 
 	// Set mode to walking
 	setCurrentState(Walking);
